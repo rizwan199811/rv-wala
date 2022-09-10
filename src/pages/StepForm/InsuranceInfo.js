@@ -7,6 +7,7 @@ export const InsuranceInfo = ({nextStep, prevStep,handleCheck}) => {
     option3: false,
     option4: false,
 }
+let listObj = JSON.parse(localStorage.getItem("listObj"));
   const [activeClass, setActiveclass] = useState(initialState);
   const [active, setActive] = useState(false);
   const toggleClass=(index)=>{
@@ -31,7 +32,9 @@ export const InsuranceInfo = ({nextStep, prevStep,handleCheck}) => {
                   <div className="row">
                     <div className="col-md-12 mb-3">
                       <label className="fieldlabels">Insurance ?</label>
-                      <input type="checkbox" name="insurance" onChange = {(e)=>{handleCheck(e,"InsuranceInfo")}}/>
+                      <input type="checkbox" name="insurance"
+                       onChange = {(e)=>{handleCheck(e,"InsuranceInfo")}}
+                       checked={listObj && listObj.InsuranceInfo && listObj.InsuranceInfo.insurance}/>
                       <p>I have regular RV insurance for non rentals</p>
                     </div>
 
