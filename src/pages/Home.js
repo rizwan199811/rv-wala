@@ -23,7 +23,7 @@ const Home = (props) => {
   
     <div className="booking-form-wrapper bg-white">
   <form action="#">
-    <div className="form-group border-bottom d-flex align-items-center justify-content-between flex-wrap">
+    {/* <div className="form-group border-bottom d-flex align-items-center justify-content-between flex-wrap">
       <label className="option my-sm-0 my-2">
         <input type="radio" name="radio" defaultChecked="" />
         Round Trip
@@ -34,13 +34,13 @@ const Home = (props) => {
         One Way
         <span className="checkmark" />
       </label>
-      {/* <div className="d-flex align-items-center my-sm-0 my-2">
+      <div className="d-flex align-items-center my-sm-0 my-2">
         <a href="#" className="text-decoration-none">
           Multi-city/Stopovers{" "}
           <span className="fas fa-angle-right ps-2 text-primary" />
         </a>
-      </div> */}
-    </div>
+      </div>
+    </div> */}
     <div className="form-group d-sm-flex margin">
       <div className="d-flex align-items-center flex-fill me-sm-1 my-sm-0 my-4 border-bottom position-relative">
         <input

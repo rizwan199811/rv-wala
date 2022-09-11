@@ -66,11 +66,11 @@ export const CreateListing = () => {
   }
   return (
     <>
-      <div class="container-fluid my-3">
+      <div class="container-fluid my-3 listing-form-wrapper">
         <div class="row justify-content-center">
           <div class="col-11 col-sm-10 col-md-10 col-lg-8 col-xl-8 text-center p-0 mt-3 mb-2">
             <div class="card p-2 pt-4 pb-0 mt-3 mb-3">
-              <h2 id="heading">Sign Up Your User Account</h2>
+              <h2 id="heading">Create Your Listing</h2>
               <p>Fill all form field to go to next step</p>
               <form id="msform">
                 <ul id="progressbar">

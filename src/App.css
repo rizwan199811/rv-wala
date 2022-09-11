@@ -1621,36 +1621,28 @@ margin-top: 36px;
 .contact-page-form form {
 padding: 20px 15px 0;
 }
-::placeholder{
-  color: black;
-}
 
-* {
-  margin: 0;
-  padding: 0
-}
 
-html {
-  height: 100%
-}
 
-p {
-  color: grey
-}
 
-#heading {
+
+
+
+
+/* =================== Listing Form Start ================== */
+.listing-form-wrapper #heading {
   text-transform: uppercase;
-  color: #673AB7;
+  color: #cb5644;
   font-weight: normal
 }
 
-#msform {
+.listing-form-wrapper #msform {
   text-align: center;
   position: relative;
   margin-top: 20px
 }
 
-#msform fieldset {
+.listing-form-wrapper #msform fieldset {
   background: white;
   border: 0 none;
   border-radius: 0.5rem;
@@ -1661,16 +1653,17 @@ p {
   position: relative
 }
 
-.form-card {
-  text-align: left
+.listing-form-wrapper .form-card {
+  text-align: left;
+  padding: 0 20px;
 }
 
-#msform fieldset:not(:first-of-type) {
+.listing-form-wrapper #msform fieldset:not(:first-of-type) {
   display: none
 }
 
-#msform input,
-#msform textarea {
+.listing-form-wrapper #msform input,
+.listing-form-wrapper #msform textarea {
   padding: 6px 15px 6px 15px;
   border: 1px solid #ccc;
   border-radius: 0px;
@@ -1685,8 +1678,8 @@ p {
   letter-spacing: 1px;
 }
 
-#msform input:focus,
-#msform textarea:focus {
+.listing-form-wrapper #msform input:focus,
+.listing-form-wrapper #msform textarea:focus {
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
@@ -1694,9 +1687,9 @@ p {
   outline-width: 0
 }
 
-#msform .action-button {
+.listing-form-wrapper #msform .action-button {
   width: 100px;
-  background: #673AB7;
+  background: #cb5644;
   font-weight: bold;
   color: white;
   border: 0 none;
@@ -1707,12 +1700,12 @@ p {
   float: right
 }
 
-#msform .action-button:hover,
-#msform .action-button:focus {
+.listing-form-wrapper #msform .action-button:hover,
+.listing-form-wrapper #msform .action-button:focus {
   background-color: #311B92
 }
 
-#msform .action-button-previous {
+.listing-form-wrapper #msform .action-button-previous {
   width: 100px;
   background: #616161;
   font-weight: bold;
@@ -1725,54 +1718,55 @@ p {
   float: right
 }
 
-#msform .action-button-previous:hover,
-#msform .action-button-previous:focus {
+.listing-form-wrapper #msform .action-button-previous:hover,
+.listing-form-wrapper #msform .action-button-previous:focus {
   background-color: #000000
 }
 
-.card {
+.listing-form-wrapper .card {
   z-index: 0;
   border: none;
-  position: relative
+  position: relative;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.fs-title {
+.listing-form-wrapper .fs-title {
   font-size: 25px;
-  color: #673AB7;
+  color: #cb5644;
   margin-bottom: 15px;
   font-weight: normal;
   text-align: left
 }
 
-.purple-text {
-  color: #673AB7;
+.listing-form-wrapper .purple-text {
+  color: #cb5644;
   font-weight: normal
 }
 
-.steps {
+.listing-form-wrapper .steps {
   font-size: 25px;
-  color: gray;
+  color:#cb5644;
   margin-bottom: 10px;
   font-weight: normal;
   text-align: right
 }
 
-.fieldlabels {
-  color: gray;
+.listing-form-wrapper .fieldlabels {
+  color: black;
   text-align: left
 }
 
-#progressbar {
+.listing-form-wrapper #progressbar {
   margin-bottom: 30px;
   overflow: hidden;
   color: lightgrey
 }
 
-#progressbar .active {
-  color: #673AB7
+.listing-form-wrapper #progressbar .active {
+  color: #cb5644
 }
 
-#progressbar li {
+.listing-form-wrapper #progressbar li {
   list-style-type: none;
   font-size: 15px;
   width: 14%;
@@ -1781,41 +1775,41 @@ p {
   font-weight: 400
 }
 
-#progressbar #account:before {
+.listing-form-wrapper #progressbar #account:before {
   font-family: FontAwesome;
-  content: "\f13e"
+  content: "\f05a"
 }
 
-#progressbar #personal:before {
+.listing-form-wrapper #progressbar #personal:before {
   font-family: FontAwesome;
-  content: "\f007"
+  content: "\f15c"
 }
 
-#progressbar #payment:before {
+.listing-form-wrapper #progressbar #payment:before {
   font-family: FontAwesome;
-  content: "\f030"
+  content: "\f19c"
 }
 
-#progressbar #Features:before {
+.listing-form-wrapper #progressbar #Features:before {
   font-family: FontAwesome;
-  content: "\f030"
+  content: "\f085"
 }
 
-#progressbar #Photos:before {
+.listing-form-wrapper #progressbar #Photos:before {
   font-family: FontAwesome;
-  content: "\f030"
+  content: "\f03e"
 }
-#progressbar #Prices:before {
+.listing-form-wrapper #progressbar #Prices:before {
   font-family: FontAwesome;
-  content: "\f030"
+  content: "\f3d1"
 }
 
-#progressbar #confirm:before {
+.listing-form-wrapper #progressbar #confirm:before {
   font-family: FontAwesome;
   content: "\f00c"
 }
 
-#progressbar li:before {
+.listing-form-wrapper #progressbar li:before {
   width: 50px;
   height: 50px;
   line-height: 45px;
@@ -1828,7 +1822,7 @@ p {
   padding: 2px
 }
 
-#progressbar li:after {
+.listing-form-wrapper #progressbar li:after {
   content: '';
   width: 100%;
   height: 2px;
@@ -1839,28 +1833,33 @@ p {
   z-index: -1
 }
 
-#progressbar li.active:before,
-#progressbar li.active:after {
-  background: #673AB7
+.listing-form-wrapper #progressbar li.active:before,
+.listing-form-wrapper #progressbar li.active:after {
+  background: #cb5644;
 }
 
-.progress {
+.listing-form-wrapper .progress {
   height: 20px
 }
 
-.progress-bar {
-  background-color: #673AB7
+.listing-form-wrapper .progress-bar {
+  background-color: #cb5644 !important;
 }
 
-.fit-image {
+.listing-form-wrapper .fit-image {
   width: 100%;
   object-fit: cover
 }
-.insurance_card_active{
-  border: 2px solid forestgreen !important;
+.listing-form-wrapper .insurance_card_active{
+  border: 2px solid #cb5644 !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 
-#msform input[type='checkbox'] { 
+.listing-form-wrapper #msform input[type='checkbox'] { 
   width: auto !important;
 }
+::placeholder{
+  color: grey;
+}
+/* =================== Listing Form Ends ================== */
