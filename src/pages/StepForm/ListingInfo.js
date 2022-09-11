@@ -1,10 +1,21 @@
-import React from "react";
+import {useState} from "react";
+import { useFormik} from "formik";
+import * as Yup from "yup";
 export const ListingInfo = ({
   nextStep,
   prevStep,
   handleChange,
   handleCheck,
 }) => {
+  let initialValues ={
+    title: "",
+    description: "",
+    address: "",
+    for_rent: "",
+    cancel_policy: "",
+    for_sale: ""
+  }
+
   let policies = [
     {
       label: "Rental cancellation policy",
@@ -20,6 +31,67 @@ export const ListingInfo = ({
     },
   ];
   let listObj = JSON.parse(localStorage.getItem("listObj"));
+  let ListInfo = listObj ? {...initialValues ,...listObj.ListInfo} : initialValues;
+
+  const formik = useFormik({
+    initialValues: ListInfo,
+    validationSchema: Yup.object({
+      title: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+      address: Yup.string().required("Required"),
+      for_rent: Yup.string().required("Required"),
+      cancel_policy: Yup.string().required("Required"),
+      for_sale: Yup.string().required("Required")
+    }),
+    enableReinitialize: true,
+
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+
+  const { errors, touched, handleBlur,values } = formik;
+
+  const [proceedNext, setProceedNext] = useState(true);
+
+  const validateFields = () => {
+    const {
+      title,
+      description,
+      address,
+      for_rent,
+      cancel_policy,
+      for_sale,
+      value
+    } = values;
+  
+    console.log({
+      title,
+      description,
+      address,
+      for_rent,
+      cancel_policy,
+      for_sale
+    }
+    )
+    if (
+      title   &&
+      description &&
+      address &&
+      // for_rent &&
+      cancel_policy 
+      // &&
+      // for_sale 
+    ) {
+      // 
+      setProceedNext(true);
+      nextStep();
+    } else {
+      setProceedNext(false);
+    }
+  };
+
   return (
     <>
       <div class="form-card">
@@ -41,10 +113,16 @@ export const ListingInfo = ({
                 listObj && listObj.ListInfo && listObj.ListInfo.title
               }
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleChange(e, "ListInfo");
               }}
+              onBlur={handleBlur}
               placeholder="Clear, Concise Title of your listing"
             />
+            {errors.title && touched.title && (
+              <p className="text-danger">{errors.title} </p>
+            )}
           </div>
           <div class="col-md-12 mb-3">
             <label class="fieldlabels">Description: *</label>
@@ -57,10 +135,17 @@ export const ListingInfo = ({
                 listObj && listObj.ListInfo && listObj.ListInfo.description
               }
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleChange(e, "ListInfo");
               }}
+              onBlur={handleBlur}
+              
               style={{ height: "100px" }}
             ></textarea>
+             {errors.description && touched.description && (
+              <p className="text-danger">{errors.description} </p>
+            )}
           </div>
 
           <div class="col-md-9 mb-3">
@@ -75,9 +160,15 @@ export const ListingInfo = ({
                 listObj && listObj.ListInfo && listObj.ListInfo.address
               }
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleChange(e, "ListInfo");
               }}
+              onBlur={handleBlur}
             />
+              {errors.address && touched.address && (
+              <p className="text-danger">{errors.address} </p>
+            )}
           </div>
           <div class="col-md-3 mb-3">
             <label class="fieldlabels">For Rent: *</label>
@@ -86,9 +177,15 @@ export const ListingInfo = ({
               name="for_rent"
               checked={listObj && listObj.ListInfo && listObj.ListInfo.for_rent}
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleCheck(e, "ListInfo");
               }}
+              onBlur={handleBlur}
             />
+              {errors.for_rent && touched.for_rent && (
+              <p className="text-danger">{errors.for_rent} </p>
+            )}
           </div>
           <div class="col-md-9 mb-3">
             <label class="fieldlabels">Cancellation Policy : *</label>
@@ -100,14 +197,20 @@ export const ListingInfo = ({
                 listObj && listObj.ListInfo && listObj.ListInfo.cancel_policy
               }
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleChange(e, "ListInfo");
               }}
+              onBlur={handleBlur}
             >
               {policies.length > 0 &&
                 policies.map((x) => {
                   return <option value={x.value}>{x.label}</option>;
                 })}
             </select>
+            {errors.cancel_policy && touched.cancel_policy && (
+              <p className="text-danger">{errors.cancel_policy} </p>
+            )}
           </div>
           <div class="col-md-3 mb-3">
             <label class="fieldlabels" name="for_sale">
@@ -117,13 +220,18 @@ export const ListingInfo = ({
               type="checkbox"
               name="for_sale"
               onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
                 handleCheck(e, "ListInfo");
               }}
-              
+              onBlur={handleBlur}
               checked={
                 listObj && listObj.ListInfo && listObj.ListInfo.for_sale
               }
             />
+              {errors.for_sale && touched.for_sale && (
+              <p className="text-danger">{errors.for_sale} </p>
+            )}
           </div>
         </div>
       </div>
@@ -132,7 +240,8 @@ export const ListingInfo = ({
         name="next"
         class="next action-button"
         value="Next"
-        onClick={nextStep}
+        onClick={validateFields}
+        style={!proceedNext ? { opacity: 0.5, pointerEvents: "none" } : {}}
       />
       <input
         type="button"
@@ -140,6 +249,7 @@ export const ListingInfo = ({
         class="previous action-button-previous"
         value="Previous"
         onClick={prevStep}
+        
       />
     </>
   );
