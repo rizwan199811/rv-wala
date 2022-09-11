@@ -88,6 +88,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
                     </div>
                   </div> */}
         <div {...getRootProps({ className: "dropzone" })}>
+        <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
           <input {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
         </div>

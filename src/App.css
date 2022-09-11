@@ -1683,7 +1683,7 @@ padding: 20px 15px 0;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
-  border: 1px solid #673AB7;
+  border: 1px solid #cb5644;
   outline-width: 0
 }
 
@@ -1695,32 +1695,38 @@ padding: 20px 15px 0;
   border: 0 none;
   border-radius: 0px;
   cursor: pointer;
-  padding: 10px 5px;
-  margin: 10px 0px 10px 5px;
-  float: right
+  padding: 6px 5px;
+  margin: 10px 21px 10px 5px;
+  float: right;
+  border-radius: 40px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
 }
 
 .listing-form-wrapper #msform .action-button:hover,
 .listing-form-wrapper #msform .action-button:focus {
-  background-color: #311B92
+  background-color: #ffff;
+  color: #cb5644;
 }
 
 .listing-form-wrapper #msform .action-button-previous {
   width: 100px;
-  background: #616161;
+  background: #919191;
   font-weight: bold;
   color: white;
   border: 0 none;
   border-radius: 0px;
   cursor: pointer;
-  padding: 10px 5px;
+  padding: 6px 5px;
   margin: 10px 5px 10px 0px;
-  float: right
+  float: right;
+  border-radius: 40px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
 }
 
 .listing-form-wrapper #msform .action-button-previous:hover,
 .listing-form-wrapper #msform .action-button-previous:focus {
-  background-color: #000000
+  background-color: #ffff;
+  color: #cb5644;
 }
 
 .listing-form-wrapper .card {
@@ -1861,5 +1867,13 @@ padding: 20px 15px 0;
 }
 ::placeholder{
   color: grey;
+}
+.dropzone{
+  /* border: 1px solid; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
 }
 /* =================== Listing Form Ends ================== */

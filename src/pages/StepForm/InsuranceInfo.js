@@ -148,7 +148,7 @@ let listObj = JSON.parse(localStorage.getItem("listObj"));
                       </div>
                     </div>
                     <div>
-                      <p>
+                      <p className='pt-4'>
                         RVnGO will cover claims up to, but NOT exceeding, the
                         property limit of the selected rental coverage, and Host
                         waives any claims for property damage above the selected

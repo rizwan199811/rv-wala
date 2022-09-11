@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import listingCheck from '../../images/listingCheck.png'
 
 export const Finish = () => {
   return (
@@ -19,7 +20,7 @@ export const Finish = () => {
     <div class="row justify-content-center">
       <div class="col-3">
         <img
-          src="https://i.imgur.com/GwStPmg.png"
+          src={listingCheck}
           class="fit-image"
         />
       </div>
@@ -28,7 +29,7 @@ export const Finish = () => {
     <div class="row justify-content-center">
       <div class="col-7 text-center">
         <h5 class="purple-text text-center">
-          You Have Successfully Signed Up
+          You Have Successfully Create Listing
         </h5>
       </div>
     </div>

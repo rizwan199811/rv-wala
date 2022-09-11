@@ -170,7 +170,7 @@ export const ListingInfo = ({
               <p className="text-danger">{errors.address} </p>
             )}
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-md-3 mb-3 m-auto d-flex justify-content-around">
             <label class="fieldlabels">For Rent: *</label>
             <input
               type="checkbox"
@@ -187,7 +187,7 @@ export const ListingInfo = ({
               <p className="text-danger">{errors.for_rent} </p>
             )}
           </div>
-          <div class="col-md-9 mb-3">
+          <div class="col-md-9 mb-3 ">
             <label class="fieldlabels">Cancellation Policy : *</label>
             <select
               class="form-select"
@@ -212,7 +212,7 @@ export const ListingInfo = ({
               <p className="text-danger">{errors.cancel_policy} </p>
             )}
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-md-3 mb-3 m-auto d-flex justify-content-around">
             <label class="fieldlabels" name="for_sale">
               For Sale: *
             </label>
