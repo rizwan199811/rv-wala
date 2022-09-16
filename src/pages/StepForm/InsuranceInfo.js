@@ -26,7 +26,7 @@ let listObj = JSON.parse(localStorage.getItem("listObj"));
                       <h2 className="fs-title">Insurance</h2>
                     </div>
                     <div className="col-5">
-                      <h2 className="steps">Step 3 - 7</h2>
+                      <h2 className="steps">Step 3 - 8</h2>
                     </div>
                   </div>
                   <div className="row">
@@ -49,7 +49,7 @@ let listObj = JSON.parse(localStorage.getItem("listObj"));
                   <div className="row">
                     <div className="col-md-3">
                       <div
-                     className="card"
+                    //  className="card"
                   
                         className={activeClass.option1 ? "card insurance_card_active" : "card"}
                         onClick={() => toggleClass('option1')}

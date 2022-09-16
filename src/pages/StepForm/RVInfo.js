@@ -226,7 +226,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
             <h2 class="fs-title">Basic RV Info</h2>
           </div>
           <div class="col-5">
-            <h2 class="steps">Step 1 - 7</h2>
+            <h2 class="steps">Step 1 - 8</h2>
           </div>
         </div>
         <div class="row">

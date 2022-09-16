@@ -89,7 +89,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
             <h2 class="fs-title">Prices</h2>
           </div>
           <div class="col-5">
-            <h2 class="steps">Step 4 - 7</h2>
+            <h2 class="steps">Step 4 - 8</h2>
           </div>
           <div>
             <h5>Rental Pricing</h5>

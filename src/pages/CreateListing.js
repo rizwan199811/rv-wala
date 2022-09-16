@@ -7,6 +7,7 @@ import { InsuranceInfo } from "./StepForm/InsuranceInfo";
 import { PricingInfo } from "./StepForm/PricingInfo";
 import { ImagesInfo } from "./StepForm/ImagesInfo";
 import { FeaturesInfo } from "./StepForm/FeaturesInfo";
+import { UrlsInfo } from "./StepForm/UrlsInfo";
 import { Finish } from "./StepForm/Finish";
 
 export const CreateListing = () => {
@@ -14,13 +15,13 @@ export const CreateListing = () => {
   const [progressWidth, setProgressWidth] = useState(parseFloat(100 / 7) * 1);
   const [listObj, setListObj] = useState({});
   const nextStep = () => {
-    let totalSteps = 7;
+    let totalSteps = 8;
     let percent = parseFloat(100 / totalSteps) * (step + 1);
     setProgressWidth(percent);
     setStep(step + 1);
   };
   const prevStep = () => {
-    let totalSteps = 7;
+    let totalSteps = 8;
     let percent = parseFloat(100 / totalSteps) * (step - 1);
     setProgressWidth(percent);
     setStep(step - 1);
@@ -86,13 +87,16 @@ export const CreateListing = () => {
                   <li id="Prices" className={step == 4 ? "active" : ""}>
                     <strong>Prices</strong>
                   </li>
-                  <li id="Photos" className={step == 5 ? "active" : ""}>
+                  <li id="urls" className={step == 5 ? "active" : ""}>
+                    <strong>URLs</strong>
+                  </li>
+                  <li id="Photos" className={step == 6 ? "active" : ""}>
                     <strong>Photos</strong>
                   </li>
-                  <li id="Features" className={step == 6 ? "active" : ""}>
+                  <li id="Features" className={step == 7 ? "active" : ""}>
                     <strong>Features</strong>
                   </li>
-                  <li id="confirm" className={step == 7 ? "active" : ""}>
+                  <li id="confirm" className={step == 8 ? "active" : ""}>
                     <strong>Finish</strong>
                   </li>
                   {/* <!-- <li id="confirm"><strong>Finish</strong></li> --> */}
@@ -140,6 +144,13 @@ export const CreateListing = () => {
                     />
                   )}
                   {step == 5 && (
+                    <UrlsInfo
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      handleChange={handleChange}
+                    />
+                  )}
+                  {step == 6 && (
                     <ImagesInfo
                       nextStep={nextStep}
                       prevStep={prevStep}
@@ -147,14 +158,14 @@ export const CreateListing = () => {
                       onUpload={onUpload}
                     />
                   )}
-                  {step == 6 && (
+                  {step == 7 && (
                     <FeaturesInfo
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleCheck={handleCheck}
                     />
                   )}
-                  {step == 7 && (
+                  {step == 8 && (
                     <Finish nextStep={nextStep} prevStep={prevStep} />
                   )}
                 </Fieldset>

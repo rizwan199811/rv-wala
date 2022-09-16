@@ -9,7 +9,7 @@ export const Finish = () => {
         <h2 class="fs-title">Finish:</h2>
       </div>
       <div class="col-5">
-        <h2 class="steps">Step 7 - 7</h2>
+        <h2 class="steps">Step 8 - 8</h2>
       </div>
     </div>
     <br /><br />

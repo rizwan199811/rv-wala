@@ -100,7 +100,7 @@ export const ListingInfo = ({
             <h2 class="fs-title">Listing Details:</h2>
           </div>
           <div class="col-5">
-            <h2 class="steps">Step 2 - 7</h2>
+            <h2 class="steps">Step 2 - 8</h2>
           </div>
         </div>
         <div class="row">

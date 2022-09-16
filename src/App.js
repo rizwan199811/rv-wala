@@ -7,12 +7,14 @@ import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Contact from './pages/Contact';
 import {CreateListing} from './pages/CreateListing';
+import AfterLoginHeader from './components/AfterLoginHeader';
 
 
 function App() {
   return (
     <div>
       <Header/>
+      <AfterLoginHeader/>
       <Routes>
         <Route path="/" element={ <Home/> } />
         <Route path="/login" element={ <LogIn/> } />

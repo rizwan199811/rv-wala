@@ -70,7 +70,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
             <h2 class="fs-title">Photos:</h2>
           </div>
           <div class="col-5">
-            <h2 class="steps">Step 5 - 7</h2>
+            <h2 class="steps">Step 6 - 8</h2>
           </div>
         </div>
         {/* <div class="row">
