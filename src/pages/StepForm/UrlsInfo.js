@@ -39,7 +39,7 @@ export const UrlsInfo = ({ nextStep, prevStep, handleChange }) => {
         name="next"
         class="next action-button"
         value="Next"
-        // onClick={validateFields}
+        onClick={nextStep}
         style={!proceedNext ? { opacity: 0.5, pointerEvents: "none" } : {}}
       />
       <input

@@ -14,7 +14,7 @@ function App() {
   return (
     <div>
       <Header/>
-      <AfterLoginHeader/>
+      {/* <AfterLoginHeader/> */}
       <Routes>
         <Route path="/" element={ <Home/> } />
         <Route path="/login" element={ <LogIn/> } />
