@@ -52,7 +52,8 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   };
   const thumbs = files.map(file => (
     <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
+      <div className="imageinfo-preview-div" style={thumbInner}>
+     <a> <i class="fa-solid fa-circle-xmark"></i></a>
         <img
           src={file.preview}
           style={img}

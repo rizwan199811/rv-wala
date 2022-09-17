@@ -81,6 +81,14 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
       setProceedNext(false);
     }
   };
+
+
+  const [checked, setChecked] = useState(false);
+
+  const handleChangeCheck = (event) => {
+    setChecked(event.currentTarget.checked);
+  }
+
   return (
     <>
       <div class="form-card">
@@ -130,11 +138,11 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-              {errors.weekly && touched.weekly && (
+            {errors.weekly && touched.weekly && (
               <p className="text-danger">{errors.weekly} </p>
             )}
           </div>
-          <div class="col-md-3 mb:-3">
+          <div class="col-md-3 mb-3">
             <label class="fieldlabels">Monthly Rate: *</label>
             <input
               type="number"
@@ -149,7 +157,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-             {errors.monthly && touched.monthly && (
+            {errors.monthly && touched.monthly && (
               <p className="text-danger">{errors.monthly} </p>
             )}
           </div>
@@ -168,7 +176,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-               {errors.deposit && touched.deposit && (
+            {errors.deposit && touched.deposit && (
               <p className="text-danger">{errors.deposit} </p>
             )}
           </div>
@@ -189,7 +197,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-                {errors.damage_deposit && touched.damage_deposit && (
+            {errors.damage_deposit && touched.damage_deposit && (
               <p className="text-danger">{errors.damage_deposit} </p>
             )}
           </div>
@@ -208,7 +216,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-                {errors.prep_fee && touched.prep_fee && (
+            {errors.prep_fee && touched.prep_fee && (
               <p className="text-danger">{errors.prep_fee} </p>
             )}
           </div>
@@ -227,7 +235,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-                {errors.cleaning_fee && touched.cleaning_fee && (
+            {errors.cleaning_fee && touched.cleaning_fee && (
               <p className="text-danger">{errors.cleaning_fee} </p>
             )}
           </div>
@@ -246,11 +254,138 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             />
-                {errors.late_fee && touched.late_fee && (
+            {errors.late_fee && touched.late_fee && (
               <p className="text-danger">{errors.late_fee} </p>
             )}
           </div>
+
+          {/* <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+              checked={checked}
+              onChange={handleChangeCheck}
+            />
+            <label class="fieldlabels">Mileage Charges</label>
+            {
+              checked && (
+                <div className="priceing-checkhide-div">
+                  <label class="fieldlabels pt-3">Max Free Miles per Night</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="Max Free Miles per Night"
+                  />
+                  <label class="fieldlabels pt-3">Per Mile Charge  (extra miles)</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="e.g.$100.00"
+                  />
+                </div>
+              )
+            }
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+              checked={checked}
+              onChange={handleChangeCheck}
+            />
+            <label class="fieldlabels">Generator</label>
+               {
+              checked && (
+                <div className="priceing-checkhide-div">
+                  <label class="fieldlabels pt-3">Free Hours Per Night</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="0"
+                  />
+                  <label class="fieldlabels pt-3">Price Per Hour  (extra hours)</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="e.g.$100.00"
+                  />
+                </div>
+              )
+            }
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+              checked={checked}
+              onChange={handleChangeCheck}
+            />
+            <label class="fieldlabels">Towing Package</label>
+               {
+              checked && (
+                <div className="priceing-checkhide-div">
+                  <label class="fieldlabels pt-3">Weight Limit</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="0"
+                  />
+                  <label class="fieldlabels pt-3">Price per Mile</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="e.g.$0.10"
+                  />
+                </div>
+              )
+            }
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+              checked={checked}
+              onChange={handleChangeCheck}
+            />
+            <label class="fieldlabels">Delivery Available</label>
+               {
+              checked && (
+                <div className="priceing-checkhide-div">
+                <span>As a host you will have the ability to provide an amount upon confirmation of inquiries</span>
+                </div>
+              )
+            }
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+            />
+            <label class="fieldlabels">One Way Rental Available</label>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+              checked={checked}
+              onChange={handleChangeCheck}
+            />
+            <label class="fieldlabels">Pet Friendly</label>
+               {
+              checked && (
+                <div className="priceing-checkhide-div">
+                  <label class="fieldlabels pt-3">Pet Fee</label>
+                  <input
+                    type="number"
+                    name=""
+                    placeholder="e.g.$20.00"
+                  />
+                </div>
+              )
+            }
+          </div>
+          <div class="col-md-4 mb-3">
+            <input type="checkbox"
+              name=""
+            />
+            <label class="fieldlabels">Wheelchair Accessible</label>
+          </div> */}
         </div>
+
       </div>
       <input
         type="button"
