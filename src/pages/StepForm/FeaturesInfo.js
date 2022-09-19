@@ -1,10 +1,13 @@
 import React from 'react'
 import axios from 'axios'
-import { localURL, stagingURL } from '../../config/apiURL'
+import {  baseURL } from '../../config/apiURL'
+import { useNavigate } from "react-router-dom";
 
 export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
+  let history = useNavigate();
   const handleSubmit = async () => {
+    try{
     let body = localStorage.getItem('listObj')
       ? JSON.parse(localStorage.getItem('listObj'))
       : {}
@@ -12,8 +15,14 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
       Authorization: localStorage.getItem('token'),
     }
     console.log({ headers })
-    const { message } = await axios.post(stagingURL + '/rv', body, { headers })
-    console.log({ message })
+    const { message } = await axios.post(baseURL + '/rv', body, { headers })
+    console.log({ message });
+    history("/rvs-for-rent", { replace: true });
+    }
+    catch(e){
+      console.log({e})
+    }
+  
   }
 
   return (

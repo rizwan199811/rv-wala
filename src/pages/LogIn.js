@@ -2,7 +2,7 @@ import React from 'react'
 import login from '../images/loigin.jpg'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { stagingURL, localURL } from '../config/apiURL'
+import { baseURL } from '../config/apiURL'
 import { useDispatch } from 'react-redux'
 import { setToken } from '../app/slice/AuthSlice'
 import axios from 'axios'
@@ -48,7 +48,7 @@ const LogIn = () => {
       }
       const {
         data: { data, token, refreshToken },
-      } = await axios.post(stagingURL + '/auth/login', body)
+      } = await axios.post(baseURL + '/auth/login', body)
       dispatch(setToken(token))
       localStorage.setItem('token', token)
       history('/', { replace: true })

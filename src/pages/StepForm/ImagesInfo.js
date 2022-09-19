@@ -1,13 +1,13 @@
 import React,{useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
-import { stagingURL,localURL } from "../../config/apiURL";
+import { baseURL } from "../../config/apiURL";
 
 
 export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   let listObj = JSON.parse(localStorage.getItem("listObj"))
   // let files = listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [];
-
+  const [proceedNext, setProceedNext] = useState(true);
   const [files, setFiles] = useState(listObj && listObj.ImageInfo ? listObj.ImageInfo.files : []);
   const {getRootProps, getInputProps} = useDropzone({
     accept: {
@@ -29,11 +29,12 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
     // formData.append("files", files);
     const {
       data: { data },
-    } = await axios.post(localURL + '/misc/upload-file', formData,{
+    } = await axios.post(baseURL + '/misc/upload-file', formData,{
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
+    setProceedNext(true);
     setFiles(data)
     onUpload(data,'ImageInfo');
     console.log({data})
@@ -76,6 +77,13 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
     width: "auto",
     height: "100%",
   };
+  const validateImages =( )=>{
+    if(files.length==0){
+     return setProceedNext(false)
+    }
+    setProceedNext(true);
+    nextStep()
+  }
   const thumbs = files.map(file => (
     <div style={thumb} key={file.filename}>
       <div className="imageinfo-preview-div" style={thumbInner}>
@@ -126,7 +134,8 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
         name="next"
         class="next action-button"
         value="Next"
-        onClick={nextStep}
+        onClick={validateImages}
+        style={!proceedNext ? { opacity: 0.5, pointerEvents: "none" } : {}}
       />
       <input
         type="button"

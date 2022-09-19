@@ -2,7 +2,7 @@ import { useRef, useState,useEffect } from "react";
 import { useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { stagingURL, localURL } from '../../config/apiURL'
+import { baseURL } from '../../config/apiURL'
 
 export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
  const [types, setTypes] = useState([])
@@ -32,7 +32,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
     }
     const {
       data: { data },
-    } = await axios.post(stagingURL + '/misc/get-seed', body)
+    } = await axios.post(baseURL + '/misc/get-seed', body)
     let type =data.find(x=>x.name=="Type");
     console.log({type})
     let make =data.find(x=>x.name=="Make");
