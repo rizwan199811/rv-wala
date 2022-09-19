@@ -96,9 +96,9 @@ export const CreateListing = () => {
                   <li id="Features" className={step == 7 ? "active" : ""}>
                     <strong>Features</strong>
                   </li>
-                  <li id="confirm" className={step == 8 ? "active" : ""}>
+                  {/* <li id="confirm" className={step == 8 ? "active" : ""}>
                     <strong>Finish</strong>
-                  </li>
+                  </li> */}
                   {/* <!-- <li id="confirm"><strong>Finish</strong></li> --> */}
                 </ul>
                 <div class="progress">
@@ -165,9 +165,9 @@ export const CreateListing = () => {
                       handleCheck={handleCheck}
                     />
                   )}
-                  {step == 8 && (
+                  {/* {step == 8 && (
                     <Finish nextStep={nextStep} prevStep={prevStep} />
-                  )}
+                  )} */}
                 </Fieldset>
               </form>
             </div>

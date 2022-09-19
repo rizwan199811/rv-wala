@@ -1,24 +1,50 @@
 import React,{useState} from "react";
 import {useDropzone} from 'react-dropzone';
+import axios from 'axios';
+import { stagingURL,localURL } from "../../config/apiURL";
+
 
 export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   let listObj = JSON.parse(localStorage.getItem("listObj"))
-  let files = listObj && listObj.ImageInfo ? listObj.ImageInfo.files : []
-  // const [files, setFiles] = useState([]);
+  // let files = listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [];
+
+  const [files, setFiles] = useState(listObj && listObj.ImageInfo ? listObj.ImageInfo.files : []);
   const {getRootProps, getInputProps} = useDropzone({
     accept: {
       'image/*': []
     },
-    onDrop: acceptedFiles => {
-      let files = acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      }))
-        onUpload(files,'ImageInfo');
+    onDrop: async (acceptedFiles) => {
+       await imageUpload(acceptedFiles)
       // setFiles(acceptedFiles.map(file => Object.assign(file, {
       //   preview: URL.createObjectURL(file)
       // })));
     }
   });
+  const imageUpload =async (files)=>{
+    console.log({files})
+    let formData = new FormData();
+    files.forEach(file=>{
+      formData.append("files", file);
+    });
+    // formData.append("files", files);
+    const {
+      data: { data },
+    } = await axios.post(localURL + '/misc/upload-file', formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    setFiles(data)
+    onUpload(data,'ImageInfo');
+    console.log({data})
+  }
+
+  const removeFile= async ( key )=>{
+    let tempFile =[...files];
+    let filtered = tempFile.filter(function(el) { return el.filename != key; });
+    setFiles(filtered) 
+    onUpload(filtered,'ImageInfo');
+  }
   // onDrop:onUpload
   const thumbsContainer = {
     display: "flex",
@@ -51,14 +77,14 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
     height: "100%",
   };
   const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
+    <div style={thumb} key={file.filename}>
       <div className="imageinfo-preview-div" style={thumbInner}>
-     <a> <i class="fa-solid fa-circle-xmark"></i></a>
+     <a onClick={()=>{removeFile(file.filename)}}> <i class="fa-solid fa-circle-xmark"></i></a>
         <img
-          src={file.preview}
+          src={file.path}
           style={img}
           // Revoke data uri after image is loaded
-          onLoad={() => { URL.revokeObjectURL(file.preview) }}
+          onLoad={() => { URL.revokeObjectURL(file.path) }}
         />
       </div>
     </div>

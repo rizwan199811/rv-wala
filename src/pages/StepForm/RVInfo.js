@@ -1,114 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import { useFormik} from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { stagingURL, localURL } from '../../config/apiURL'
 
 export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
-  let types = [
-    {
-      label: "Class A",
-      value: "Class A",
-    },
-    {
-      label: "Class B",
-      value: "Class B",
-    },
-    {
-      label: "Class C",
-      value: "Class C",
-    },
-    {
-      label: "Fifth Wheel",
-      value: "Fifth Wheel",
-    },
-    {
-      label: "Toy Hauler",
-      value: "Toy Hauler",
-    },
-    {
-      label: "Travel Trailer",
-      value: "Travel Trailer",
-    },
-    {
-      label: "Pop up camper and other",
-      value: "Pop up camper and other",
-    },
-    {
-      label: "Campervan",
-      value: "Campervan",
-    },
-  ];
-  let makes = [
-    {
-      label: "A-Liner",
-      value: "A-Liner",
-    },
-    {
-      label: "Adirondack",
-      value: "Adirondack",
-    },
-    {
-      label: "Aerolite",
-      value: "Aerolite",
-    },
-    {
-      label: "Airstream",
-      value: "Airstream",
-    },
-    {
-      label: "Alfa",
-      value: "Alfa",
-    },
-    {
-      label: "Alfa Leisure",
-      value: "Alfa Leisure",
-    },
-    {
-      label: "Allegro",
-      value: "Allegro",
-    },
-    {
-      label: "American Coach",
-      value: "American Coach",
-    },
-    {
-      label: "American Cruiser",
-      value: "American Cruiser",
-    },
-    {
-      label: "Arctic Fox",
-      value: "Arctic Fox",
-    },
-    {
-      label: "Athens Park Homes",
-      value: "Athens Park Homes",
-    },
-    {
-      label: "Autumn Ridge",
-      value: "Autumn Ridge",
-    },
-  ];
-  let years = [
-    {
-      label: "2022",
-      value: "2022",
-    },
-    {
-      label: "2021",
-      value: "2021",
-    },
-    {
-      label: "2020",
-      value: "2020",
-    },
-    {
-      label: "2019",
-      value: "2019",
-    },
-    {
-      label: "2018",
-      value: "2018",
-    },
-  ];
+ const [types, setTypes] = useState([])
+ const [makes, setMakes] = useState([])
+ const [years, setYears] = useState([])
+ const [slides, setSlides] = useState([])
+ const [seatbelts, setSeatbelts] = useState([])
+ const [sleeps, setSleeps] = useState([])
   let initialValues ={
     make: "",
     type: "",
@@ -123,6 +25,33 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
     length: "",
     value: "",
   }
+  useEffect(() => {
+    async function fetchData() {
+      let body ={
+        "names":["Type","Year","Make","Slide","Seatbelt","Sleep"]
+    }
+    const {
+      data: { data },
+    } = await axios.post(stagingURL + '/misc/get-seed', body)
+    let type =data.find(x=>x.name=="Type");
+    console.log({type})
+    let make =data.find(x=>x.name=="Make");
+    let year =data.find(x=>x.name=="Year");
+    let slide =data.find(x=>x.name=="Slide");
+    let seatbelt =data.find(x=>x.name=="Seatbelt");
+    let sleep =data.find(x=>x.name=="Sleep");
+    setTypes(type.value)
+    setMakes(make.value)
+    setYears(year.value)
+    setSlides(slide.value)
+    setSeatbelts(seatbelt.value)
+    setSleeps(sleep.value)
+    }
+ 
+    
+    fetchData()
+  }, [])
+  
 
   let listObj = JSON.parse(localStorage.getItem("listObj"));
   let RVInfo = listObj ? {...initialValues ,...listObj.RVInfo} : initialValues
@@ -262,12 +191,12 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             >
-              <option value="" selected>
+              <option value="">
                 Select Type
               </option>
               {types.length > 0 &&
                 types.map((x) => {
-                  return <option value={x.value}>{x.label}</option>;
+                  return <option value={x.value} selected={x.value==RVInfo.type}>{x.label}</option>;
                 })}
               {/*  */}
             </select>
@@ -289,12 +218,12 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             >
-              <option selected value="">
+              <option value="">
                 Vehcile Make
               </option>
               {makes.length > 0 &&
                 makes.map((x) => {
-                  return <option value={x.value}>{x.label}</option>;
+                  return <option value={x.value} selected={x.value==RVInfo.make}>{x.label}</option>;
                 })}
             </select>
             {errors.make && touched.make && (
@@ -333,12 +262,12 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             >
-              <option selected value="">
+              <option  value="">
                 Select Year
               </option>
               {years.length > 0 &&
                 years.map((x) => {
-                  return <option value={x.value}>{x.label}</option>;
+                  return <option value={x.value} selected={x.value==RVInfo.year}>{x.label}</option>;
                 })}
             </select>
             {errors.year && touched.year && (
@@ -359,12 +288,14 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               }}
               onBlur={handleBlur}
             >
-              <option selected value="">
+              <option  value="">
                 Number of beds
               </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              {
+              sleeps.length > 0 &&  
+                sleeps.map((x) => {
+                  return <option value={x.value} selected={x.value==RVInfo.sleep}>{x.label}</option>;
+                })}
             </select>
             {errors.sleep && touched.sleep && (
               <p className="text-danger">{errors.sleep} </p>
@@ -384,12 +315,14 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               onBlur={handleBlur}
               defaultValue={listObj && listObj.RVInfo && listObj.RVInfo.slides}
             >
-              <option selected value="">
+              <option  value="">
                 Number of slides
               </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              {
+              slides.length > 0 &&  
+                slides.map((x) => {
+                  return <option value={x.value} selected={x.value==RVInfo.slides}>{x.label}</option>;
+                })}
             </select>
             {errors.slides && touched.slides && (
               <p className="text-danger">{errors.slides} </p>
@@ -411,12 +344,14 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
                 listObj && listObj.RVInfo && listObj.RVInfo.seatbelts
               }
             >
-              <option selected value="">
+              <option  value="">
                 Number of Seatbelts
               </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              {
+              seatbelts.length > 0 &&  
+                seatbelts.map((x) => {
+                  return <option value={x.value} selected={x.value==RVInfo.seatbelts}>{x.label}</option>;
+                })}
             </select>
             {errors.seatbelts && touched.seatbelts && (
               <p className="text-danger">{errors.seatbelts} </p>

@@ -1,46 +1,138 @@
-import React from "react";
-import { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React from 'react'
+import { useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
   let initialValues = {
-    nightly: "",
-    weekly: "",
-    monthly: "",
-    deposit: "",
-    damage_deposit: "",
-    prep_fee: "",
-    cleaning_fee: "",
-    late_fee: "",
-  };
-  let listObj = JSON.parse(localStorage.getItem("listObj"));
+    nightly: '',
+    weekly: '',
+    monthly: '',
+    deposit: '',
+    damage_deposit: '',
+    prep_fee: '',
+    cleaning_fee: '',
+    late_fee: '',
+    free_hours_per_night: '',
+    price_per_extra_hours: '',
+    max_free_miles_per_night: '',
+    pet_fee: '',
+    price_per_mile: '',
+    weight_limit: '',
+  }
+  let listObj = JSON.parse(localStorage.getItem('listObj'))
   let PricingInfo = listObj
-    ? { ...initialValues, ...listObj.Pricing }
-    : initialValues;
+    ? {
+        ...initialValues,
+        ...listObj.Pricing,
 
+        max_free_miles_per_night:
+          listObj.Pricing && listObj.Pricing.mileage &&
+          listObj.Pricing && listObj.Pricing.mileage.max_free_miles_per_night,
+        per_extra_miles_charge:
+          listObj.Pricing && listObj.Pricing.mileage && listObj.Pricing && listObj.Pricing.mileage.per_extra_miles_charge,
+
+
+        free_hours_per_night:
+          listObj.Pricing && listObj.Pricing.generator &&
+          listObj.Pricing && listObj.Pricing.generator.free_hours_per_night,
+        price_per_extra_hours:
+          listObj.Pricing && listObj.Pricing.generator &&
+          listObj.Pricing && listObj.Pricing.generator.price_per_extra_hours,
+
+
+        weight_limit:
+          listObj.Pricing && listObj.Pricing.towing_package &&
+          listObj.Pricing && listObj.Pricing.towing_package.weight_limit,
+        price_per_mile:
+          listObj.Pricing && listObj.Pricing.towing_package &&
+          listObj.Pricing && listObj.Pricing.towing_package.price_per_mile,
+
+
+        pet_fee: listObj.Pricing && listObj.Pricing.pet &&
+        listObj.Pricing.pet.pet_fee
+      }
+    : initialValues
   const formik = useFormik({
     initialValues: PricingInfo,
     validationSchema: Yup.object({
-      nightly: Yup.number().required("Required").positive("Must be positive").integer(),
-      weekly: Yup.number().required("Required").positive("Must be positive").integer(),
-      monthly: Yup.number().required("Required").positive("Must be positive").integer(),
-      deposit: Yup.number().required("Required").positive("Must be positive").integer(),
-      damage_deposit: Yup.number().required("Required").positive("Must be positive").integer(),
-      prep_fee: Yup.number().required("Required").positive("Must be positive").integer(),
-      cleaning_fee: Yup.number().required("Required").positive("Must be positive").integer(),
-      late_fee: Yup.number().required("Required").positive("Must be positive").integer(),
+      nightly: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      weekly: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      monthly: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      deposit: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      damage_deposit: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      prep_fee: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      cleaning_fee: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      late_fee: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      free_hours_per_night: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      price_per_extra_hours: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      max_free_miles_per_night: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      pet_fee: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      price_per_mile: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+      weight_limit: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
     }),
     enableReinitialize: true,
 
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(values, null, 2))
     },
-  });
+  })
 
-  const [proceedNext, setProceedNext] = useState(true);
+  const [proceedNext, setProceedNext] = useState(true)
+  const [checked, setChecked] = useState({
+    mileage: listObj.Pricing && listObj.Pricing.mileage ? true : false,
+    generator: listObj.Pricing && listObj.Pricing.generator ? true : false,
+    towing_package: listObj.Pricing && listObj.Pricing.towing_package ? true : false,
+    delivery: listObj.Pricing && listObj.Pricing.delivery ? true : false,
+    pet: listObj.Pricing && listObj.Pricing.pet ? true : false,
+    rental_avaliability: listObj.Pricing && listObj.Pricing.rental_avaliability ? true : false,
+    wheelchair: listObj.Pricing && listObj.Pricing.wheelchair ? true : false,
+  })
 
-  const { errors, touched, handleBlur, values } = formik;
+
+  const { errors, touched, handleBlur, values } = formik
 
   const validateFields = () => {
     const {
@@ -52,41 +144,64 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
       prep_fee,
       cleaning_fee,
       late_fee,
-    } = values;
+      max_free_miles_per_night,
+      per_extra_miles_charge,
+      free_hours_per_night,
+      price_per_extra_hours,
+      weight_limit,
+      price_per_mile,
+      pet_fee
+
+    } = values
 
     console.log({
-      nightly,
-      weekly,
-      monthly,
-      deposit,
-      damage_deposit,
-      prep_fee,
-      cleaning_fee,
-      late_fee,
-    });
-    if (
-      nightly &&
-      weekly &&
-      monthly &&
-      deposit &&
-      damage_deposit &&
-      prep_fee &&
-      cleaning_fee &&
-      late_fee
-    ) {
-      //
-      setProceedNext(true);
-      nextStep();
-    } else {
-      setProceedNext(false);
+      values,checked:checked['mileage'],
+    },parseInt(per_extra_miles_charge) < 0 )
+
+    if(checked['mileage'] && parseInt(max_free_miles_per_night) < 0 || parseInt(per_extra_miles_charge) < 0){
+      return setProceedNext(false)
     }
-  };
+    if(checked['generator'] && free_hours_per_night < 0 || price_per_extra_hours < 0){
+      return setProceedNext(false)
+    }
+    if(checked['towing_package'] && weight_limit < 0 || price_per_mile < 0){
+      return setProceedNext(false)
+    }
+    if(checked['pet'] && pet_fee < 0){
+      return setProceedNext(false)
+    }
+    if (
+      nightly < 0 &&
+      weekly< 0 &&
+      monthly< 0 &&
+      deposit< 0 &&
+      damage_deposit< 0 &&
+      prep_fee< 0 &&
+      cleaning_fee < 0 &&
+      late_fee < 0 
+    ) {
+      return setProceedNext(false)
+    }
+    setProceedNext(true)
+    nextStep()
+  }
 
+ 
 
-  const [checked, setChecked] = useState(false);
-
-  const handleChangeCheck = (event) => {
-    setChecked(event.currentTarget.checked);
+  const handleCheckWithDropdown = (event) => {
+    let { name } = event.target;
+    let PricingInfo=listObj.Pricing;
+   
+    
+    if(!event.target.checked){
+      delete PricingInfo[[name]];
+    }
+    listObj.Pricing =PricingInfo
+    localStorage.setItem("listObj",JSON.stringify(listObj))
+    setChecked({
+      ...checked,
+      [name]: !checked[name],
+    })
   }
 
   return (
@@ -113,9 +228,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.nightly}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -132,9 +247,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.weekly}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -151,9 +266,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.monthly}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -170,9 +285,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.deposit}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -191,9 +306,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
                 listObj && listObj.Pricing && listObj.Pricing.damage_deposit
               }
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -210,9 +325,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.prep_fee}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -229,9 +344,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.cleaning_fee}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -248,9 +363,9 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               placeholder="e.g.$100.00"
               value={listObj && listObj.Pricing && listObj.Pricing.late_fee}
               onChange={(e) => {
-                formik.handleChange(e);
-                setProceedNext(true);
-                handleChange(e, "Pricing");
+                formik.handleChange(e)
+                setProceedNext(true)
+                handleChange(e, 'Pricing')
               }}
               onBlur={handleBlur}
             />
@@ -259,133 +374,265 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
             )}
           </div>
 
-          {/* <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
-              checked={checked}
-              onChange={handleChangeCheck}
+          <div class="col-md-4 mb-3">
+            <input
+              type="checkbox"
+              name="mileage"
+              checked={checked['mileage']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Mileage Charges</label>
-            {
-              checked && (
-                <div className="priceing-checkhide-div">
-                  <label class="fieldlabels pt-3">Max Free Miles per Night</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="Max Free Miles per Night"
-                  />
-                  <label class="fieldlabels pt-3">Per Mile Charge  (extra miles)</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="e.g.$100.00"
-                  />
-                </div>
-              )
-            }
+            {checked['mileage'] && (
+              <div className="priceing-checkhide-div">
+                <label class="fieldlabels pt-3">Max Free Miles per Night</label>
+                <input
+                  type="number"
+                  min="0"
+                  name="max_free_miles_per_night"
+                  placeholder="Max Free Miles per Night"
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.mileage &&
+                    listObj.Pricing.mileage.max_free_miles_per_night
+                  }
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.mileage')
+                  }}
+                  onBlur={handleBlur}
+                />
+                {errors.max_free_miles_per_night &&
+                  touched.max_free_miles_per_night && (
+                    <p className="text-danger">
+                      {errors.max_free_miles_per_night}{' '}
+                    </p>
+                  )}
+                <label class="fieldlabels pt-3">
+                  Per Mile Charge (extra miles)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  name="per_extra_miles_charge"
+                  placeholder="e.g.$100.00"
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.mileage &&
+                    listObj.Pricing.mileage.per_extra_miles_charge
+                  }
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.mileage')
+                  }}
+                  onBlur={handleBlur}
+                />
+                {errors.per_extra_miles_charge &&
+                  touched.per_extra_miles_charge && (
+                    <p className="text-danger">
+                      {errors.per_extra_miles_charge}{' '}
+                    </p>
+                  )}
+              </div>
+            )}
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
-              checked={checked}
-              onChange={handleChangeCheck}
+            <input
+              type="checkbox"
+              name="generator"
+              checked={checked['generator']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Generator</label>
-               {
-              checked && (
-                <div className="priceing-checkhide-div">
-                  <label class="fieldlabels pt-3">Free Hours Per Night</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="0"
-                  />
-                  <label class="fieldlabels pt-3">Price Per Hour  (extra hours)</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="e.g.$100.00"
-                  />
-                </div>
-              )
-            }
+            {checked['generator'] && (
+              <div className="priceing-checkhide-div">
+                <label class="fieldlabels pt-3">Free Hours Per Night</label>
+                <input
+                  type="number"
+                  min="0"
+                  name="free_hours_per_night"
+                  placeholder="0"
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.generator &&
+                    listObj.Pricing.generator.free_hours_per_night
+                  }
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.generator')
+                  }}
+                  onBlur={handleBlur}
+                />
+                {errors.free_hours_per_night &&
+                  touched.free_hours_per_night && (
+                    <p className="text-danger">
+                      {errors.free_hours_per_night}{' '}
+                    </p>
+                  )}
+                <label class="fieldlabels pt-3">
+                  Price Per Hour (extra hours)
+                </label>
+                <input
+                  min="0"
+                  type="number"
+                  name="price_per_extra_hours"
+                  placeholder="e.g.$100.00"
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.generator')
+                  }}
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.generator &&
+                    listObj.Pricing.generator.price_per_extra_hours
+                  }
+                  onBlur={handleBlur}
+                />
+                {errors.price_per_extra_hours &&
+                  touched.price_per_extra_hours && (
+                    <p className="text-danger">
+                      {errors.price_per_extra_hours}{' '}
+                    </p>
+                  )}
+              </div>
+            )}
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
-              checked={checked}
-              onChange={handleChangeCheck}
+            <input
+              type="checkbox"
+              name="towing_package"
+              min="0"
+              checked={checked['towing_package']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Towing Package</label>
-               {
-              checked && (
-                <div className="priceing-checkhide-div">
-                  <label class="fieldlabels pt-3">Weight Limit</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="0"
-                  />
-                  <label class="fieldlabels pt-3">Price per Mile</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="e.g.$0.10"
-                  />
-                </div>
-              )
-            }
+            {checked['towing_package'] && (
+              <div className="priceing-checkhide-div">
+                <label class="fieldlabels pt-3">Weight Limit</label>
+                <input
+                  type="number"
+                  name="weight_limit"
+                  placeholder="0"
+                  min="0"
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.towing_package')
+                  }}
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.towing_package &&
+                    listObj.Pricing.towing_package.weight_limit
+                  }
+                  onBlur={handleBlur}
+                />
+                {errors.weight_limit && touched.weight_limit && (
+                  <p className="text-danger">{errors.weight_limit} </p>
+                )}
+                <label class="fieldlabels pt-3">Price per Mile</label>
+                <input
+                  type="number"
+                  name="price_per_mile"
+                  placeholder="e.g.$0.10"
+                  min="0"
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.towing_package')
+                  }}
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.towing_package &&
+                    listObj.Pricing.towing_package.price_per_mile
+                  }
+                  onBlur={handleBlur}
+                />
+                {errors.price_per_mile && touched.price_per_mile && (
+                  <p className="text-danger">{errors.price_per_mile} </p>
+                )}
+              </div>
+            )}
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
-              checked={checked}
-              onChange={handleChangeCheck}
+            <input
+              type="checkbox"
+              name="delivery"
+              min="0"
+              checked={checked['delivery']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Delivery Available</label>
-               {
-              checked && (
-                <div className="priceing-checkhide-div">
-                <span>As a host you will have the ability to provide an amount upon confirmation of inquiries</span>
-                </div>
-              )
-            }
+            {checked['delivery'] && (
+              <div className="priceing-checkhide-div">
+                <span>
+                  As a host you will have the ability to provide an amount upon
+                  confirmation of inquiries
+                </span>
+              </div>
+            )}
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
+            <input
+              type="checkbox"
+              name="rental_avaliability"
+              checked={checked['rental_avaliability']}
             />
             <label class="fieldlabels">One Way Rental Available</label>
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
-              checked={checked}
-              onChange={handleChangeCheck}
+            <input
+              type="checkbox"
+              name="pet"
+              checked={checked['pet']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Pet Friendly</label>
-               {
-              checked && (
-                <div className="priceing-checkhide-div">
-                  <label class="fieldlabels pt-3">Pet Fee</label>
-                  <input
-                    type="number"
-                    name=""
-                    placeholder="e.g.$20.00"
-                  />
-                </div>
-              )
-            }
+            {checked['pet'] && (
+              <div className="priceing-checkhide-div">
+                <label class="fieldlabels pt-3">Pet Fee</label>
+                <input
+                  type="number"
+                  name="pet_fee"
+                  placeholder="e.g.$20.00"
+                  min="0"
+                  value={
+                    listObj &&
+                    listObj.Pricing &&
+                    listObj.Pricing.pet &&
+                    listObj.Pricing.pet.pet_fee
+                  }
+                  onChange={(e) => {
+                    formik.handleChange(e)
+                    setProceedNext(true)
+                    handleChange(e, 'Pricing.pet')
+                  }}
+                  onBlur={handleBlur}
+                />
+                {errors.pet_fee && touched.pet_fee && (
+                  <p className="text-danger">{errors.pet_fee} </p>
+                )}
+              </div>
+            )}
           </div>
           <div class="col-md-4 mb-3">
-            <input type="checkbox"
-              name=""
+            <input
+              type="checkbox"
+              name="wheelchair"
+              checked={checked['wheelchair']}
+              onChange={handleCheckWithDropdown}
             />
             <label class="fieldlabels">Wheelchair Accessible</label>
-          </div> */}
+          </div>
         </div>
-
       </div>
       <input
         type="button"
@@ -393,7 +640,7 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
         class="next action-button"
         value="Next"
         onClick={validateFields}
-        style={!proceedNext ? { opacity: 0.5, pointerEvents: "none" } : {}}
+        style={!proceedNext ? { opacity: 0.5, pointerEvents: 'none' } : {}}
       />
       <input
         type="button"
@@ -403,5 +650,5 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
         onClick={prevStep}
       />
     </>
-  );
-};
+  )
+}
