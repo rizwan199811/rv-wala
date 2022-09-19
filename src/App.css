@@ -879,12 +879,12 @@ hr {
 
 
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.home-step-tabs .nav-pills .nav-link.active,
+.home-step-tabs .nav-pills .show > .nav-link {
   background-color: rgb(203, 86, 68) !important ;
 }
 
-.nav-pills .nav-link {
+.home-step-tabs .nav-pills .nav-link {
   width: 100%;
   /* border: 1px solid black !important; */
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -1917,3 +1917,206 @@ padding: 20px 15px 0;
   padding: 17px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
+
+
+
+/* =================Listing RV Starts ======================= */
+
+
+.product-card {
+    width: 100%;
+    position: relative;
+    box-shadow: 0 2px 7px #dfdfdf;
+    margin: 50px auto;
+    background: #fafafa;
+}
+
+.badge {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    background: red;
+    color: #fff;
+    padding: 3px 10px;
+}
+
+.product-tumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    padding: 50px;
+    background: #f0f0f0;
+}
+
+.product-tumb img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.product-details {
+    padding: 30px;
+}
+
+.product-catagory {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 18px;
+}
+
+.product-details h4 a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    color: #363636;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.product-details h4 a:hover {
+    color: #fbb72c;
+}
+
+.product-details p {
+    font-size: 15px;
+    line-height: 22px;
+    margin-bottom: 18px;
+    color: #999;
+}
+
+.product-bottom-details {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.product-bottom-details div {
+    float: left;
+    width: 50%;
+}
+
+.product-price {
+    font-size: 18px;
+    color: #fbb72c;
+    font-weight: 600;
+}
+
+.product-price small {
+    font-size: 80%;
+    font-weight: 400;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.product-links {
+    text-align: right;
+}
+
+.product-links a {
+    display: inline-block;
+    margin-left: 5px;
+    color: #e1e1e1;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.product-links a:hover {
+    color: #fbb72c;
+}
+/* =================Listing RV ends ======================= */
+/* =================Detail Listing RV Starts ======================= */
+
+.dposit-inp input{
+width: auto;
+}
+
+
+/* Utilities */
+.single-detail-user-card .card::after,
+.single-detail-user-card .card img {
+  border-radius: 50%;
+}
+
+.single-detail-user-card .card {
+  padding: 2.5rem 2rem;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, .5);
+  max-width: 100%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .15);
+  /* margin: 1rem; */
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+.single-detail-user-card .card::before,
+.single-detail-user-card .card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+}
+.single-detail-user-card .card::before {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #FFF;
+  border-radius: 10px;
+  top: -.7rem;
+  left: -.7rem;
+}
+.single-detail-user-card .card::after {
+  height: 15rem;
+  width: 15rem;
+  background-color: #4172f5aa;
+  top: -8rem;
+  right: -8rem;
+  box-shadow: 2rem 6rem 0 -3rem #FFF
+}
+
+.single-detail-user-card .card img {
+  width: 8rem;
+  min-width: 80px;
+  box-shadow: 0 0 0 5px #FFF;
+}
+
+.single-detail-user-card.infos {
+  margin-left: 1.5rem;
+}
+
+.single-detail-user-card .name {
+  margin-bottom: 1rem;
+}
+.single-detail-user-card .name h2 {
+  font-size: 1.3rem;
+}
+.single-detail-user-card .name h4 {
+  font-size: .8rem;
+  color: #333
+}
+
+.single-detail-user-card .text {
+  font-size: .9rem;
+  margin-bottom: 1rem;
+}
+
+.single-detail-user-card .stats {
+  margin-bottom: 1rem;
+}
+.single-detail-user-card .stats li {
+  min-width: 5rem;
+}
+.single-detail-user-card .stats li h3 {
+  font-size: .99rem;
+}
+.single-detail-user-card .stats li h4 {
+  font-size: .75rem;
+}
+
+
+/* =================Detail Listing RV ends ======================= */

@@ -18,8 +18,9 @@ const Home = (props) => {
   
     <Sliderr/>
   
-  
-  
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7bt34mry.json"  background="transparent"  speed="1"  style={{width:"300px",height:"300px"}}  loop  autoplay></lottie-player>
+<lottie-player src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"  background="transparent"  speed="1"  style={{width:"300px",height:"300px"}}  loop  autoplay></lottie-player>
   
     <div className="booking-form-wrapper bg-white">
   <form action="#">
@@ -116,7 +117,7 @@ const Home = (props) => {
 
 
 <div className='container text-center'>
-  <div className='row'>
+  <div className='row home-step-tabs'>
   <h1 className='py-3'>How It Works</h1>
 <ul class="nav nav-pills mb-3 py-3" id="pills-tab" role="tablist">
   <li class="nav-item col-md-6 p-1" role="presentation">
