@@ -2,13 +2,15 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
-
+import { useNavigate } from "react-router-dom";
 const ListingRv = () => {
   const itemsPerPage = 1
   const [RVs, setRVs] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
 
+
+  const history = useNavigate();
   useEffect(() => {
    
     fetchRVs()
@@ -53,7 +55,10 @@ const ListingRv = () => {
             RVs.map((x) => {
               return (
                 <div className="col-sm-6 col-12 col-md-4 col-xxl-3 mb-2">
-                  <div className="product-card">
+                  <div className="product-card"
+                    onClick={()=>{
+                      history(`/rvs-for-rent/detail/${x._id}`, { replace: true })
+                    }}>
                     <div className="badge">${x.Pricing.nightly}/night</div>
                     <div className="product-tumb">
                       <img src={x.ImageInfo.files[0].path} alt="" />
