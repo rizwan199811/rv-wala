@@ -11,6 +11,16 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+a{
+  text-decoration: none !important;
+}
+li{
+  list-style: none;
+}
+p,
+h6{
+  margin: 0 !important;
+}
 h1{
   font-weight: 800 !important;
 }
@@ -1162,10 +1172,10 @@ color: #fff;
 .carousel-control.left {
   background-image: none;
 }
-.carousel-indicators .active {
+/* .carousel-indicators .active {
   background-color: #edbb00;
   border-color: #edbb00;
-}
+} */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .carousel-caption {
     padding-bottom: 350px;
@@ -1944,30 +1954,35 @@ padding: 20px 15px 0;
 }
 
 .product-tumb {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    padding: 50px;
+  /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    height: 140px;
+    width: 100%;
+    padding: 5px;
     background: #f0f0f0;
 }
 
 .product-tumb img {
-    max-width: 100%;
-    max-height: 100%;
+    /* max-width: 100%;
+    max-height: 100%; */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .product-details {
-    padding: 30px;
+    /* padding: 30px; */
+    padding: 7px 17px;
 }
 
 .product-catagory {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #ccc;
-    margin-bottom: 18px;
+  /* display: block;  */
+  font-size: 14px;
+  /* font-weight: 700; */
+  /* text-transform: uppercase; */
+  color: #ccc;
+  /* /* margin-bottom: 18px;  */
 }
 
 .product-details h4 a {
@@ -1985,16 +2000,16 @@ padding: 20px 15px 0;
 }
 
 .product-details p {
-    font-size: 15px;
-    line-height: 22px;
-    margin-bottom: 18px;
-    color: #999;
+  font-size: 15px;
+  /* line-height: 22px; */
+  /* margin-bottom: 18px; */
+  color: #999;
 }
 
 .product-bottom-details {
     overflow: hidden;
     border-top: 1px solid #eee;
-    padding-top: 20px;
+    padding-top: 6px;
 }
 
 .product-bottom-details div {
@@ -2046,34 +2061,36 @@ width: auto;
 }
 
 .single-detail-user-card .card {
-  padding: 2.5rem 2rem;
+  padding: 0.5rem 2rem;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, .5);
+  /* background-color: rgba(255, 255, 255, .5); */
   max-width: 100%;
-  box-shadow: 0 0 30px rgba(0, 0, 0, .15);
+  box-shadow: 0 0 30px rgb(0 0 0 / 15%);
   /* margin: 1rem; */
   position: relative;
-  transform-style: preserve-3d;
+  /* transform-style: preserve-3d; */
   overflow: hidden;
 }
 .single-detail-user-card .card::before,
 .single-detail-user-card .card::after {
-  content: '';
+  content: 'YOUR HOST';
   position: absolute;
-  z-index: -1;
+  /* z-index: -1; */
+  right: 12px;
+  transform: rotate(45deg);
 }
 .single-detail-user-card .card::before {
-  width: 100%;
+  /* width: 100%;
   height: 100%;
   border: 1px solid #FFF;
   border-radius: 10px;
   top: -.7rem;
-  left: -.7rem;
+  left: -.7rem; */
 }
 .single-detail-user-card .card::after {
   height: 15rem;
   width: 15rem;
-  background-color: #4172f5aa;
+  background-color: #cb5644;
   top: -8rem;
   right: -8rem;
   box-shadow: 2rem 6rem 0 -3rem #FFF
@@ -2093,7 +2110,7 @@ width: auto;
   margin-bottom: 1rem;
 }
 .single-detail-user-card .name h2 {
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 .single-detail-user-card .name h4 {
   font-size: .8rem;
@@ -2117,6 +2134,148 @@ width: auto;
 .single-detail-user-card .stats li h4 {
   font-size: .75rem;
 }
+.rv_details_tabs{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.rv_details_tabs .tab-content{
+  padding: 20px;
+}
+.bestseller-div img {
+  width: 90%;
+  height: 100%;
+}
+.bestseller-img-div{
+  /* height: 300px !important; */
+}
+.bestseller-div{
+background-color: aliceblue;
+pad: 20px;
+border: 1px solid black;
+}
 
 
+
+.near-rv-card .card-image > img {
+  /* display: block; */
+  width: 100%;
+  /* opacity: 0; visually hide the img element */
+}
+
+
+
+
+
+
+.near-rv-card .card {
+  /* display: inline-block; */
+  width: 96%;
+  /* max-width: 20rem; */
+  /* margin: 1rem; */
+  font-size: 1rem;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 0 3rem -1rem rgba(0,0,0,0.5);
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s;
+}
+
+.near-rv-card .card:hover {
+  transform: translateY(-0.5rem) scale(1.0125);
+  box-shadow: 0 0.5em 3rem -1rem rgba(0,0,0,0.5);
+}
+
+.near-rv-card .card-description {
+  /* display: block; */
+  padding: 1em 0.5em;
+  /* color: #515151;
+  text-decoration: none; */
+}
+
+.near-rv-card .card-description > h6 {
+  color: #cb5644;
+  font-size: 15px;
+  /* margin: 0 0 0.5em; */
+}
+
+.near-rv-card .card-description > p {
+  margin: 0;
+  font-size: 12px;
+}
 /* =================Detail Listing RV ends ======================= */
+
+
+
+/* =================For React Paginate Starts ======================= */
+
+#react-paginate ul {
+  display: inline-block;
+  margin-left: 20px;
+  padding-left: 0;
+}
+
+#react-paginate li {
+  display: inline-block;
+  border: 1px solid rgb(224, 224, 224);
+  color: #000;
+  cursor: pointer;
+  margin-right: 3px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+#react-paginate li a {
+    padding: 2px 9px;
+    display: inline-block;
+    color: #000;
+    outline: none;
+}
+
+#react-paginate li.selected {
+  background:#cb5644;
+  outline: none;
+}
+#react-paginate li.selected a{
+  color: white;
+}
+/* =================For React Paginate Ends ======================= */
+
+
+
+
+
+
+
+.thumnail-carousel .carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+
+.thumnail-carousel #custCarousel .carousel-indicators {
+  position: static;
+  margin-top:20px;
+}
+
+.thumnail-carousel #custCarousel .carousel-indicators > li {
+width:100px;
+}
+
+.thumnail-carousel #custCarousel .carousel-indicators li img {
+  display: block;
+  opacity: 0.5;
+}
+
+.thumnail-carousel #custCarousel .carousel-indicators li.active img {
+  opacity: 1;
+}
+
+.thumnail-carousel #custCarousel .carousel-indicators li:hover img {
+  opacity: 0.75;
+}
+
+.thumnail-carousel .carousel-item img{
+
+  width:100%;
+}
+.carousel-control-next-icon, .carousel-control-prev-icon {
+  background: rgba(0, 0, 0, 0.5);
+
+}

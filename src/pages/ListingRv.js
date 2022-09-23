@@ -54,7 +54,7 @@ const ListingRv = () => {
           {RVs.length > 0 &&
             RVs.map((x) => {
               return (
-                <div className="col-sm-6 col-12 col-md-4 col-xxl-3 mb-2">
+                <div className="col-sm-6 col-12 col-md-4 col-lg-3 col-xxl-3 mb-2">
                   <div className="product-card"
                     onClick={()=>{
                       history(`/rvs-for-rent/detail/${x._id}`, { replace: true })
@@ -64,12 +64,20 @@ const ListingRv = () => {
                       <img src={x.ImageInfo.files[0].path} alt="" />
                     </div>
                     <div className="product-details">
+                      <div className='d-flex justify-content-between'>
+                      <div>
                       <span className="product-catagory">Type</span>
-                      <h4>{x.RVInfo.type}</h4>
+                      <h6>{x.RVInfo.type}</h6>
+                      </div>
+                      <div>
+
                       <span className="product-catagory">Year</span>
-                      <h4>{x.RVInfo.year}</h4>
+                      <h6>{x.RVInfo.year}</h6>
+                      </div>
+
+                      </div>
                       <span className="product-catagory">Make</span>
-                      <h4>{x.RVInfo.make}</h4>
+                      <h6>{x.RVInfo.make}</h6>
 
                       <div className="product-bottom-details">
                         <div className="product-price">
@@ -83,7 +91,7 @@ const ListingRv = () => {
                 </div>
               )
             })}
-
+          <div id="react-paginate">
           <ReactPaginate
             breakLabel="..."
             nextLabel="next >"
@@ -93,6 +101,7 @@ const ListingRv = () => {
             previousLabel="< previous"
             renderOnZeroPageCount={null}
           />
+          </div>
           {/* <div className="col-sm-6 col-12 col-md-4 col-xxl-3 mb-2">
             <div className="product-card">
               <div className="badge">$109/night</div>

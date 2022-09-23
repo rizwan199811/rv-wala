@@ -1,15 +1,19 @@
 import axios from 'axios'
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { baseURL } from '../config/apiURL'
+import Slider from "react-slick";
+import image1 from '../images/loigin.jpg'
 
 const SingleDetailRV = () => {
+
+
   useEffect(() => {
-   fetchRV()
+    fetchRV()
   }, [])
 
   const [RV, setRV] = useState({})
-  const {id} =useParams();
+  const { id } = useParams();
   const fetchRV = async () => {
     try {
 
@@ -20,19 +24,76 @@ const SingleDetailRV = () => {
         data: {
           data,
         },
-      } = await axios.get(baseURL + '/rv/'+id , { headers })
+      } = await axios.get(baseURL + '/rv/' + id, { headers })
       setRV(data)
-    } catch (e) {}
+    } catch (e) { }
   }
+
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 3,
+    speed: 500,
+    autoplay: true,
+  };
   return (
     <>
-      <div className="container">
-        <div className="row">
           <section className="single-product-carousel">
             <div className="container">
               <div className="row my-4">
                 <div className="col-md-7">
-                  <div>
+                  <div className="col-md-12 thumnail-carousel">
+                    <div id="custCarousel" className="carousel slide" data-ride="carousel" align="center">
+                      {/* slides */}
+                      <div className="carousel-inner">
+                        <div className="carousel-item active">
+                          <img src="https://i.imgur.com/weXVL8M.jpg" alt="Hills" />
+                        </div>
+                        <div className="carousel-item">
+                          <img src="https://i.imgur.com/Rpxx6wU.jpg" alt="Hills" />
+                        </div>
+                        <div className="carousel-item">
+                          <img src="https://i.imgur.com/83fandJ.jpg" alt="Hills" />
+                        </div>
+                        <div className="carousel-item">
+                          <img src="https://i.imgur.com/JiQ9Ppv.jpg" alt="Hills" />
+                        </div>
+                      </div>
+                      {/* Left right */}
+                      <a className="carousel-control-prev" href="#custCarousel" data-slide="prev">
+                        <span className="carousel-control-prev-icon" />
+                      </a>
+                      <a className="carousel-control-next" href="#custCarousel" data-slide="next">
+                        <span className="carousel-control-next-icon" />
+                      </a>
+                      {/* Thumbnails */}
+                      <ol className="carousel-indicators list-inline">
+                        <li className="list-inline-item active">
+                          <a id="carousel-selector-0" className="selected" data-slide-to={0} data-target="#custCarousel">
+                            <img src="https://i.imgur.com/weXVL8M.jpg" className="img-fluid" />
+                          </a>
+                        </li>
+                        <li className="list-inline-item">
+                          <a id="carousel-selector-1" data-slide-to={1} data-target="#custCarousel">
+                            <img src="https://i.imgur.com/Rpxx6wU.jpg" className="img-fluid" />
+                          </a>
+                        </li>
+                        <li className="list-inline-item">
+                          <a id="carousel-selector-2" data-slide-to={2} data-target="#custCarousel">
+                            <img src="https://i.imgur.com/83fandJ.jpg" className="img-fluid" />
+                          </a>
+                        </li>
+                        <li className="list-inline-item">
+                          <a id="carousel-selector-2" data-slide-to={3} data-target="#custCarousel">
+                            <img src="https://i.imgur.com/JiQ9Ppv.jpg" className="img-fluid" />
+                          </a>
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                  <div className='col-12 rv_details_tabs mb-3'>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item" role="presentation">
                         <button
@@ -390,29 +451,34 @@ const SingleDetailRV = () => {
                       <div className="infos">
                         <div className="name">
                           <h2>Vantrek LLC</h2>
-                          <h4></h4>
                         </div>
                         <div>
-                          <div className="name">
-                            <h2>Member Since</h2>
-                            <h4>2021</h4>
+                          <div className='d-flex justify-content-between'>
+                            <div className="name">
+                              <h2>Member Since</h2>
+                              <h4>2021</h4>
+                            </div>
+                            <div className="name">
+                              <h2>Responds to Inquiries</h2>
+                              <h4>More often than not</h4>
+                            </div>
+
                           </div>
-                          <div className="name">
-                            <h2># Listings</h2>
-                            <h4>2</h4>
+                          <div className='d-flex justify-content-between'>
+                            <div className="name">
+                              <h2># Listings</h2>
+                              <h4>2</h4>
+                            </div>
+                            <div className="name">
+                              <h2>Verified Member</h2>
+                              <img src="https://files.rvngo.com/a/rvrd-member-sm-74d1df166814dffe11f382517d7df3f45caf996605fb4ef350047af31e6f3efd.webp" />
+                            </div>
                           </div>
-                          <div className="name">
-                            <h2>Responds to Inquiries</h2>
-                            <h4>More often than not</h4>
-                          </div>
-                          <div className="name">
-                            <h2>Verified Member</h2>
-                            <img src="https://files.rvngo.com/a/rvrd-member-sm-74d1df166814dffe11f382517d7df3f45caf996605fb4ef350047af31e6f3efd.webp" />
-                          </div>
-                          <div className="name">
+                          {/* <div className="name">
                             <h2>Host Rules</h2>
                             <a>Click to View</a>
-                          </div>
+                          </div> */}
+
                         </div>
                       </div>
                     </div>
@@ -436,10 +502,61 @@ const SingleDetailRV = () => {
                   </div>
                 </div>
               </div>
+              <div className='mb-3 mt-2'>
+                <h2> Nearby RVs</h2>
+                <Slider {...settings}>
+                  <div class="col-md-4 near-rv-card">
+
+                    <div className="card">
+                      <a className="card-image" >
+                        <img src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp" alt="" />
+                      </a>
+                      <div className="card-description">
+                        <h6>The River Run 2021 RAM 3500 High Roof</h6>
+                        <p>0 miles away, Nightly Rate: $250</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 near-rv-card">
+
+                    <div className="card">
+                      <a className="card-image" >
+                        <img src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp" alt="" />
+                      </a>
+                      <div className="card-description">
+                        <h6>The River Run 2021 RAM 3500 High Roof</h6>
+                        <p>0 miles away, Nightly Rate: $250</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 near-rv-card">
+
+                    <div className="card">
+                      <a className="card-image" >
+                        <img src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp" alt="" />
+                      </a>
+                      <div className="card-description">
+                        <h6>The River Run 2021 RAM 3500 High Roof</h6>
+                        <p>0 miles away, Nightly Rate: $250</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 near-rv-card">
+
+                    <div className="card">
+                      <a className="card-image" >
+                        <img src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp" alt="" />
+                      </a>
+                      <div className="card-description">
+                        <h6>The River Run 2021 RAM 3500 High Roof</h6>
+                        <p>0 miles away, Nightly Rate: $250</p>
+                      </div>
+                    </div>
+                  </div>
+                </Slider>
+              </div>
             </div>
           </section>
-        </div>
-      </div>
     </>
   )
 }
