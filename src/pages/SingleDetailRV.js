@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { baseURL } from '../config/apiURL'
 import Slider from "react-slick";
 import image1 from '../images/loigin.jpg'
@@ -43,6 +43,10 @@ const SingleDetailRV = () => {
           <section className="single-product-carousel">
             <div className="container">
               <div className="row my-4">
+                <div className='border-bottom p-0 mb-3 d-flex justify-content-between align-items-baseline'>
+                  <h3>THIS RV IS FOR RENT</h3>
+                  <h6>$240/night</h6>
+                </div>
                 <div className="col-md-7">
                   <div className="col-md-12 thumnail-carousel">
                     <div id="custCarousel" className="carousel slide" data-ride="carousel" align="center">
@@ -265,24 +269,6 @@ const SingleDetailRV = () => {
                         <div>
                           <div>
                             <h4>Vehicle</h4>
-                            <div className="d-flex justify-content-evenly py-4">
-                              <div>
-                                <h6>MAKE</h6>
-                                <p>Ram</p>
-                              </div>
-                              <div>
-                                <h6>MODEL</h6>
-                                <p>Promaster 3500</p>
-                              </div>
-                              <div>
-                                <h6>YEAR</h6>
-                                <p>2021</p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <h4>Vehicle</h4>
                             <div className="d-flex justify-content-between pt-4">
                               <div>
                                 <h6>MAKE</h6>
@@ -372,35 +358,36 @@ const SingleDetailRV = () => {
                             <div className="row dposit-inp">
                               <h4>Deposits</h4>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div className="col-md-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked disabled />
                                 <label>FM Radio</label>
                               </div>
                               <div></div>
@@ -471,7 +458,7 @@ const SingleDetailRV = () => {
                             </div>
                             <div className="name">
                               <h2>Verified Member</h2>
-                              <img src="https://files.rvngo.com/a/rvrd-member-sm-74d1df166814dffe11f382517d7df3f45caf996605fb4ef350047af31e6f3efd.webp" />
+                              <img src="https://files.rvngo.com/a/rvrd-member-sm-74d1df166814dffe11f382517d7df3f45caf996605fb4ef350047af31e6f3efd.webp" style={{width:"auto"}} />
                             </div>
                           </div>
                           {/* <div className="name">
@@ -488,6 +475,18 @@ const SingleDetailRV = () => {
                   <div className="single-product-sale-div">
                     <h3>2021 Ram Promaster 3500</h3>
                     <p>in Spokane Valley, WA</p>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                      </div>
                     <hr />
                     <div className="row">
                       <div className="col-md-6">
@@ -498,12 +497,63 @@ const SingleDetailRV = () => {
                         <label>Check Out*</label>
                         <input type="date" />
                       </div>
+                      <em className='text-center'>(minimum 1 night rental)</em>
                     </div>
+                  </div>
+                  <div className='my-3'>
+                  <div className="card" style={{width:"100%"}}>
+                    <div className="card-header">
+                    Invoice
+                    </div>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item">An item</li>
+                      <li className="list-group-item">A second item</li>
+                      <li className="list-group-item">A third item</li>
+                    </ul>
+                  </div>
+                  </div>
+                  <div className='my-3'>
+                  <div className="card" style={{width:"100%"}}>
+                    <div className="card-header">
+                    Deposit Terms
+                    </div>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item d-flex justify-content-between"><span>Booking Deposit<em>(required to book)</em></span><span><b>$309.27</b></span></li>
+                      <li className="list-group-item d-flex justify-content-between"><span>Security Deposit<em>(due by check-in)</em></span><span><b>$800.00</b></span></li>
+                      <li className="list-group-item d-flex justify-content-between"><span>Balance Due<em>(due by 10/16)</em></span><span><b>$2,351.22</b></span></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <div className='my-3'>
+                  <div className="card" style={{width:"100%"}}>
+                    <div className="card-header">
+                    Other Charges That May Apply
+                    </div>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item d-flex justify-content-between"><span>Mileage <br/><em>(120 included a day)</em></span><span className='text-end'><b>$0.50</b><br/><em>per extra mile</em> </span></li>
+                      <li className="list-group-item d-flex justify-content-between"><span>Deductible paid by Guest<br/> <em>(per incident)</em></span><span><b>$2,500</b></span></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <div class="alert alert-warning" role="alert">
+                  To make an inquiry for this listing, please log-in or sign-up. Once logged-in, you'll be brought back here to complete your inquiry.
+                 <div className='d-flex justify-content-center mt-3'>
+                 <div className="nav-item">
+                      <Link to="/login" className="nav-link log" href="#">
+                      Login
+                      </Link>
+                    </div>
+                    <div className="nav-item">
+                      <Link to="/signup" className="nav-link reg" href="#">
+                      Sign up
+                      </Link>
+                    </div>
+                 </div>
                   </div>
                 </div>
               </div>
               <div className='mb-3 mt-2'>
-                <h2> Nearby RVs</h2>
+                <h2 className='mb-3 border-bottom'> Nearby RVs</h2>
                 <Slider {...settings}>
                   <div class="col-md-4 near-rv-card">
 

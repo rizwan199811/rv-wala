@@ -18,7 +18,10 @@ li{
   list-style: none;
 }
 p,
-h6{
+h6,
+h1,
+h2,
+h3,h4,h5{
   margin: 0 !important;
 }
 h1{
@@ -2051,6 +2054,7 @@ padding: 20px 15px 0;
 
 .dposit-inp input{
 width: auto;
+margin-right: 4px;
 }
 
 
@@ -2139,6 +2143,19 @@ width: auto;
 }
 .rv_details_tabs .tab-content{
   padding: 20px;
+}
+.rv_details_tabs .tab-content h6{
+  font-weight: bolder;
+  color: #000;
+  font-size: 15px;
+
+}
+.rv_details_tabs .tab-content p{
+  color: grey;
+    font-size: 15px;
+}
+.rv_details_tabs .tab-content h4{
+font-weight: 800;
 }
 .bestseller-div img {
   width: 90%;
@@ -2243,6 +2260,7 @@ border: 1px solid black;
 
 
 
+/* =============== Thumbnail Carousel  Starts============= */
 
 .thumnail-carousel .carousel-inner img {
     width: 100%;
@@ -2275,7 +2293,54 @@ width:100px;
 
   width:100%;
 }
-.carousel-control-next-icon, .carousel-control-prev-icon {
+.thumnail-carousel .carousel-control-next-icon, .carousel-control-prev-icon {
   background: rgba(0, 0, 0, 0.5);
 
 }
+/* =============== Thumbnail Carousel  Ends============= */
+
+
+
+
+
+
+
+
+
+/* =============== Rating Stars Starts============= */
+.rate {
+  /* float: left; */
+  height: 46px;
+  padding: 0 10px;
+}
+.rate:not(:checked) > input {
+  position:absolute;
+  top:-9999px;
+}
+.rate:not(:checked) > label {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate:not(:checked) > label:before {
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
+/* =============== Rating Stars Ends============= */
