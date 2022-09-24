@@ -3,7 +3,12 @@ import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
+export const PricingInfo = ({
+  nextStep,
+  prevStep,
+  handleChange,
+  handleCheck,
+}) => {
   let initialValues = {
     nightly: '',
     weekly: '',
@@ -27,30 +32,40 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
         ...listObj.Pricing,
 
         max_free_miles_per_night:
-          listObj.Pricing && listObj.Pricing.mileage &&
-          listObj.Pricing && listObj.Pricing.mileage.max_free_miles_per_night,
+          listObj.Pricing &&
+          listObj.Pricing.mileage &&
+          listObj.Pricing &&
+          listObj.Pricing.mileage.max_free_miles_per_night,
         per_extra_miles_charge:
-          listObj.Pricing && listObj.Pricing.mileage && listObj.Pricing && listObj.Pricing.mileage.per_extra_miles_charge,
-
+          listObj.Pricing &&
+          listObj.Pricing.mileage &&
+          listObj.Pricing &&
+          listObj.Pricing.mileage.per_extra_miles_charge,
 
         free_hours_per_night:
-          listObj.Pricing && listObj.Pricing.generator &&
-          listObj.Pricing && listObj.Pricing.generator.free_hours_per_night,
+          listObj.Pricing &&
+          listObj.Pricing.generator &&
+          listObj.Pricing &&
+          listObj.Pricing.generator.free_hours_per_night,
         price_per_extra_hours:
-          listObj.Pricing && listObj.Pricing.generator &&
-          listObj.Pricing && listObj.Pricing.generator.price_per_extra_hours,
-
+          listObj.Pricing &&
+          listObj.Pricing.generator &&
+          listObj.Pricing &&
+          listObj.Pricing.generator.price_per_extra_hours,
 
         weight_limit:
-          listObj.Pricing && listObj.Pricing.towing_package &&
-          listObj.Pricing && listObj.Pricing.towing_package.weight_limit,
+          listObj.Pricing &&
+          listObj.Pricing.towing_package &&
+          listObj.Pricing &&
+          listObj.Pricing.towing_package.weight_limit,
         price_per_mile:
-          listObj.Pricing && listObj.Pricing.towing_package &&
-          listObj.Pricing && listObj.Pricing.towing_package.price_per_mile,
+          listObj.Pricing &&
+          listObj.Pricing.towing_package &&
+          listObj.Pricing &&
+          listObj.Pricing.towing_package.price_per_mile,
 
-
-        pet_fee: listObj.Pricing && listObj.Pricing.pet &&
-        listObj.Pricing.pet.pet_fee
+        pet_fee:
+          listObj.Pricing && listObj.Pricing.pet && listObj.Pricing.pet.pet_fee,
       }
     : initialValues
   const formik = useFormik({
@@ -124,13 +139,14 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
   const [checked, setChecked] = useState({
     mileage: listObj.Pricing && listObj.Pricing.mileage ? true : false,
     generator: listObj.Pricing && listObj.Pricing.generator ? true : false,
-    towing_package: listObj.Pricing && listObj.Pricing.towing_package ? true : false,
+    towing_package:
+      listObj.Pricing && listObj.Pricing.towing_package ? true : false,
     delivery: listObj.Pricing && listObj.Pricing.delivery ? true : false,
     pet: listObj.Pricing && listObj.Pricing.pet ? true : false,
-    rental_avaliability: listObj.Pricing && listObj.Pricing.rental_avaliability ? true : false,
+    rental_avaliability:
+      listObj.Pricing && listObj.Pricing.rental_avaliability ? true : false,
     wheelchair: listObj.Pricing && listObj.Pricing.wheelchair ? true : false,
   })
-
 
   const { errors, touched, handleBlur, values } = formik
 
@@ -150,35 +166,44 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
       price_per_extra_hours,
       weight_limit,
       price_per_mile,
-      pet_fee
-
+      pet_fee,
     } = values
 
-    console.log({
-      values,checked:checked['mileage'],
-    },parseInt(per_extra_miles_charge) < 0 )
+    console.log(
+      {
+        values,
+        checked: checked['mileage'],
+      },
+      parseInt(per_extra_miles_charge) < 0,
+    )
 
-    if(checked['mileage'] && parseInt(max_free_miles_per_night) < 0 || parseInt(per_extra_miles_charge) < 0){
+    if (
+      (checked['mileage'] && parseInt(max_free_miles_per_night) < 0) ||
+      parseInt(per_extra_miles_charge) < 0
+    ) {
       return setProceedNext(false)
     }
-    if(checked['generator'] && free_hours_per_night < 0 || price_per_extra_hours < 0){
+    if (
+      (checked['generator'] && free_hours_per_night < 0) ||
+      price_per_extra_hours < 0
+    ) {
       return setProceedNext(false)
     }
-    if(checked['towing_package'] && weight_limit < 0 || price_per_mile < 0){
+    if ((checked['towing_package'] && weight_limit < 0) || price_per_mile < 0) {
       return setProceedNext(false)
     }
-    if(checked['pet'] && pet_fee < 0){
+    if (checked['pet'] && pet_fee < 0) {
       return setProceedNext(false)
     }
     if (
       nightly < 0 &&
-      weekly< 0 &&
-      monthly< 0 &&
-      deposit< 0 &&
-      damage_deposit< 0 &&
-      prep_fee< 0 &&
+      weekly < 0 &&
+      monthly < 0 &&
+      deposit < 0 &&
+      damage_deposit < 0 &&
+      prep_fee < 0 &&
       cleaning_fee < 0 &&
-      late_fee < 0 
+      late_fee < 0
     ) {
       return setProceedNext(false)
     }
@@ -186,18 +211,15 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
     nextStep()
   }
 
- 
-
   const handleCheckWithDropdown = (event) => {
-    let { name } = event.target;
-    let PricingInfo=listObj.Pricing;
-   
-    
-    if(!event.target.checked){
-      delete PricingInfo[[name]];
+    let { name } = event.target
+    let PricingInfo = listObj.Pricing
+
+    if (!event.target.checked) {
+      delete PricingInfo[[name]]
     }
-    listObj.Pricing =PricingInfo
-    localStorage.setItem("listObj",JSON.stringify(listObj))
+    listObj.Pricing = PricingInfo
+    localStorage.setItem('listObj', JSON.stringify(listObj))
     setChecked({
       ...checked,
       [name]: !checked[name],
@@ -568,7 +590,10 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               name="delivery"
               min="0"
               checked={checked['delivery']}
-              onChange={handleCheckWithDropdown}
+              onChange={(e) => {
+                handleCheckWithDropdown(e);
+                handleCheck(e, 'Pricing')
+              }}
             />
             <label class="fieldlabels">Delivery Available</label>
             {checked['delivery'] && (
@@ -585,6 +610,10 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               type="checkbox"
               name="rental_avaliability"
               checked={checked['rental_avaliability']}
+              onChange={(e) => {
+                handleCheckWithDropdown(e)
+                handleCheck(e, 'Pricing')
+              }}
             />
             <label class="fieldlabels">One Way Rental Available</label>
           </div>
@@ -628,7 +657,10 @@ export const PricingInfo = ({ nextStep, prevStep, handleChange }) => {
               type="checkbox"
               name="wheelchair"
               checked={checked['wheelchair']}
-              onChange={handleCheckWithDropdown}
+              onChange={(e) => {
+                handleCheckWithDropdown(e)
+                handleCheck(e, 'Pricing')
+              }}
             />
             <label class="fieldlabels">Wheelchair Accessible</label>
           </div>

@@ -1,13 +1,20 @@
 import { useState } from 'react'
 
 export const InsuranceInfo = ({ nextStep, prevStep, handleCheck,handleChange }) => {
-  const initialState = {
+
+  let listObj = localStorage.getItem('listObj') && JSON.parse(localStorage.getItem('listObj'))
+ 
+ const options ={
     option1: false,
     option2: false,
     option3: false,
     option4: false,
+ }
+  const initialState = listObj && listObj.InsuranceInfo && listObj.InsuranceInfo.rental_coverage &&
+  {
+    ...options,
+    [listObj.InsuranceInfo.rental_coverage.key] :true
   }
-  let listObj = JSON.parse(localStorage.getItem('listObj'))
   const [activeClass, setActiveclass] = useState(initialState)
   const [active, setActive] = useState(false)
 
@@ -19,11 +26,10 @@ export const InsuranceInfo = ({ nextStep, prevStep, handleCheck,handleChange }) 
   };
   const toggleClass = (index,value) => {
     let path = `InsuranceInfo.rental_coverage`
-    delete value['key']
     let obj = localStorage.getItem("listObj") ? JSON.parse(localStorage.getItem("listObj")) :{} 
     set(obj, path, value);
     localStorage.setItem("listObj", JSON.stringify(obj));
-    setActiveclass((state) => ({ ...initialState, [index]: true }))
+    setActiveclass((state) => ({ ...options, [index]: true }))
   }
   let property_rental_coverage = [
     {

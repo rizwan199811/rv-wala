@@ -5,10 +5,12 @@ import * as Yup from 'yup'
 import { baseURL } from '../config/apiURL'
 import { useDispatch } from 'react-redux'
 import { setToken } from '../app/slice/AuthSlice'
+
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast,ToastContainer } from 'react-toastify';
 import toastOptions from "../config/toast";
+import { setProfileImage } from '../app/slice/ProfileSlice'
 
 const LogIn = () => {
   let history = useNavigate()
@@ -51,11 +53,13 @@ const LogIn = () => {
       const {
         data: { data, token, refreshToken ,message},
       } = await axios.post(baseURL + '/auth/login', body)
-    
+        let profileImage =data.profileImage || 'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
         toast.success(message,toastOptions);
         setTimeout(() => {
           dispatch(setToken(token))
+          dispatch(setProfileImage(profileImage))
           localStorage.setItem('token', token)
+          localStorage.setItem('image', profileImage)
           history('/', { replace: true })
         },3000);
     }     

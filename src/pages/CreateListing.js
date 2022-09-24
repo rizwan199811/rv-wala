@@ -141,6 +141,7 @@ export const CreateListing = () => {
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleChange={handleChange}
+                      handleCheck={handleCheck}
                     />
                   )}
                   {step == 5 && (

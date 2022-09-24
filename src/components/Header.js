@@ -6,6 +6,7 @@ import { setToken } from '../app/slice/AuthSlice';
 const Header = () => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token);
+  const profile = useSelector((state) => state.profile.image);
   const Logout =()=>{
     localStorage.clear();
     dispatch(setToken(''))
@@ -37,17 +38,17 @@ const Header = () => {
           </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="#">
+          <Link  to="/listRV" className="nav-link">
           list my rv
-          </a>
+          </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="#">
+          <Link to="/rvs-for-rent" className="nav-link" >
           Search
-          </a>
+          </Link>
         </li>
         <li className="nav-item">
-          <Link to="/contactus" className="nav-link" href="#">
+          <Link to="/contactus" className="nav-link" >
           Contact
           </Link>
         </li>
@@ -84,7 +85,7 @@ const Header = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
         >
-     <img src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80'/>
+     <img src={profile}/>
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>

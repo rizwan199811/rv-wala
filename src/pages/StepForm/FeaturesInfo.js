@@ -1,33 +1,65 @@
 import React from 'react'
 import axios from 'axios'
-import {  baseURL } from '../../config/apiURL'
-import { useNavigate } from "react-router-dom";
+import { baseURL } from '../../config/apiURL'
+import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import toastOptions from '../../config/toast'
 
 export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
-  let history = useNavigate();
+  let history = useNavigate()
   const handleSubmit = async () => {
-    try{
-    let body = localStorage.getItem('listObj')
-      ? JSON.parse(localStorage.getItem('listObj'))
-      : {}
-    let headers = {
-      Authorization: localStorage.getItem('token'),
+    try {
+      let features =localStorage.getItem('features') ? JSON.parse(localStorage.getItem('features')) : [];
+      let body = localStorage.getItem('listObj')
+        ? {
+          ...JSON.parse(localStorage.getItem('listObj'))
+          ,featuresArray:features
+        }
+        : {}
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      console.log({ headers })
+      const { data:{message} } = await axios.post(baseURL + '/rv', body, { headers })
+      console.log({message})
+      toast.success(message, toastOptions)
+      setTimeout(() => {
+        history('/rvs-for-rent', { replace: true })
+      }, 3000)
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      toast.error(message, toastOptions)
     }
-    console.log({ headers })
-    const { message } = await axios.post(baseURL + '/rv', body, { headers })
-    console.log({ message });
-    history("/rvs-for-rent", { replace: true });
+  }
+
+  const generateData = (event, identifier, label) => {
+    
+    let features= localStorage.getItem("features") && JSON.parse(localStorage.getItem("features")) ||  [];
+
+    if(event.target.checked){
+      features.push({
+        label:label,
+        value:event.target.name,
+        type:identifier
+      })
     }
-    catch(e){
-      console.log({e})
+    else{
+    let index = features.findIndex(x=>x.label==label)
+    console.log({index})
+    if(index!==-1){
+      features.splice(index,1);
     }
-  
+    }
+    localStorage.setItem("features",JSON.stringify(features));
   }
 
   return (
     <>
-      {' '}
+      <ToastContainer />
       <div class="form-card">
         <div class="row">
           <div class="col-7">
@@ -54,6 +86,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'CD')
               }}
             />
             <label class="fieldlabels">CD</label>
@@ -70,6 +103,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'FM Radio')
               }}
             />
             <label class="fieldlabels"> FM Radio</label>
@@ -86,6 +120,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Factory Cab Air')
               }}
             />
             <label class="fieldlabels">Factory Cab Air</label>
@@ -102,6 +137,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Rear Living')
               }}
             />
             <label class="fieldlabels">Rear Living</label>
@@ -118,6 +154,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Roof Air')
               }}
             />
             <label class="fieldlabels">Roof Air</label>
@@ -134,6 +171,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Refrigerator')
               }}
             />
             <label class="fieldlabels">Refrigerator</label>
@@ -150,6 +188,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Front Living')
               }}
             />
             <label class="fieldlabels">Front Living</label>
@@ -166,6 +205,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Stove')
               }}
             />
             <label class="fieldlabels">Stove</label>
@@ -181,6 +221,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.tv_dvd
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'TV/DVD')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -199,6 +240,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Front Kitchen')
               }}
             />
             <label class="fieldlabels">Front Kitchen</label>
@@ -214,6 +256,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.shower
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Shower')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -231,6 +274,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Kitchen Sink')
               }}
             />
             <label class="fieldlabels">Kitchen Sink</label>
@@ -246,6 +290,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.wash_basin
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Wash Basin')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -262,6 +307,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.toilet
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Toilet')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -280,6 +326,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'Kitchen Table')
               }}
             />
             <label class="fieldlabels">Kitchen Table</label>
@@ -296,6 +343,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
               }
               onChange={(e) => {
                 handleCheck(e, 'Features.inside')
+                generateData(e, 'inside', 'GPS Navigation')
               }}
             />
             <label class="fieldlabels">GPS Navigation</label>
@@ -311,6 +359,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.dinette
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Kitchen Dinette')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -327,6 +376,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.radio
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Satellite Radio')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -343,6 +393,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.tv_satellite
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'Satellite TV')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -359,6 +410,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.inside.wifi
               }
               onChange={(e) => {
+                generateData(e, 'inside', 'WiFi')
                 handleCheck(e, 'Features.inside')
               }}
             />
@@ -381,6 +433,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.bbq_grill
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'BBQ/Grill')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -397,6 +450,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.kitchen
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside Kitchen')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -413,6 +467,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.sink
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside Sink')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -429,6 +484,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.tv
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside TV')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -437,7 +493,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
           <div class="col-md-3 mb-3">
             <input
               type="checkbox"
-              name="tshowerv"
+              name="shower"
               checked={
                 listObj &&
                 listObj.Features &&
@@ -445,6 +501,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.shower
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside Shower')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -461,6 +518,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.balcony
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Balcony')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -477,6 +535,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.stereo
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside Stereo')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -493,6 +552,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.outside.refrigerator_outside
               }
               onChange={(e) => {
+                generateData(e, 'outside', 'Outside Refrigerator')
                 handleCheck(e, 'Features.outside')
               }}
             />
@@ -515,6 +575,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.tank
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Propane Tank')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -531,6 +592,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.bike_rack
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Bike Rack')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -547,6 +609,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.level_system
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Leveling System')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -563,6 +626,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.awning
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Awning')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -579,6 +643,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.arctic
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Arctic Package')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -595,6 +660,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 listObj.Features.others.trailer
               }
               onChange={(e) => {
+                generateData(e, 'others', 'Trailer')
                 handleCheck(e, 'Features.others')
               }}
             />
@@ -629,6 +695,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
           </div>
         </div>
       </div>
+      
       <input
         type="button"
         name="next"

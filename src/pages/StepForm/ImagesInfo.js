@@ -1,114 +1,131 @@
-import React,{useState} from "react";
-import {useDropzone} from 'react-dropzone';
-import axios from 'axios';
-import { baseURL } from "../../config/apiURL";
-import { toast,ToastContainer } from 'react-toastify';
-import toastOptions from "../../config/toast";
+import React, { useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import axios from 'axios'
+import { baseURL } from '../../config/apiURL'
+import { toast, ToastContainer } from 'react-toastify'
+import toastOptions from '../../config/toast'
 
 export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
-  let listObj = JSON.parse(localStorage.getItem("listObj"))
+  let listObj = JSON.parse(localStorage.getItem('listObj'))
+
   // let files = listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [];
-  const [proceedNext, setProceedNext] = useState(true);
-  const [files, setFiles] = useState(listObj && listObj.ImageInfo ? listObj.ImageInfo.files : []);
-  const {getRootProps, getInputProps} = useDropzone({
+  const [proceedNext, setProceedNext] = useState(true)
+  const [loading, setLoading] = useState(false)
+
+  const [files, setFiles] = useState(
+    listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [],
+  )
+  const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      'image/*': []
+      'image/*': [],
     },
     onDrop: async (acceptedFiles) => {
-       await imageUpload(acceptedFiles)
+      await imageUpload(acceptedFiles)
       // setFiles(acceptedFiles.map(file => Object.assign(file, {
       //   preview: URL.createObjectURL(file)
       // })));
-    }
-  });
-  const imageUpload =async (files)=>{
-    try{
-      let formData = new FormData();
-      files.forEach(file=>{
-        formData.append("files", file);
-      });
+    },
+  })
+  const imageUpload = async (files) => {
+    try {
+      setLoading(true)
+      let formData = new FormData()
+      files.forEach((file) => {
+        formData.append('files', file)
+      })
       // formData.append("files", files);
       const {
-        data: { data ,message},
-      } = await axios.post(baseURL + '/misc/upload-file', formData,{
+        data: { data, message },
+      } = await axios.post(baseURL + '/misc/upload-file', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
-      setProceedNext(true);
+      setProceedNext(true)
       setFiles(data)
-      onUpload(data,'ImageInfo');
-      toast.success(message,toastOptions);
-      console.log({data})
+      onUpload(data, 'ImageInfo')
+      setLoading(false)
+      toast.success(message, toastOptions)
+      console.log({ data })
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      toast.error(message, toastOptions)
     }
-    catch({response :{ data :{message}}}){
-
-      toast.error(message, toastOptions
-        );
-    }
-  
   }
 
-  const removeFile= async ( key )=>{
-    let tempFile =[...files];
-    let filtered = tempFile.filter(function(el) { return el.filename != key; });
-    setFiles(filtered) 
-    onUpload(filtered,'ImageInfo');
+  const removeFile = async (key) => {
+    let tempFile = [...files]
+    let filtered = tempFile.filter(function (el) {
+      return el.filename != key
+    })
+    setFiles(filtered)
+    onUpload(filtered, 'ImageInfo')
   }
   // onDrop:onUpload
   const thumbsContainer = {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginTop: 16,
-  };
+  }
 
   const thumb = {
-    display: "inline-flex",
+    display: 'inline-flex',
     borderRadius: 2,
-    border: "1px solid #eaeaea",
+    border: '1px solid #eaeaea',
     marginBottom: 8,
     marginRight: 8,
     width: 100,
     height: 100,
     padding: 4,
-    boxSizing: "border-box",
-  };
+    boxSizing: 'border-box',
+  }
 
   const thumbInner = {
-    display: "flex",
+    display: 'flex',
     minWidth: 0,
-    overflow: "hidden",
-  };
+    overflow: 'hidden',
+  }
 
   const img = {
-    display: "block",
-    width: "auto",
-    height: "100%",
-  };
-  const validateImages =( )=>{
-    if(files.length==0){
-     return setProceedNext(false)
+    display: 'block',
+    width: 'auto',
+    height: '100%',
+  }
+  const validateImages = () => {
+    if (files.length == 0) {
+      return setProceedNext(false)
     }
-    setProceedNext(true);
+    setProceedNext(true)
     nextStep()
   }
-  const thumbs = files.map(file => (
+  const thumbs = files.map((file) => (
     <div style={thumb} key={file.filename}>
       <div className="imageinfo-preview-div" style={thumbInner}>
-     <a onClick={()=>{removeFile(file.filename)}}> <i class="fa-solid fa-circle-xmark"></i></a>
+        <a
+          onClick={() => {
+            removeFile(file.filename)
+          }}
+        >
+          {' '}
+          <i class="fa-solid fa-circle-xmark"></i>
+        </a>
         <img
           src={file.path}
           style={img}
           // Revoke data uri after image is loaded
-          onLoad={() => { URL.revokeObjectURL(file.path) }}
+          onLoad={() => {
+            URL.revokeObjectURL(file.path)
+          }}
         />
       </div>
     </div>
-  ));
+  ))
   return (
     <>
-  
       <div class="form-card">
         <div class="row">
           <div class="col-7">
@@ -118,7 +135,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
             <h2 class="steps">Step 6 - 8</h2>
           </div>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
         {/* <div class="row">
                     <div class="col-md-12 mb-3">
                       <div class="mb-3">
@@ -133,11 +150,22 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
                       </div>
                     </div>
                   </div> */}
-        <div {...getRootProps({ className: "dropzone" })}>
-        <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
+        <div {...getRootProps({ className: 'dropzone' })}>
+          <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
           <input {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
         </div>
+
+        {loading && (
+          <lottie-player
+            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
+            background="transparent"
+            speed="1"
+            style={{ width: '300px', height: '300px' }}
+            loop
+            autoplay
+          ></lottie-player>
+        )}
         <aside style={thumbsContainer}>{thumbs}</aside>
       </div>
       <input
@@ -146,7 +174,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
         class="next action-button"
         value="Next"
         onClick={validateImages}
-        style={!proceedNext ? { opacity: 0.5, pointerEvents: "none" } : {}}
+        style={!proceedNext ? { opacity: 0.5, pointerEvents: 'none' } : {}}
       />
       <input
         type="button"
@@ -155,7 +183,6 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
         value="Previous"
         onClick={prevStep}
       />
-      
     </>
-  );
-};
+  )
+}

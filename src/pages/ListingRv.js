@@ -8,7 +8,7 @@ const ListingRv = () => {
   const [RVs, setRVs] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
-
+  const [loading, setLoading] = useState(false)
 
   const history = useNavigate();
   useEffect(() => {
@@ -17,6 +17,7 @@ const ListingRv = () => {
   }, [])
   const fetchRVs = async (currentPage=1) => {
     try {
+      setLoading(true)
       let body = {
         page:currentPage,
         limit:itemsPerPage
@@ -31,6 +32,7 @@ const ListingRv = () => {
       } = await axios.post(baseURL + '/rv/list', body, { headers })
       setPageCount(totalPages)
       setRVs(docs)
+      setLoading(false)
     } catch (e) {}
   }
   const handlePageClick = async(event) => {
@@ -45,6 +47,16 @@ const ListingRv = () => {
   }
   return (
     <>
+     {loading && 
+      <lottie-player
+            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
+            background="transparent"
+            speed="1"
+            style={{ width: '300px', height: '300px' }}
+            loop
+            autoplay
+          ></lottie-player>
+          }
       <div className="container">
         <div className="row">
           <div>
@@ -91,7 +103,7 @@ const ListingRv = () => {
                 </div>
               )
             })}
-          <div id="react-paginate">
+          {RVs.length > 0 && <div id="react-paginate">
           <ReactPaginate
             breakLabel="..."
             nextLabel="next >"
@@ -101,7 +113,10 @@ const ListingRv = () => {
             previousLabel="< previous"
             renderOnZeroPageCount={null}
           />
-          </div>
+          </div>}
+          {RVs.length ==0 && !loading && <>
+          <p>No data found</p>
+          </>}
           {/* <div className="col-sm-6 col-12 col-md-4 col-xxl-3 mb-2">
             <div className="product-card">
               <div className="badge">$109/night</div>
