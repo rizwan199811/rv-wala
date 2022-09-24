@@ -4,7 +4,7 @@ import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from "react-router-dom";
 const ListingRv = () => {
-  const itemsPerPage = 1
+  const itemsPerPage = 6
   const [RVs, setRVs] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)

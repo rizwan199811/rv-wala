@@ -2,7 +2,8 @@ import React,{useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
 import { baseURL } from "../../config/apiURL";
-
+import { toast,ToastContainer } from 'react-toastify';
+import toastOptions from "../../config/toast";
 
 export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   let listObj = JSON.parse(localStorage.getItem("listObj"))
@@ -21,23 +22,31 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
     }
   });
   const imageUpload =async (files)=>{
-    console.log({files})
-    let formData = new FormData();
-    files.forEach(file=>{
-      formData.append("files", file);
-    });
-    // formData.append("files", files);
-    const {
-      data: { data },
-    } = await axios.post(baseURL + '/misc/upload-file', formData,{
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    setProceedNext(true);
-    setFiles(data)
-    onUpload(data,'ImageInfo');
-    console.log({data})
+    try{
+      let formData = new FormData();
+      files.forEach(file=>{
+        formData.append("files", file);
+      });
+      // formData.append("files", files);
+      const {
+        data: { data ,message},
+      } = await axios.post(baseURL + '/misc/upload-file', formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      setProceedNext(true);
+      setFiles(data)
+      onUpload(data,'ImageInfo');
+      toast.success(message,toastOptions);
+      console.log({data})
+    }
+    catch({response :{ data :{message}}}){
+
+      toast.error(message, toastOptions
+        );
+    }
+  
   }
 
   const removeFile= async ( key )=>{
@@ -99,6 +108,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   ));
   return (
     <>
+  
       <div class="form-card">
         <div class="row">
           <div class="col-7">
@@ -108,6 +118,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
             <h2 class="steps">Step 6 - 8</h2>
           </div>
         </div>
+        <ToastContainer/>
         {/* <div class="row">
                     <div class="col-md-12 mb-3">
                       <div class="mb-3">
@@ -144,6 +155,7 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
         value="Previous"
         onClick={prevStep}
       />
+      
     </>
   );
 };

@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux'
 import { setToken } from '../app/slice/AuthSlice'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { toast,ToastContainer } from 'react-toastify';
+import toastOptions from "../config/toast";
 
 const LogIn = () => {
   let history = useNavigate()
@@ -47,13 +49,20 @@ const LogIn = () => {
         password: values.password,
       }
       const {
-        data: { data, token, refreshToken },
+        data: { data, token, refreshToken ,message},
       } = await axios.post(baseURL + '/auth/login', body)
-      dispatch(setToken(token))
-      localStorage.setItem('token', token)
-      history('/', { replace: true })
-    } catch (e) {
-      console.log({ e })
+    
+        toast.success(message,toastOptions);
+        setTimeout(() => {
+          dispatch(setToken(token))
+          localStorage.setItem('token', token)
+          history('/', { replace: true })
+        },3000);
+    }     
+    catch({response :{ data :{message}}}){
+      console.log({message})
+      toast.error(message, toastOptions
+        );
     }
   }
   return (
@@ -161,6 +170,7 @@ const LogIn = () => {
               </button>
             </form>
           </div>
+          <ToastContainer />
         </div>
       </div>
     </>
