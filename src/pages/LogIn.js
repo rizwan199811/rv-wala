@@ -166,12 +166,14 @@ const LogIn = () => {
                 </div>
               </div>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary login-wrapper-btn"
                 type="submit"
                 onClick={SignIn}
               >
+               <i class="fa fa-spinner fa-spin"></i>Loading
                 Sign In
               </button>
+
             </form>
           </div>
           <ToastContainer />
