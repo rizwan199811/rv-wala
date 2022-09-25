@@ -31,11 +31,13 @@ function App() {
         )}
 
         {!token &&  (
-          
-          <Route
+         <> 
+         <Route
           path="*"
           element={<Navigate to="/login" replace />}
          />
+         <Route path="/rvs-for-rent" element={<ListingRv />} />
+         </>
         )}
       </Routes>
       <Footer />
