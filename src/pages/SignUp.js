@@ -105,10 +105,10 @@ const SignUp = () => {
         <div className="carousel-inner">
                     <div className="carousel-item card border-0 card-0">
                       <div className="text-center">
-                        <img
+                        {/* <img
                           src="https://i.imgur.com/IjkibdE.jpg"
                           className="img-fluid profile-pic"
-                        />
+                        /> */}
                       </div>
                       <h6 className="font-weight-bold mt-5">John Paul</h6>{" "}
                       <small className="mb-2">USER REVIEW</small>
@@ -124,10 +124,10 @@ const SignUp = () => {
                     </div>
                     <div className="carousel-item card border-0 card-0">
                       <div className="text-center">
-                        <img
+                        {/* <img
                           src="https://i.imgur.com/oW8Wpwi.jpg"
                           className="img-fluid profile-pic"
-                        />
+                        /> */}
                       </div>
                       <h6 className="font-weight-bold mt-5">Ximena Vegara</h6>{" "}
                       <small className="mb-2">USER REVIEW</small>
@@ -143,10 +143,10 @@ const SignUp = () => {
                     </div>
                     <div className="carousel-item active card border-0 card-0">
                       <div className="text-center">
-                        <img
+                        {/* <img
                           src="https://i.imgur.com/EUYNvE1.jpg"
                           className="img-fluid profile-pic"
-                        />
+                        /> */}
                       </div>
                       <h6 className="font-weight-bold mt-5">Lena Maria</h6>{" "}
                       <small className="mb-2">USER REVIEW</small>
@@ -267,9 +267,9 @@ const SignUp = () => {
                     ''
                   )}
               </div>
-              <div className="row px-3 mb-3">
+              <div className="row px-3 py-2 mb-3">
                 <small className="text-muted">
-                  By signing up, you agree our{" "}
+                 <input type="checkbox" style={{width:"auto"}}/> By signing up, you agree our{" "}
                   <a href className="text-primary">
                     Terms of services
                   </a>{" "}
@@ -288,7 +288,7 @@ const SignUp = () => {
                   </button>
                 </div>
               </div>
-              <div className="row px-3 mb-4">
+              {/* <div className="row px-3 mb-4">
                 <div className="line" />
                 <small className="text-muted or text-center">OR</small>
                 <div className="line" />
@@ -306,8 +306,8 @@ const SignUp = () => {
                     <small className="pl-3 pr-1">Sign up with google+</small>
                   </p>
                 </div>
+              </div> */}
                 <ToastContainer />
-              </div>
             </div>
           </div>
         </div>

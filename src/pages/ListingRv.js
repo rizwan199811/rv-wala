@@ -4,7 +4,7 @@ import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from "react-router-dom";
 const ListingRv = () => {
-  const itemsPerPage = 6
+  const itemsPerPage = 12;
   const [RVs, setRVs] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
@@ -52,7 +52,7 @@ const ListingRv = () => {
             src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
             background="transparent"
             speed="1"
-            style={{ width: '300px', height: '300px' }}
+            style={{ width: '250px', height: '250px' , margin:"auto"}}
             loop
             autoplay
           ></lottie-player>
