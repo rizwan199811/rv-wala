@@ -10,11 +10,12 @@ export const InsuranceInfo = ({ nextStep, prevStep, handleCheck,handleChange }) 
     option3: false,
     option4: false,
  }
-  const initialState = listObj && listObj.InsuranceInfo && listObj.InsuranceInfo.rental_coverage &&
+  const initialState = listObj && listObj.InsuranceInfo && listObj.InsuranceInfo.rental_coverage ?
   {
     ...options,
     [listObj.InsuranceInfo.rental_coverage.key] :true
-  }
+  } : options
+   console.log({initialState})
   const [activeClass, setActiveclass] = useState(initialState)
   const [active, setActive] = useState(false)
 
@@ -106,7 +107,7 @@ export const InsuranceInfo = ({ nextStep, prevStep, handleCheck,handleChange }) 
               <div className="col-md-3">
                 <div
                   className={
-                    activeClass[[x.key]] ? 'card insurance_card_active' : 'card'
+                    activeClass[x.key] ? 'card insurance_card_active' : 'card'
                   }
                   onClick={() => toggleClass(x.key,x)}
                   style={{ width: '100%' }}
