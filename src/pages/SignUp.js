@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -12,7 +12,7 @@ import toastOptions from "../config/toast";
 
  
 const SignUp = () => {
-
+  const [loading, setLoading] = useState(false)
   const formik = useFormik({
     initialValues: {
       fullname:'',
@@ -50,12 +50,14 @@ const SignUp = () => {
   let history = useNavigate()
   const createAccount =async (e)=>{
     try{
+      
       if (!values.email && !values.password && !values.username && !values.fullname ) {
         return
       }
       if (errors.email && errors.password && errors.username && errors.fullname) {
         return
       }
+      setLoading(true)
       let body = {
         email: values.email,
         password: values.password,
@@ -68,6 +70,7 @@ const SignUp = () => {
       toast.success(message,toastOptions
         );
         setTimeout(() => {
+          setLoading(false)
           history('/login', { replace: true })
         },5000);
     }
@@ -280,6 +283,7 @@ const SignUp = () => {
                 <div className="col-md-6">
                   <button className="btn btn-blue text-center mb-1 py-2"
                   onClick={createAccount}>
+                    {loading && <i class="fa fa-spinner fa-spin"></i>}
                     Create Account
                   </button>
                 </div>

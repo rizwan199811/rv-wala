@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState} from 'react'
 import axios from 'axios'
 import { baseURL } from '../../config/apiURL'
 import { useNavigate } from 'react-router-dom'
@@ -8,8 +8,10 @@ import toastOptions from '../../config/toast'
 export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
   let history = useNavigate()
+  const [loading, setLoading] = useState(false)
   const handleSubmit = async () => {
     try {
+      setLoading(true)
       let features =localStorage.getItem('features') ? JSON.parse(localStorage.getItem('features')) : [];
       let body = localStorage.getItem('listObj')
         ? {
@@ -25,6 +27,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
       console.log({message})
       toast.success(message, toastOptions)
       setTimeout(() => {
+        setLoading(false)
         history('/rvs-for-rent', { replace: true })
       }, 3000)
     } catch ({
@@ -696,6 +699,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
         </div>
       </div>
       
+      {loading && <i class="fa fa-spinner fa-spin"></i>}
       <input
         type="button"
         name="next"

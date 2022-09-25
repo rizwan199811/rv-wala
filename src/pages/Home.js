@@ -69,6 +69,7 @@ const Home = (props) => {
         <input
           type="date"
           required=""
+          min={new Date().toISOString().split('T')[0]}
           placeholder="Depart Date"
           className="form-control"
         />
@@ -78,6 +79,7 @@ const Home = (props) => {
         <input
           type="date"
           required=""
+          min={new Date().toISOString().split('T')[0]}
           placeholder="Return Date"
           className="form-control"
         />
@@ -124,9 +126,7 @@ const Home = (props) => {
     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Rent A RV</button>
   </li>
   <li class="nav-item col-md-6 p-1" role="presentation">
-    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={()=>{
-     history("/listRV", { replace: true });
-    }}>List My RV</button>
+    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">List My RV</button>
   </li>
 
 </ul>

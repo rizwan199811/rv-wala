@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import login from '../images/loigin.jpg'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -36,9 +36,10 @@ const LogIn = () => {
     },
   })
   const { errors, touched, handleBlur, values } = formik
-
+  const [loading, setLoading] = useState(false)
   const SignIn = async (e) => {
     try {
+      setLoading(true);
       e.preventDefault()
       if (!values.email && !values.password) {
         return
@@ -56,6 +57,7 @@ const LogIn = () => {
         let profileImage =data.profileImage || 'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
         toast.success(message,toastOptions);
         setTimeout(() => {
+          setLoading(false);
           dispatch(setToken(token))
           dispatch(setProfileImage(profileImage))
           localStorage.setItem('token', token)
@@ -170,7 +172,7 @@ const LogIn = () => {
                 type="submit"
                 onClick={SignIn}
               >
-               <i class="fa fa-spinner fa-spin"></i>Loading
+               {loading && <i class="fa fa-spinner fa-spin"></i>}
                 Sign In
               </button>
 
