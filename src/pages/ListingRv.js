@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from "react-router-dom";
+
 const ListingRv = () => {
   const itemsPerPage = 12;
   const [RVs, setRVs] = useState([])
@@ -57,6 +58,85 @@ const ListingRv = () => {
             autoplay
           ></lottie-player>
           }
+          <section className='listing-_bg_sec'>
+            <h1>Listing</h1>
+            
+          </section>
+          <div className='container rv-filters-form'>
+          <div className='row align-items-end'>
+            <div className='col-md-3'>
+            <div className="mb-3">
+                <label className="form-label">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                />
+              </div>
+
+            </div>
+            <div className='col-md-3'>
+            <div className="mb-3">
+                <label className="form-label">
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className='col-md-3'>
+            <div className="mb-3">
+                <label className="form-label">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className='col-md-3'>
+              <div className="mb-3">
+              <button
+                className="btn btn-primary login-wrapper-btn"
+                type="submit"
+              >Search</button>
+              </div>
+            </div>
+
+            <div className='col-md-3'>
+            <div className="mb-3 position-relative">
+                 <button className='filter-btns'>Price</button>
+                 <div className='price-div'>
+                    <input type="range"/>
+                 </div>
+              </div>
+
+            </div>
+            <div className='col-md-3'>
+            <div className="mb-3 position-relative">
+            <button className='filter-btns'>Distance</button>
+            <div className='price-div'>
+                    <input type="range"/>
+                 </div>
+              </div>
+            </div>
+            <div className='col-md-3'>
+            <div className="mb-3 position-relative">
+            <button className='filter-btns'>Book now</button>
+              </div>
+            </div>
+            <div className='col-md-3'>
+              <div className="mb-3 position-relative">
+            <button className='filter-btns'>Reserveable</button>
+
+              </div>
+            </div>
+          </div>
+          </div>
       <div className="container">
         <div className="row">
           <div>
