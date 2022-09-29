@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 export const InsuranceInfo = ({ nextStep, prevStep, handleCheck,handleChange }) => {
 
-  let listObj = localStorage.getItem('listObj') && JSON.parse(localStorage.getItem('listObj'))
+ let listObj = localStorage.getItem('listObj') && JSON.parse(localStorage.getItem('listObj'))
  
  const options ={
     option1: false,
