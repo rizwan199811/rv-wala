@@ -2091,20 +2091,34 @@ padding: 20px 15px 0;
     background: transparent;
 }
 .price-div{
-  display: none;
+  /* display: none; */
+  background-color: #cb5644;
+  color: white;
+  position: absolute;
+  width: 100%;
 }
 .filter-btns:hover{
   background-color: #cb5644;
   color: white;
 }
-.filter-btns:hover + .price-div{
+/* .filter-btns:hover + .price-div{
   display: block;
   width: 100%;
   position: absolute;
   margin-top: 10px;
   background-color: #f89938;
   padding: 10px 20px;
-}
+} */
+
+
+
+
+
+
+
+
+
+
 /* =================Listing RV ends ======================= */
 /* =================Detail Listing RV Starts ======================= */
 

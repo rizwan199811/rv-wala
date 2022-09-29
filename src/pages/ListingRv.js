@@ -10,6 +10,7 @@ const ListingRv = () => {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [show, toggleShow] = useState(false);
 
   const history = useNavigate();
   useEffect(() => {
@@ -109,18 +110,18 @@ const ListingRv = () => {
 
             <div className='col-md-3'>
             <div className="mb-3 position-relative">
-                 <button className='filter-btns'>Price</button>
+                 <button className='filter-btns' onClick={() => toggleShow(!show)}>Price</button>
                  <div className='price-div'>
-                    <input type="range"/>
+                    {show && <input type="range"/>}
                  </div>
               </div>
 
             </div>
             <div className='col-md-3'>
             <div className="mb-3 position-relative">
-            <button className='filter-btns'>Distance</button>
-            <div className='price-div'>
-                    <input type="range"/>
+            <button className='filter-btns' onClick={() => toggleShow(!show)}>Distance</button>
+                 <div className='price-div'>
+                    {show && <input type="range"/>}
                  </div>
               </div>
             </div>
