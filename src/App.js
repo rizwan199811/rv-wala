@@ -11,6 +11,8 @@ import AfterLoginHeader from './components/AfterLoginHeader'
 import ListingRv from './pages/ListingRv'
 import SingleDetailRV from './pages/SingleDetailRV'
 import {  useSelector } from 'react-redux';
+import AddDetails from './pages/AddDetails'
+import Checkout from './pages/Checkout'
 function App() {
   const token = useSelector((state) => state.auth.token);
 
@@ -21,6 +23,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/booking-details" element={<AddDetails />} />
+        <Route path="/checkout" element={<Checkout />} />
         {token && (
           <>
             <Route path="/contactus" element={<Contact />} />
