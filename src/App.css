@@ -123,10 +123,10 @@ ul {
 .footer-widget-heading h3::before {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -15px;
+  left: 0px;
+  bottom: -3px;
   height: 2px;
-  width: 50px;
+  width: 57px;
   background: #cb5644;
 }
 .footer-widget ul li {
@@ -2092,7 +2092,7 @@ padding: 20px 15px 0;
 }
 .price-div{
   /* display: none; */
-  background-color: #cb5644;
+  background-color: #eb8d8d;
   color: white;
   position: absolute;
   width: 100%;
@@ -2429,22 +2429,25 @@ width:100px;
   margin-right: 8px;
 }
 
-/* =============== Multi Range Slider============= */
+/* =============== Multi Range Slider Starts============= */
 
-.wrapper{
-  position: relative;
-  width: 95vmin;
-  background-color: #ffffff;
-  padding: 50px 40px 20px 40px;
-  border-radius: 10px;
-}
-.container{
+.multirange-wrap .wrapper{
   position: relative;
   width: 100%;
-  height: 100px;
-  margin-top: 30px;
+  padding: 10px 5px;
+  /* background-color: #ffffff; */
+  /* padding: 50px 40px 20px 40px; */
+  border-radius: 10px
 }
-input[type="range"]{
+.multirange-wrap .container{
+  position: relative;
+  width: 100%;
+  height: 64px;
+  /* margin-top: 30px; */
+  padding: 0;
+  margin: 17px 0 0 0;
+}
+.multirange-wrap input[type="range"]{
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -2457,7 +2460,7 @@ input[type="range"]{
   background-color: transparent;
   pointer-events: none;
 }
-.slider-track{
+.multirange-wrap .slider-track{
   width: 100%;
   height: 5px;
   position: absolute;
@@ -2466,19 +2469,19 @@ input[type="range"]{
   bottom: 0;
   border-radius: 5px;
 }
-input[type="range"]::-webkit-slider-runnable-track{
+.multirange-wrap input[type="range"]::-webkit-slider-runnable-track{
   -webkit-appearance: none;
   height: 5px;
 }
-input[type="range"]::-moz-range-track{
+.multirange-wrap input[type="range"]::-moz-range-track{
   -moz-appearance: none;
   height: 5px;
 }
-input[type="range"]::-ms-track{
+.multirange-wrap input[type="range"]::-ms-track{
   appearance: none;
   height: 5px;
 }
-input[type="range"]::-webkit-slider-thumb{
+.multirange-wrap input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance: none;
   height: 1.7em;
   width: 1.7em;
@@ -2488,7 +2491,7 @@ input[type="range"]::-webkit-slider-thumb{
   pointer-events: auto;
   border-radius: 50%;
 }
-input[type="range"]::-moz-range-thumb{
+.multirange-wrap input[type="range"]::-moz-range-thumb{
   -webkit-appearance: none;
   height: 1.7em;
   width: 1.7em;
@@ -2497,7 +2500,7 @@ input[type="range"]::-moz-range-thumb{
   background-color: #3264fe;
   pointer-events: auto;
 }
-input[type="range"]::-ms-thumb{
+.multirange-wrap input[type="range"]::-ms-thumb{
   appearance: none;
   height: 1.7em;
   width: 1.7em;
@@ -2506,23 +2509,23 @@ input[type="range"]::-ms-thumb{
   background-color: #3264fe;
   pointer-events: auto;
 }
-input[type="range"]:active::-webkit-slider-thumb{
+.multirange-wrap input[type="range"]:active::-webkit-slider-thumb{
   background-color: #ffffff;
   border: 3px solid #3264fe;
 }
-.values{
+.multirange-wrap .values{
   background-color: #3264fe;
-  width: 32%;
   position: relative;
   margin: auto;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   border-radius: 5px;
   text-align: center;
-  font-weight: 500;
+  /* font-weight: 500; */
   font-size: 25px;
   color: #ffffff;
+  width: 50%;
 }
-.values:before{
+.multirange-wrap .values:before{
   content: "";
   position: absolute;
   height: 0;
@@ -2535,3 +2538,4 @@ input[type="range"]:active::-webkit-slider-thumb{
   left: 0;
   right: 0;
 }
+/* =============== Multi Range Slider Ends============= */

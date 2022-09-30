@@ -35,10 +35,11 @@ slideTwo();
  }, []);
   return (
     <>
+      <div className='multirange-wrap'>
       <div class="wrapper">
         <div class="values">
           <span id="range1">0</span>
-          <span> &dash; </span>
+          <span> - </span>
           <span id="range2">100</span>
         </div>
         <div class="container">
@@ -60,6 +61,7 @@ slideTwo();
             // oninput="slideTwo()"
           />
         </div>
+      </div>
       </div>
     </>
   )
