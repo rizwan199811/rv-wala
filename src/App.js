@@ -7,7 +7,6 @@ import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
 import Contact from './pages/Contact'
 import { CreateListing } from './pages/CreateListing'
-import AfterLoginHeader from './components/AfterLoginHeader'
 import ListingRv from './pages/ListingRv'
 import SingleDetailRV from './pages/SingleDetailRV'
 import {  useSelector } from 'react-redux';

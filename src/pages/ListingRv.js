@@ -4,19 +4,24 @@ import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from 'react-router-dom'
 import MultiRangeSlider from '../components/MultiRangeSlider'
+import { PrettoSlider } from '../components/SimpleSlider'
+
 // import InputRange from 'react-input-range'
 // import 'react-input-range/lib/css/index.css'
 const ListingRv = () => {
-  const itemsPerPage = 12
+  const itemsPerPage = 12,minDistance = 0;
   let initialShow = {
     price: false,
     distance: false,
   }
+
   const [RVs, setRVs] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [loading, setLoading] = useState(false)
   const [show, toggleShow] = useState(initialShow)
+  const [value, setValue] = useState([0, 1000]);
+  const [searchCriteria,setSearch] =useState({});
 
   const history = useNavigate()
   useEffect(() => {
@@ -28,6 +33,7 @@ const ListingRv = () => {
       let body = {
         page: currentPage,
         limit: itemsPerPage,
+        searchCriteria
       }
       let headers = {
         Authorization: localStorage.getItem('token'),
@@ -45,12 +51,46 @@ const ListingRv = () => {
   const handlePageClick = async (event) => {
     console.log({ event })
     let currentPage = event.selected + 1
+
     await fetchRVs(currentPage)
     // const newOffset = (event.selected * itemsPerPage) % RVs.length
     // console.log(
     //   `User requested page number ${event.selected}, which is offset ${newOffset}`,
     // )
     // setItemOffset(newOffset)
+  }
+
+  const handleChange = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    if (activeThumb === 0) {
+      setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
+      setSearch({
+        ...searchCriteria,
+        price:{
+          min:Math.min(newValue[0], value[1] - minDistance),
+          max:value[1]
+        }
+      })
+    } else {
+      setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
+      setSearch({
+        ...searchCriteria,
+        price:{
+          min:value[0],
+          max:Math.max(newValue[1], value[0] + minDistance)
+        }
+      })
+    }
+  
+  };
+  const valueLabelFormat=(value)=> {
+    const unit ='mi';
+    return `${value}${unit}`;
+  }
+  const search=async()=> {
+    await fetchRVs()
   }
   return (
     <>
@@ -82,6 +122,7 @@ const ListingRv = () => {
               <button
                 className="btn btn-primary login-wrapper-btn"
                 type="submit"
+                onClick={search}
               >
                 Search
               </button>
@@ -98,7 +139,7 @@ const ListingRv = () => {
               </button>
               <div className="price-div">
                 {show.price && (
-                 <MultiRangeSlider/>
+                 <MultiRangeSlider handleChange={handleChange} value={value}/>
                 )}
               </div>
               {/* <button className="filter-btns">Price</button>
@@ -118,7 +159,14 @@ const ListingRv = () => {
                 Distance
               </button>
               <div className="price-div">
-                {show.distance && <input type="range" />}
+                {show.distance && <PrettoSlider 
+                      valueLabelDisplay="auto"
+                      aria-label="pretto slider"
+                      valueLabelFormat={valueLabelFormat}
+                      defaultValue={20}
+                      min={0}
+                      max={300}
+                      />}
               </div>
             </div>
           </div>

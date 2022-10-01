@@ -1,70 +1,36 @@
-import { useState,useEffect } from 'react'
-import classnames from 'classnames'
-const MultiRangeSlider = () => {
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 
- useEffect(() => {
-  let sliderOne = document.getElementById("slider-1");
-let sliderTwo = document.getElementById("slider-2");
-let displayValOne = document.getElementById("range1");
-let displayValTwo = document.getElementById("range2");
-let minGap = 0;
-let sliderTrack = document.querySelector(".slider-track");
-let sliderMaxValue = document.getElementById("slider-1").max;
-function slideOne(){
-    if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap){
-        sliderOne.value = parseInt(sliderTwo.value) - minGap;
-    }
-    displayValOne.textContent = sliderOne.value;
-    fillColor();
-}
-function slideTwo(){
-    if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap){
-        sliderTwo.value = parseInt(sliderOne.value) + minGap;
-    }
-    displayValTwo.textContent = sliderTwo.value;
-    fillColor();
-}
-function fillColor(){
-    let percent1 = (sliderOne.value / sliderMaxValue) * 100;
-    let percent2 = (sliderTwo.value / sliderMaxValue) * 100;
-    sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #3264fe ${percent1}% , #3264fe ${percent2}%, #dadae5 ${percent2}%)`;
-}
-slideOne();
-slideTwo();
- }, []);
+
+
+
+export default function MultiRangeSlider({handleChange,value}) {
+
+
+
   return (
-    <>
-      <div className='multirange-wrap'>
-      <div class="wrapper">
-        <div class="values">
-          <span id="range1">0</span>
-          <span> - </span>
-          <span id="range2">100</span>
-        </div>
-        <div class="container">
-          <div class="slider-track"></div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="30"
-            id="slider-1"
-            // oninput="slideOne()"
-          />
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="70"
-            id="slider-2"
-            // oninput="slideTwo()"
-          />
-        </div>
+    <Box sx={{ width: 300 }}>
+       <div className="multirange-wrap">
+        <div class="wrapper">
+          <div class="values">
+            <span id="range1">${value[0]}</span>
+            <span> - </span>
+            <span id="range2">${value[1]}</span>
+          </div>
+      <Slider
+        getAriaLabel={() => 'Minimum distance'}
+        value={value}
+        min={0}
+        max={1000}
+        onChange={handleChange}
+        // valueLabelDisplay="auto"
+        disableSwap
+      />
+    
       </div>
       </div>
-    </>
-  )
+    </Box>
+  );
 }
-
-export default MultiRangeSlider

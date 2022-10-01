@@ -1,20 +1,26 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { baseURL } from '../config/apiURL'
 import Slider from 'react-slick'
-import image1 from '../images/loigin.jpg'
 import moment from 'moment'
+import { useSelector } from 'react-redux'
 
 const SingleDetailRV = () => {
+
+  let history = useNavigate();
+
+
   useEffect(() => {
     fetchRV()
   }, [])
+  const token = useSelector((state) => state.auth.token);
 
   const [RV, setRV] = useState({})
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const { id } = useParams()
+
   const fetchRV = async () => {
     try {
       setLoading(true)
@@ -68,6 +74,10 @@ const SingleDetailRV = () => {
         </div>
       </section>
     )
+  }
+
+  const bookNow = async()=>{
+    history('/booking-details', { replace: true })
   }
 
   return (
@@ -631,14 +641,14 @@ const SingleDetailRV = () => {
                         <b>${RV.Pricing.damage_deposit}</b>
                       </span>
                     </li>
-                    <li className="list-group-item d-flex justify-content-between">
+                    {/* <li className="list-group-item d-flex justify-content-between">
                       <span>
                         Balance Due<em>(due by 10/16)</em>
                       </span>
                       <span>
                         <b>$2,351.22</b>
                       </span>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -659,7 +669,7 @@ const SingleDetailRV = () => {
                         <em>per extra mile</em>{' '}
                       </span>
                     </li>
-                    <li className="list-group-item d-flex justify-content-between">
+                    {/* <li className="list-group-item d-flex justify-content-between">
                       <span>
                         Deductible paid by Guest
                         <br /> <em>(per incident)</em>
@@ -667,11 +677,11 @@ const SingleDetailRV = () => {
                       <span>
                         <b>$2,500</b>
                       </span>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
-              <div class="alert alert-warning" role="alert">
+              {!token && <div class="alert alert-warning" role="alert">
                 To make an inquiry for this listing, please log-in or sign-up.
                 Once logged-in, you'll be brought back here to complete your
                 inquiry.
@@ -687,7 +697,16 @@ const SingleDetailRV = () => {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </div>}
+            
+              {token && <button
+                className="btn btn-primary login-wrapper-btn"
+                type="submit"
+                onClick={bookNow}
+              >
+               {loading && <i class="fa fa-spinner fa-spin"></i>}
+                Book now
+              </button>}
             </div>
           </div>
           <div className="mb-3 mt-2">
