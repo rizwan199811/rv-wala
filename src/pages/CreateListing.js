@@ -33,8 +33,9 @@ export const CreateListing = () => {
     const lastObj = keys.reduce((obj, key) => (obj[key] = obj[key] || {}), obj);
     lastObj[lastKey] = val;
   };
-  const handleChange = (e, identifier) => {
+  const handleChange = (e, identifier,parseToNumber=false) => {
     let { name, value } = e.target;
+    value = parseToNumber ? parseInt(value):value;
     let path = `${identifier}.${name}`;
     // let obj = { ...listObj };
   

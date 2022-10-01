@@ -430,7 +430,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               onChange={(e) => {
                 setProceedNext(true);
                 formik.handleChange(e);
-                handleChange(e, "RVInfo");
+                handleChange(e, "RVInfo",true);
               }}
               onBlur={handleBlur}
               defaultValue={listObj && listObj.RVInfo && listObj.RVInfo.value}
