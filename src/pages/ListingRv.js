@@ -2,13 +2,16 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useSearchParams } from 'react-router-dom'
 import MultiRangeSlider from '../components/MultiRangeSlider'
 import { PrettoSlider } from '../components/SimpleSlider'
 
 // import InputRange from 'react-input-range'
 // import 'react-input-range/lib/css/index.css'
 const ListingRv = () => {
+  const [searchParams, setSearchParams] =useSearchParams();
+  console.log({searchParams:searchParams.get('rvClass')})
+
   const itemsPerPage = 12,minDistance = 0;
   let initialShow = {
     price: false,
@@ -25,15 +28,24 @@ const ListingRv = () => {
 
   const history = useNavigate()
   useEffect(() => {
+
+
     fetchRVs()
   }, [])
   const fetchRVs = async (currentPage = 1) => {
     try {
+      let queryParams={};
+      const rvClass=searchParams.get('rvClass') || '';
+      queryParams = rvClass ? {class:rvClass} :queryParams;
+      console.log({queryParams})
       setLoading(true)
       let body = {
         page: currentPage,
         limit: itemsPerPage,
-        searchCriteria
+        searchCriteria:{
+          ...searchCriteria,
+          ...queryParams
+        }
       }
       let headers = {
         Authorization: localStorage.getItem('token'),

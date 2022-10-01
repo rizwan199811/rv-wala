@@ -1,7 +1,7 @@
 import React from 'react'
 import Sliderr from '../components/Slider'
 import Slider from "react-slick";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Home = (props) => {
   let history = useNavigate();
   const settings = {
@@ -95,13 +95,13 @@ const Home = (props) => {
     </div> */}
     <div className="serachrv-classes">
       <div className='d-flex justify-content-between'> 
-        <img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/>
-        <img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/>
-        <img src="https://files.rvngo.com/assets/icons/class_c_off_sm-48b27e0e4e9d72be5ef7870129361181cf026686b5483e5f29f14957eb79e0b1.png"/>
-        <img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/>
-        <img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/>
-        <img src="https://files.rvngo.com/assets/icons/camper_trailer_off_sm-3a76f47796e9da89bf36125de2ebec2163c1f423fa23d74db78ef5782aeaedab.png"/>
-        <img src="https://files.rvngo.com/assets/icons/popup_camper_off_sm-fc7c5fd615e78226cdb09af9fe043ddd956fd448fdb4c7ae6db54684b634ad78.png"/>
+        <Link to="/rvs-for-rent?rvClass=Class A"><img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Class B"><img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Class C"><img src="https://files.rvngo.com/assets/icons/class_c_off_sm-48b27e0e4e9d72be5ef7870129361181cf026686b5483e5f29f14957eb79e0b1.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Fifth Wheel"><img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Campervan"><img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Campervan"><img src="https://files.rvngo.com/assets/icons/camper_trailer_off_sm-3a76f47796e9da89bf36125de2ebec2163c1f423fa23d74db78ef5782aeaedab.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Pop up camper and other"><img src="https://files.rvngo.com/assets/icons/popup_camper_off_sm-fc7c5fd615e78226cdb09af9fe043ddd956fd448fdb4c7ae6db54684b634ad78.png"/></Link>
       </div>
     </div>
     <div className="form-group my-3">
