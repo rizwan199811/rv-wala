@@ -28,8 +28,6 @@ const ListingRv = () => {
 
   const history = useNavigate()
   useEffect(() => {
-
-
     fetchRVs()
   }, [])
   const fetchRVs = async (currentPage = 1) => {
@@ -38,6 +36,7 @@ const ListingRv = () => {
       const rvClass = searchParams.get('rvClass') || '';
       queryParams = rvClass ? { class: rvClass } : queryParams;
       console.log({ queryParams })
+      setRVs([])
       setLoading(true)
       let body = {
         page: currentPage,
@@ -102,6 +101,7 @@ const ListingRv = () => {
     return `${value}${unit}`;
   }
   const search = async () => {
+    toggleShow(initialShow)
     await fetchRVs()
   }
   return (
@@ -151,7 +151,7 @@ const ListingRv = () => {
               </button>
               <div className="price-div">
                 {show.price && (
-                  <MultiRangeSlider handleChange={handleChange} value={value} />
+                  <MultiRangeSlider handleChange={handleChange} value={value} search={search} />
                 )}
               </div>
             </div>
@@ -176,7 +176,7 @@ const ListingRv = () => {
                   min={0}
                   max={300}
                 />
-                 <button className='login-wrapper-btn'>Apply</button>
+                 <button className='login-wrapper-btn'  >Apply</button>
                 </div>
                 }
                 

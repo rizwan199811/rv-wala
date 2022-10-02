@@ -6,7 +6,7 @@ import Slider from '@mui/material/Slider';
 
 
 
-export default function MultiRangeSlider({handleChange,value}) {
+export default function MultiRangeSlider({handleChange,value,search}) {
 
 
 
@@ -29,7 +29,7 @@ export default function MultiRangeSlider({handleChange,value}) {
         disableSwap
       />
     
-      <button className='login-wrapper-btn'>Apply</button>
+      <button className='login-wrapper-btn'    onClick={search} >Apply</button>
       </div>
       </div>
 

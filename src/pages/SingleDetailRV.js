@@ -6,24 +6,107 @@ import Slider from 'react-slick'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBookingDetails } from '../app/slice/BookSlice'
-
+import { toast, ToastContainer } from 'react-toastify'
+import { toastOptionsDate } from '../config/toast'
 const SingleDetailRV = () => {
-
-  let history = useNavigate();
-
+  let history = useNavigate()
 
   useEffect(() => {
+    
     fetchRV()
   }, [])
-  const token = useSelector((state) => state.auth.token);
-  const dispatch=useDispatch()
+  const token = useSelector((state) => state.auth.token)
+  const dispatch = useDispatch()
   const [RV, setRV] = useState({})
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
-  const { id } = useParams()
+  const [error, setError] = useState(false)
+  const [dateRange, setDateRange] = useState([
+    moment().format('YYYY-MM-DD'),
+    moment().format('YYYY-MM-DD'),
+  ])
+  const [invoiceInfo, setInvoiceInfo] = useState({
+    reservation: [],
+    hostServices: [],
+    reservationTotal:0,
+    hostServicesTotal:0
+  })
 
+  const { id } = useParams()
+  const enumerateDaysBetweenDates = (startDate, endDate,nightly_rate) => {
+    var now = startDate,
+      dates = []
+    while (now.isSameOrBefore(endDate)) {
+      dates.push({date:now.format('YYYY-MM-DD'),rate:nightly_rate})
+      now.add(1, 'days')
+    }
+    console.log({ dates })
+    const sum = dates.reduce((accumulator, object) => {
+      return accumulator + parseInt(object.rate);
+    }, 0);
+    return {dates,sum}
+  }
+  const handleDateChange = async (e) => {
+    const { name, value } = e.target;
+    console.log(value)
+    switch (name) {
+      case 'checkIn':
+        if (moment(dateRange[1]).isBefore(value)) {
+          setError(true)
+          toast.error('Wrong date range', toastOptionsDate)
+          break
+        }
+        setError(false)
+         const {dates:checkInDates,sum:sumCheckIn} = enumerateDaysBetweenDates(
+          moment(value),
+          moment(dateRange[1]),
+          RV.Pricing.nightly
+        )
+        setInvoiceInfo({
+          ...invoiceInfo,
+          reservation: checkInDates,
+          reservationTotal:sumCheckIn
+        })
+        setDateRange([value, dateRange[1]])
+        break
+      case 'checkOut':
+        if (moment(dateRange[0]).isAfter(value)) {
+          setError(true)
+          toast.error('Wrong date range', toastOptionsDate)
+          break
+        }
+        const {dates:checkOutDates,sum:sumCheckOut} = enumerateDaysBetweenDates(
+          moment(dateRange[0]),
+          moment(value),
+          RV.Pricing.nightly
+        )
+        setInvoiceInfo({
+          ...invoiceInfo,
+          reservation: checkOutDates,
+          reservationTotal:sumCheckOut
+        })
+        setError(false)
+        setDateRange([dateRange[0], value])
+        break
+      default:
+        break
+    }
+    // if (!error) {
+    //   console.log('called')
+    //   const dateRanges = enumerateDaysBetweenDates(
+    //     moment(dateRange[0]),
+    //     moment(dateRange[1]),
+    //   )
+    //   setInvoiceInfo({
+    //     ...invoiceInfo,
+    //     reservation: dateRanges,
+    //   })
+    // }
+    console.log({ dateRange })
+  }
   const fetchRV = async () => {
     try {
+    
       setLoading(true)
       let headers = {
         Authorization: localStorage.getItem('token'),
@@ -32,6 +115,12 @@ const SingleDetailRV = () => {
         data: { data },
       } = await axios.get(baseURL + '/rv/' + id, { headers })
       console.log({ data })
+  
+      let hostServices =[{value:data.Pricing.cleaning_fee,label:'Cleaning fee'},{value:data.Pricing.prep_fee,label:'Prep fee'}]
+      const sum = hostServices.reduce((accumulator, object) => {
+        return accumulator + parseInt(object.value);
+      }, 0);
+      setInvoiceInfo({...invoiceInfo,hostServices,hostServicesTotal:sum})
       setRV(data)
       const images = data.ImageInfo.files.map((x, index) => {
         if (index == 0) {
@@ -48,7 +137,7 @@ const SingleDetailRV = () => {
       console.log({ images })
       setImages(images)
       setLoading(false)
-    } catch (e) { }
+    } catch (e) {}
   }
 
   const settings = {
@@ -68,7 +157,7 @@ const SingleDetailRV = () => {
             src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
             background="transparent"
             speed="1"
-            style={{ width: '300px', height: '300px', margin: "auto" }}
+            style={{ width: '300px', height: '300px', margin: 'auto' }}
             loop
             autoplay
           ></lottie-player>
@@ -77,9 +166,9 @@ const SingleDetailRV = () => {
     )
   }
 
-  const bookNow = async()=>{
+  const bookNow = async () => {
     dispatch(setBookingDetails(RV))
-    history('/booking-details', { replace: true }) 
+    history('/booking-details', { replace: true })
   }
 
   return (
@@ -257,7 +346,7 @@ const SingleDetailRV = () => {
                                   RV.ListInfo.cancel_policy
                                     .charAt(0)
                                     .toUpperCase() +
-                                  RV.ListInfo.cancel_policy.slice(1)}
+                                    RV.ListInfo.cancel_policy.slice(1)}
                               </h6>
                               <p>More Details </p>
                             </div>
@@ -535,7 +624,12 @@ const SingleDetailRV = () => {
               <div className="single-detail-user-card">
                 <div className="card">
                   <div className="img">
-                    <img src={RV.user.profileImage && RV.user.profileImage || "https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg"} />
+                    <img
+                      src={
+                        (RV.user.profileImage && RV.user.profileImage) ||
+                        'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
+                      }
+                    />
                   </div>
                   <div className="infos">
                     <div className="name">
@@ -576,7 +670,9 @@ const SingleDetailRV = () => {
             </div>
             <div className="col-md-5">
               <div className="single-product-sale-div">
-                <h3>{RV.RVInfo.year} {RV.RVInfo.make} {RV.RVInfo.model} </h3>
+                <h3>
+                  {RV.RVInfo.year} {RV.RVInfo.make} {RV.RVInfo.model}{' '}
+                </h3>
                 <p>in {RV.ListInfo.address}</p>
                 <div class="rate">
                   <input type="radio" id="star5" name="rate" value="5" />
@@ -604,11 +700,23 @@ const SingleDetailRV = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <label>Check In*</label>
-                    <input type="date" />
+                    <input
+                      type="date"
+                      name="checkIn"
+                      min={moment().format('YYYY-MM-DD')}
+                      value={dateRange[0]}
+                      onChange={handleDateChange}
+                    />
                   </div>
                   <div className="col-md-6">
                     <label>Check Out*</label>
-                    <input type="date" />
+                    <input
+                      type="date"
+                      name="checkOut"
+                      min={moment().format('YYYY-MM-DD')}
+                      value={dateRange[1]}
+                      onChange={handleDateChange}
+                    />
                   </div>
                   <em className="text-center">(minimum 1 night rental)</em>
                 </div>
@@ -624,10 +732,12 @@ const SingleDetailRV = () => {
                       aria-multiselectable="true"
                     >
                       <li className="list-group-item d-flex justify-content-between">
-
-
                         <div className="panel panel-default col-md-5">
-                          <div className="panel-heading" role="tab" id="headingTwo">
+                          <div
+                            className="panel-heading"
+                            role="tab"
+                            id="headingTwo"
+                          >
                             <h6 className="panel-title">
                               <a
                                 className="collapsed"
@@ -638,7 +748,7 @@ const SingleDetailRV = () => {
                                 aria-expanded="false"
                                 aria-controls="collapseTwo"
                               >
-                                Reservation
+                                reservation
                               </a>
                             </h6>
                           </div>
@@ -649,22 +759,42 @@ const SingleDetailRV = () => {
                             aria-labelledby="headingTwo"
                           >
                             <div className="panel-body">
-                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
-                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
-                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
-                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
-                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                              {invoiceInfo.reservation.map((x) => {
+                               return <p>
+                                  <b>{x.date}</b>{' '}
+                                  <span className="float-end">${x.rate}</span>{' '}
+                                </p>
+                              })}
+
+                              {/* <p>
+                                <b>2022-10-31</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p>
+                              <p>
+                                <b>2022-10-31</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p>
+                              <p>
+                                <b>2022-10-31</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p>
+                              <p>
+                                <b>2022-10-31</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p> */}
                             </div>
                           </div>
                         </div>
-                        <span>$686.70</span>
+                        <span>${invoiceInfo.reservationTotal}</span>
                       </li>
 
                       <li className="list-group-item d-flex justify-content-between">
-
-
                         <div className="panel panel-default col-md-5">
-                          <div className="panel-heading" role="tab" id="headingThree">
+                          <div
+                            className="panel-heading"
+                            role="tab"
+                            id="headingThree"
+                          >
                             <h6 className="panel-title">
                               <a
                                 className="collapsed"
@@ -686,19 +816,25 @@ const SingleDetailRV = () => {
                             aria-labelledby="headingThree"
                           >
                             <div className="panel-body">
-                              <p><b>Clean Fee</b> <span className='float-end'>$75.00</span> </p>
-
+                              {invoiceInfo.hostServices.map(x=>{
+                                return <p>
+                                <b>{x.label}</b>{' '}
+                                <span className="float-end">${x.value}</span>{' '}
+                              </p>
+                              }) }
                             </div>
                           </div>
                         </div>
-                        <span>$75.00</span>
+                        <span>${invoiceInfo.hostServicesTotal}</span>
                       </li>
 
-                      <li className="list-group-item d-flex justify-content-between">
-
-
+                      {/* <li className="list-group-item d-flex justify-content-between">
                         <div className="panel panel-default col-md-5">
-                          <div className="panel-heading" role="tab" id="headingFour">
+                          <div
+                            className="panel-heading"
+                            role="tab"
+                            id="headingFour"
+                          >
                             <h6 className="panel-title">
                               <a
                                 className="collapsed"
@@ -720,19 +856,32 @@ const SingleDetailRV = () => {
                             aria-labelledby="headingFour"
                           >
                             <div className="panel-body">
-                              <p><b>Insurance</b> <span className='float-end'>$210.00</span> </p>
-                              <p><b>Roadside Assistance</b> <span className='float-end'>$98.10</span> </p>
-                              <p><b>Processing Fee</b> <span className='float-end'>$98.10</span> </p>
+                              <p>
+                                <b>Insurance</b>{' '}
+                                <span className="float-end">$210.00</span>{' '}
+                              </p>
+                              <p>
+                                <b>Roadside Assistance</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p>
+                              <p>
+                                <b>Processing Fee</b>{' '}
+                                <span className="float-end">$98.10</span>{' '}
+                              </p>
                             </div>
                           </div>
                         </div>
                         <span>$325.84</span>
-                      </li>
-
+                      </li> */}
                     </div>
-                    <li className="list-group-item d-flex justify-content-between"><b>Sales Tax</b><span>Included</span></li>
-                    <li className="list-group-item d-flex justify-content-between"><b>Total</b><span>$1,087.54</span></li>
-
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Sales Tax</b>
+                      <span>Included</span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Total</b>
+                      <span>${invoiceInfo.reservationTotal+invoiceInfo.hostServicesTotal+(invoiceInfo.reservationTotal+invoiceInfo.hostServicesTotal)*0.13}</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -776,10 +925,21 @@ const SingleDetailRV = () => {
                     <li className="list-group-item d-flex justify-content-between">
                       <span>
                         Mileage <br />
-                        <em>({RV.Pricing.mileage && RV.Pricing.mileage.max_free_miles_per_night || 0} included a day)</em>
+                        <em>
+                          (
+                          {(RV.Pricing.mileage &&
+                            RV.Pricing.mileage.max_free_miles_per_night) ||
+                            0}{' '}
+                          included a day)
+                        </em>
                       </span>
                       <span className="text-end">
-                        <b>${RV.Pricing.mileage && RV.Pricing.mileage.per_extra_miles_charge || 0}</b>
+                        <b>
+                          $
+                          {(RV.Pricing.mileage &&
+                            RV.Pricing.mileage.per_extra_miles_charge) ||
+                            0}
+                        </b>
                         <br />
                         <em>per extra mile</em>{' '}
                       </span>
@@ -796,32 +956,37 @@ const SingleDetailRV = () => {
                   </ul>
                 </div>
               </div>
-              {!token && <div class="alert alert-warning" role="alert">
-                To make an inquiry for this listing, please log-in or sign-up.
-                Once logged-in, you'll be brought back here to complete your
-                inquiry.
-                <div className="d-flex justify-content-center mt-3">
-                  <div className="nav-item">
-                    <Link to="/login" className="nav-link log" href="#">
-                      Login
-                    </Link>
-                  </div>
-                  <div className="nav-item">
-                    <Link to="/signup" className="nav-link reg" href="#">
-                      Sign up
-                    </Link>
+              {!token && (
+                <div class="alert alert-warning" role="alert">
+                  To make an inquiry for this listing, please log-in or sign-up.
+                  Once logged-in, you'll be brought back here to complete your
+                  inquiry.
+                  <div className="d-flex justify-content-center mt-3">
+                    <div className="nav-item">
+                      <Link to="/login" className="nav-link log" href="#">
+                        Login
+                      </Link>
+                    </div>
+                    <div className="nav-item">
+                      <Link to="/signup" className="nav-link reg" href="#">
+                        Sign up
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>}
+              )}
 
-              {token && <button
-                className="btn btn-primary login-wrapper-btn"
-                type="submit"
-                onClick={bookNow}
-              >
-                {loading && <i class="fa fa-spinner fa-spin"></i>}
-                Book now
-              </button>}
+              {token && (
+                <button
+                  className="btn btn-primary login-wrapper-btn"
+                  type="submit"
+                  onClick={bookNow}
+                >
+                  {loading && <i class="fa fa-spinner fa-spin"></i>}
+                  Book now
+                </button>
+              )}
+              <ToastContainer />
             </div>
           </div>
           <div className="mb-3 mt-2">
