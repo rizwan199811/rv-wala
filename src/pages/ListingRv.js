@@ -2,17 +2,17 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
-import { useNavigate,useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import MultiRangeSlider from '../components/MultiRangeSlider'
 import { PrettoSlider } from '../components/SimpleSlider'
 
 // import InputRange from 'react-input-range'
 // import 'react-input-range/lib/css/index.css'
 const ListingRv = () => {
-  const [searchParams, setSearchParams] =useSearchParams();
-  console.log({searchParams:searchParams.get('rvClass')})
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log({ searchParams: searchParams.get('rvClass') })
 
-  const itemsPerPage = 12,minDistance = 0;
+  const itemsPerPage = 12, minDistance = 0;
   let initialShow = {
     price: false,
     distance: false,
@@ -24,7 +24,7 @@ const ListingRv = () => {
   const [loading, setLoading] = useState(false)
   const [show, toggleShow] = useState(initialShow)
   const [value, setValue] = useState([0, 1000]);
-  const [searchCriteria,setSearch] =useState({});
+  const [searchCriteria, setSearch] = useState({});
 
   const history = useNavigate()
   useEffect(() => {
@@ -34,15 +34,15 @@ const ListingRv = () => {
   }, [])
   const fetchRVs = async (currentPage = 1) => {
     try {
-      let queryParams={};
-      const rvClass=searchParams.get('rvClass') || '';
-      queryParams = rvClass ? {class:rvClass} :queryParams;
-      console.log({queryParams})
+      let queryParams = {};
+      const rvClass = searchParams.get('rvClass') || '';
+      queryParams = rvClass ? { class: rvClass } : queryParams;
+      console.log({ queryParams })
       setLoading(true)
       let body = {
         page: currentPage,
         limit: itemsPerPage,
-        searchCriteria:{
+        searchCriteria: {
           ...searchCriteria,
           ...queryParams
         }
@@ -58,7 +58,7 @@ const ListingRv = () => {
       setPageCount(totalPages)
       setRVs(docs)
       setLoading(false)
-    } catch (e) {}
+    } catch (e) { }
   }
   const handlePageClick = async (event) => {
     console.log({ event })
@@ -80,28 +80,28 @@ const ListingRv = () => {
       setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
       setSearch({
         ...searchCriteria,
-        price:{
-          min:Math.min(newValue[0], value[1] - minDistance),
-          max:value[1]
+        price: {
+          min: Math.min(newValue[0], value[1] - minDistance),
+          max: value[1]
         }
       })
     } else {
       setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
       setSearch({
         ...searchCriteria,
-        price:{
-          min:value[0],
-          max:Math.max(newValue[1], value[0] + minDistance)
+        price: {
+          min: value[0],
+          max: Math.max(newValue[1], value[0] + minDistance)
         }
       })
     }
-  
+
   };
-  const valueLabelFormat=(value)=> {
-    const unit ='mi';
+  const valueLabelFormat = (value) => {
+    const unit = 'mi';
     return `${value}${unit}`;
   }
-  const search=async()=> {
+  const search = async () => {
     await fetchRVs()
   }
   return (
@@ -151,15 +151,9 @@ const ListingRv = () => {
               </button>
               <div className="price-div">
                 {show.price && (
-                 <MultiRangeSlider handleChange={handleChange} value={value}/>
+                  <MultiRangeSlider handleChange={handleChange} value={value} />
                 )}
               </div>
-              {/* <button className="filter-btns">Price</button>
-              <div className="price-div active">
-            
-                    <MultiRangeSlider/>
-              
-              </div> */}
             </div>
           </div>
           <div className="col-md-3">
@@ -171,14 +165,21 @@ const ListingRv = () => {
                 Distance
               </button>
               <div className="price-div">
-                {show.distance && <PrettoSlider 
-                      valueLabelDisplay="auto"
-                      aria-label="pretto slider"
-                      valueLabelFormat={valueLabelFormat}
-                      defaultValue={20}
-                      min={0}
-                      max={300}
-                      />}
+                
+                {show.distance && 
+                <div className='p-5'>
+                <PrettoSlider
+                  valueLabelDisplay="auto"
+                  aria-label="pretto slider"
+                  valueLabelFormat={valueLabelFormat}
+                  defaultValue={20}
+                  min={0}
+                  max={300}
+                />
+                 <button className='login-wrapper-btn'>Apply</button>
+                </div>
+                }
+                
               </div>
             </div>
           </div>
@@ -267,9 +268,20 @@ const ListingRv = () => {
           )}
           {RVs.length == 0 && !loading && (
             <>
-              <p>No data found</p>
+               <div className="empty-state">
+            <div className="empty-state__content">
+              <div className="empty-state__icon">
+                <img src='https://img.freepik.com/free-vector/tiny-people-examining-operating-system-error-warning-web-page-isolated-flat-illustration_74855-11104.jpg?w=740&t=st=1664659798~exp=1664660398~hmac=b7b38aad83de2c4af882bdb4e1fbf4bd4645a6868f34d66a6b9345db6eb1f529' />
+              </div>
+              <div className="empty-state__message">No RV Found.</div>
+
+            </div>
+          </div>
             </>
           )}
+
+
+
           {/* <div className="col-sm-6 col-12 col-md-4 col-xxl-3 mb-2">
             <div className="product-card">
               <div className="badge">$109/night</div>

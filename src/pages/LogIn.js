@@ -13,6 +13,7 @@ import toastOptions from "../config/toast";
 import { setProfileImage } from '../app/slice/ProfileSlice'
 
 const LogIn = () => {
+  const [passwordShown, setPasswordShown] = useState(false);
   let history = useNavigate()
   const dispatch = useDispatch()
   const formik = useFormik({
@@ -71,6 +72,11 @@ const LogIn = () => {
         );
     }
   }
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
   return (
     <>
       <div
@@ -118,7 +124,7 @@ const LogIn = () => {
                   )}
                 </small>
               </div>
-              <div className="form-group mt-3">
+              <div className="form-group mt-3 position-relative">
                 <code
                   htmlFor="exampleInputPassword1"
                   style={{
@@ -133,13 +139,14 @@ const LogIn = () => {
                   className="form-control"
                   id="exampleInputPassword1"
                   placeholder="Password"
-                  type="password"
+                  type={passwordShown ? "text" : "password"}
                   name="password"
                   onChange={(e) => {
                     formik.handleChange(e)
                   }}
                   onBlur={handleBlur}
                 />
+              {passwordShown? <i class="fa-solid fa-eye eye-pass" onClick={togglePassword}></i>:<i class="fa-solid fa-eye-slash eye-pass"  onClick={togglePassword}></i>} 
                 <small className="form-text text-muted" id="passwordHelp">
                   {errors.password && touched.password ? (
                     <p className="text-danger">{errors.password} </p>
@@ -152,7 +159,7 @@ const LogIn = () => {
                 <div className="col-md-6">
                   <div className="form-group form-check">
                     <input
-                      className="form-check-input"
+                      className="form-check-input p-0"
                       id="exampleCheck1"
                       type="checkbox"
                     />

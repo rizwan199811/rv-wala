@@ -11,7 +11,7 @@ export default function MultiRangeSlider({handleChange,value}) {
 
 
   return (
-    <Box sx={{ width: 300 }}>
+    <Box >
        <div className="multirange-wrap">
         <div class="wrapper">
           <div class="values">
@@ -29,8 +29,10 @@ export default function MultiRangeSlider({handleChange,value}) {
         disableSwap
       />
     
+      <button className='login-wrapper-btn'>Apply</button>
       </div>
       </div>
+
     </Box>
   );
 }

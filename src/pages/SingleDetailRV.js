@@ -47,7 +47,7 @@ const SingleDetailRV = () => {
       console.log({ images })
       setImages(images)
       setLoading(false)
-    } catch (e) {}
+    } catch (e) { }
   }
 
   const settings = {
@@ -67,7 +67,7 @@ const SingleDetailRV = () => {
             src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
             background="transparent"
             speed="1"
-            style={{ width: '300px', height: '300px' , margin:"auto"}}
+            style={{ width: '300px', height: '300px', margin: "auto" }}
             loop
             autoplay
           ></lottie-player>
@@ -76,7 +76,7 @@ const SingleDetailRV = () => {
     )
   }
 
-  const bookNow = async()=>{
+  const bookNow = async () => {
     history('/booking-details', { replace: true })
   }
 
@@ -255,7 +255,7 @@ const SingleDetailRV = () => {
                                   RV.ListInfo.cancel_policy
                                     .charAt(0)
                                     .toUpperCase() +
-                                    RV.ListInfo.cancel_policy.slice(1)}
+                                  RV.ListInfo.cancel_policy.slice(1)}
                               </h6>
                               <p>More Details </p>
                             </div>
@@ -612,12 +612,125 @@ const SingleDetailRV = () => {
                 </div>
               </div>
               <div className="my-3">
-                <div className="card" style={{ width: '100%' }}>
+                <div className="card  invoice-accor" style={{ width: '100%' }}>
                   <div className="card-header">Invoice</div>
                   <ul className="list-group list-group-flush">
-                    <li className="list-group-item">An item</li>
-                    <li className="list-group-item">A second item</li>
-                    <li className="list-group-item">A third item</li>
+                    <div
+                      className="panel-group"
+                      id="accordion"
+                      role="tablist"
+                      aria-multiselectable="true"
+                    >
+                      <li className="list-group-item d-flex justify-content-between">
+
+
+                        <div className="panel panel-default col-md-5">
+                          <div className="panel-heading" role="tab" id="headingTwo">
+                            <h6 className="panel-title">
+                              <a
+                                className="collapsed"
+                                role="button"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseTwo"
+                                aria-expanded="false"
+                                aria-controls="collapseTwo"
+                              >
+                                Reservation
+                              </a>
+                            </h6>
+                          </div>
+                          <div
+                            id="collapseTwo"
+                            className="panel-collapse collapse"
+                            role="tabpanel"
+                            aria-labelledby="headingTwo"
+                          >
+                            <div className="panel-body">
+                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                              <p><b>2022-10-31</b> <span className='float-end'>$98.10</span> </p>
+                            </div>
+                          </div>
+                        </div>
+                        <span>$686.70</span>
+                      </li>
+
+                      <li className="list-group-item d-flex justify-content-between">
+
+
+                        <div className="panel panel-default col-md-5">
+                          <div className="panel-heading" role="tab" id="headingThree">
+                            <h6 className="panel-title">
+                              <a
+                                className="collapsed"
+                                role="button"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseThree"
+                                aria-expanded="false"
+                                aria-controls="collapseThree"
+                              >
+                                Host Services
+                              </a>
+                            </h6>
+                          </div>
+                          <div
+                            id="collapseThree"
+                            className="panel-collapse collapse"
+                            role="tabpanel"
+                            aria-labelledby="headingThree"
+                          >
+                            <div className="panel-body">
+                              <p><b>Clean Fee</b> <span className='float-end'>$75.00</span> </p>
+
+                            </div>
+                          </div>
+                        </div>
+                        <span>$75.00</span>
+                      </li>
+
+                      <li className="list-group-item d-flex justify-content-between">
+
+
+                        <div className="panel panel-default col-md-5">
+                          <div className="panel-heading" role="tab" id="headingFour">
+                            <h6 className="panel-title">
+                              <a
+                                className="collapsed"
+                                role="button"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseFour"
+                                aria-expanded="false"
+                                aria-controls="collapseFour"
+                              >
+                                RVnGO Services
+                              </a>
+                            </h6>
+                          </div>
+                          <div
+                            id="collapseFour"
+                            className="panel-collapse collapse"
+                            role="tabpanel"
+                            aria-labelledby="headingFour"
+                          >
+                            <div className="panel-body">
+                              <p><b>Insurance</b> <span className='float-end'>$210.00</span> </p>
+                              <p><b>Roadside Assistance</b> <span className='float-end'>$98.10</span> </p>
+                              <p><b>Processing Fee</b> <span className='float-end'>$98.10</span> </p>
+                            </div>
+                          </div>
+                        </div>
+                        <span>$325.84</span>
+                      </li>
+
+                    </div>
+                    <li className="list-group-item d-flex justify-content-between"><b>Sales Tax</b><span>Included</span></li>
+                    <li className="list-group-item d-flex justify-content-between"><b>Total</b><span>$1,087.54</span></li>
+
                   </ul>
                 </div>
               </div>
@@ -698,13 +811,13 @@ const SingleDetailRV = () => {
                   </div>
                 </div>
               </div>}
-            
+
               {token && <button
                 className="btn btn-primary login-wrapper-btn"
                 type="submit"
                 onClick={bookNow}
               >
-               {loading && <i class="fa fa-spinner fa-spin"></i>}
+                {loading && <i class="fa fa-spinner fa-spin"></i>}
                 Book now
               </button>}
             </div>
