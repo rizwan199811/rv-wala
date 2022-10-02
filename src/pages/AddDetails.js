@@ -1,6 +1,17 @@
+import moment from 'moment';
 import React from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AddDetails = () => {
+    let history = useNavigate();
+    const proceedToCheckOut = async()=>{
+        history('/checkout', { replace: true }) 
+      }
+      const booking_details = useSelector((state) => state.booking.details);
+      const dateChange=(e)=>{
+  console.log({value:e.target.value})
+      }
     return (
         <div className='container'>
             <div className='row my-4'>
@@ -9,7 +20,7 @@ const AddDetails = () => {
                     <div
                         className="product-card m-0"
                     >
-                        <div className="badge">$100/night</div>
+                        <div className="badge">${booking_details.Pricing.nightly}/night</div>
                         <div className="product-tumb">
                             <img src="https://rvwala.com/wp-content/uploads/2022/07/f7ff8810-d21b-4fc3-9310-2c619c8e02a0-800x600.jpg" alt="" />
                         </div>
@@ -17,21 +28,21 @@ const AddDetails = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <span className="product-catagory">Type</span>
-                                    <h6>abcd</h6>
+                                    <h6>{booking_details.RVInfo.type}</h6>
                                 </div>
                                 <div>
                                     <span className="product-catagory">Year</span>
-                                    <h6>200</h6>
+                                    <h6>{booking_details.RVInfo.year}</h6>
                                 </div>
                             </div>
                             <span className="product-catagory">Make</span>
-                            <h6>abbbb</h6>
+                            <h6>{booking_details.RVInfo.make}</h6>
 
                             <div className="product-bottom-details">
                                 <div className="product-price">
                                     <h6>Model</h6>
                                     {/* model */}
-                                    <p>sssssss</p>
+                                    <p>{booking_details.RVInfo.model}</p>
                                 </div>
                             </div>
                         </div>
@@ -67,9 +78,10 @@ const AddDetails = () => {
                                 <input
                                     type="date"
                                     required=""
-                                    min={new Date().toISOString().split('T')[0]}
+                                    min={moment().format('YYYY-MM-DD')}
                                     placeholder="Depart Date"
                                     className="form-control"
+                                    onChange={dateChange}
                                 />
                                 <div className="label" id="depart" />
                             </div>
@@ -77,9 +89,10 @@ const AddDetails = () => {
                                 <input
                                     type="date"
                                     required=""
-                                    min={new Date().toISOString().split('T')[0]}
+                                    min={moment().format('YYYY-MM-DD')}
                                     placeholder="Return Date"
                                     className="form-control"
+                                    onChange={dateChange}
                                 />
                                 <div className="label" id="return" />
                             </div>
@@ -99,7 +112,7 @@ const AddDetails = () => {
                             I agree to the terms and conditions
                         </div>
                         <div className="form-group my-3">
-                            <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center p-3">
+                            <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center p-3" onClick={proceedToCheckOut}>
                                 Proceed to Payment
                             </div>
                         </div>

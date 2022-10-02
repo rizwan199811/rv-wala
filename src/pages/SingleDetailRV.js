@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { baseURL } from '../config/apiURL'
 import Slider from 'react-slick'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setBookingDetails } from '../app/slice/BookSlice'
 
 const SingleDetailRV = () => {
 
@@ -15,7 +16,7 @@ const SingleDetailRV = () => {
     fetchRV()
   }, [])
   const token = useSelector((state) => state.auth.token);
-
+  const dispatch=useDispatch()
   const [RV, setRV] = useState({})
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -76,8 +77,9 @@ const SingleDetailRV = () => {
     )
   }
 
-  const bookNow = async () => {
-    history('/booking-details', { replace: true })
+  const bookNow = async()=>{
+    dispatch(setBookingDetails(RV))
+    history('/booking-details', { replace: true }) 
   }
 
   return (
