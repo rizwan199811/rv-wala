@@ -233,14 +233,24 @@ const ListingRv = () => {
                           <span className="product-catagory">Type</span>
                           <h6>{x.RVInfo.type}</h6>
                         </div>
-                        <div>
-                          <span className="product-catagory">Year</span>
+                        <div className='year-ty'>
+                          <span className="product-catagory text-white">Year</span>
                           <h6>{x.RVInfo.year}</h6>
                         </div>
                       </div>
+                      <div className='d-flex justify-content-between align-items-end'>
+                      <div>
                       <span className="product-catagory">Make</span>
                       <h6>{x.RVInfo.make}</h6>
-
+                      </div>
+                      <div>
+                      <i class="fa-solid fa-bed mx-2"></i>{x.RVInfo.sleep}
+                      <i class="fa-solid fa-gauge mx-2"></i>{x.RVInfo.mileage}
+                      
+                      {/* <span className="product-catagory">Make</span> */}
+                      {/* <h6>{x.RVInfo.make}</h6> */}
+                      </div>
+                      </div>
                       <div className="product-bottom-details">
                         <div className="product-price">
                           <h6>Model</h6>

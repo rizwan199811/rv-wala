@@ -94,7 +94,7 @@ const SignUp = () => {
                   {/* <u>izylearning</u> */}
                 </h5>
               </div>
-              <div className="row px-3 justify-content-center mt-4 mb-5">
+              <div className="row px-3 signup-slider justify-content-center mt-4 mb-5">
            
               <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">

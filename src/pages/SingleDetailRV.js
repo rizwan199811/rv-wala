@@ -254,9 +254,9 @@ const SingleDetailRV = () => {
                   </ol>
                 </div>
               </div>
-              <div className="col-12 rv_details_tabs mb-3">
+              <div className="col-12 rv_details_tabs mt-5 mb-3">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item col-4" role="presentation">
                     <button
                       className="nav-link active"
                       id="home-tab"
@@ -270,7 +270,7 @@ const SingleDetailRV = () => {
                       Pricing
                     </button>
                   </li>
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item col-4" role="presentation">
                     <button
                       className="nav-link"
                       id="profile-tab"
@@ -284,7 +284,7 @@ const SingleDetailRV = () => {
                       Listing
                     </button>
                   </li>
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item col-4" role="presentation">
                     <button
                       className="nav-link"
                       id="contact-tab"
@@ -324,8 +324,8 @@ const SingleDetailRV = () => {
                           <sup>/month</sup>
                         </h5>
                       </div>
-                      <div className="row">
-                        <div className="col-md-6">
+                      <div className="row my-4">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Deposits</h4>
                             <div>
@@ -337,7 +337,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Cancellation Policy</h4>
                             <div>
@@ -353,7 +353,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Fees</h4>
                             <div>
@@ -363,7 +363,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
                         {RV.RVInfo && RV.Pricing.mileage && (
-                          <div className="col-md-6">
+                          <div className="col-md-6 mb-3">
                             <div>
                               <h4>Mileage</h4>
                               <div>
@@ -391,7 +391,7 @@ const SingleDetailRV = () => {
                           </div>
                         )}
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Electric Generator</h4>
                             <div>
@@ -413,7 +413,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Pets</h4>
                             <div>
@@ -432,7 +432,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Delivery</h4>
                             <div>
@@ -445,7 +445,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>One-Way Rentals</h4>
                             <div>
@@ -460,7 +460,7 @@ const SingleDetailRV = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Other Prices</h4>
                             <div>
@@ -480,60 +480,53 @@ const SingleDetailRV = () => {
                   >
                     {RV.RVInfo && (
                       <div>
-                        <div>
                           <h4>Vehicle</h4>
-                          <div className="d-flex justify-content-between pt-4">
-                            <div>
+                          <div className="row py-3">
+                            <div className='col-sm-6 mb-2'>
                               <h6>MAKE</h6>
                               <p>{RV.RVInfo.make}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>MODEL</h6>
                               <p>{RV.RVInfo.model}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>YEAR</h6>
                               <p>{RV.RVInfo.year}</p>
                             </div>
-                          </div>
 
-                          <div className="d-flex justify-content-between pt-4">
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>TYPE</h6>
                               <p>{RV.RVInfo.type}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>LENGTH</h6>
                               <p>{RV.RVInfo.length}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>WEIGHT</h6>
                               <p>{RV.RVInfo.weight}</p>
                             </div>
-                          </div>
                         </div>
 
-                        <div>
                           <h4>Accommodations</h4>
-                          <div className="d-flex justify-content-between pt-4">
-                            <div>
+                          <div className="row py-3">
+                            <div className='col-sm-6 mb-2'>
                               <h6>BEDS</h6>
-                              <p>{RV.RVInfo.bed}</p>
+                              <p>{RV.RVInfo.sleep}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>SEATBELTS</h6>
                               <p>{RV.RVInfo.seatbelts}</p>
                             </div>
-                            <div>
+                            <div className='col-sm-6 mb-2'>
                               <h6>SLIDE-OUTS</h6>
                               <p>{RV.RVInfo.slides}</p>
                             </div>
                           </div>
-                        </div>
 
-                        <div>
                           <h4>Full Description</h4>
-                          <div className="d-flex justify-content-between pt-4">
+                          <div className="row py-3">
                             <div>
                               <p>
                                 {(RV.ListInfo && RV.ListInfo.description) ||
@@ -541,7 +534,6 @@ const SingleDetailRV = () => {
                               </p>
                             </div>
                           </div>
-                        </div>
                       </div>
                     )}
                   </div>
@@ -560,7 +552,7 @@ const SingleDetailRV = () => {
                             RV.featuresArray.map((x) => {
                               if (x.type == 'inside') {
                                 return (
-                                  <div className="col-md-3">
+                                  <div className="col-md-4 mt-3">
                                     <input
                                       type="checkbox"
                                       name={x.value}
@@ -580,7 +572,7 @@ const SingleDetailRV = () => {
                             RV.featuresArray.map((x) => {
                               if (x.type == 'outside') {
                                 return (
-                                  <div className="col-md-3">
+                                  <div className="col-md-4 mt-3">
                                     <input
                                       type="checkbox"
                                       name={x.value}
@@ -600,7 +592,7 @@ const SingleDetailRV = () => {
                             RV.featuresArray.map((x) => {
                               if (x.type == 'others') {
                                 return (
-                                  <div className="col-md-3">
+                                  <div className="col-md-4 mt-3">
                                     <input
                                       type="checkbox"
                                       name={x.value}
@@ -623,6 +615,7 @@ const SingleDetailRV = () => {
 
               <div className="single-detail-user-card">
                 <div className="card">
+                  <p className='your-host-text'>Your<br/> Host</p>
                   <div className="img">
                     <img
                       src={
@@ -630,27 +623,32 @@ const SingleDetailRV = () => {
                         'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
                       }
                     />
+                      <h2>{RV.user && RV.user.fullname}</h2>
                   </div>
                   <div className="infos">
-                    <div className="name">
+                    {/* <div className="name">
                       <h2>{RV.user && RV.user.fullname}</h2>
-                    </div>
-                    <div>
-                      <div className="d-flex justify-content-between">
+                    </div> */}
+                    <div className='row'>
+                        <div className='col-sm-6 col-12'>
                         <div className="name">
                           <h2>Member Since</h2>
                           <h4>{moment(RV.user.createdAt).year()}</h4>
                         </div>
+                        </div>
+                        <div className='col-sm-6 col-12'>
                         <div className="name">
                           <h2>Responds to Inquiries</h2>
                           <h4>More often than not</h4>
                         </div>
-                      </div>
-                      <div className="d-flex justify-content-between">
+                        </div>
+                      <div className='col-sm-6 col-12'>
                         <div className="name">
                           <h2># Listings</h2>
                           <h4>{RV.listingCount}</h4>
                         </div>
+                        </div>
+                        <div className='col-sm-6 col-12'>
                         <div className="name">
                           <h2>Verified Member</h2>
                           <img
@@ -658,7 +656,7 @@ const SingleDetailRV = () => {
                             style={{ width: 'auto' }}
                           />
                         </div>
-                      </div>
+                        </div>
                       {/* <div className="name">
                             <h2>Host Rules</h2>
                             <a>Click to View</a>
@@ -971,6 +969,7 @@ const SingleDetailRV = () => {
                       Sign up
                     </Link>
                   </div>
+                </div>
                 </div>
               }
 
