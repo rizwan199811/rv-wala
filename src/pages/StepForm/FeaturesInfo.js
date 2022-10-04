@@ -63,21 +63,21 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
   return (
     <>
       <ToastContainer />
-      <div class="form-card">
-        <div class="row">
-          <div class="col-7">
-            <h2 class="fs-title">Features</h2>
+      <div className="form-card">
+        <div className="row">
+          <div className="col-7">
+            <h2 className="fs-title">Features</h2>
           </div>
-          <div class="col-5">
-            <h2 class="steps">Step 7 - 8</h2>
+          <div className="col-5">
+            <h2 className="steps">Step 7 - 8</h2>
           </div>
         </div>
 
-        <div class="row">
+        <div className="row">
           <div>
             <h4>Inside</h4>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="cd"
@@ -92,9 +92,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'CD')
               }}
             />
-            <label class="fieldlabels">CD</label>
+            <label className="fieldlabels">CD</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="fm_radio"
@@ -109,9 +109,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'FM Radio')
               }}
             />
-            <label class="fieldlabels"> FM Radio</label>
+            <label className="fieldlabels"> FM Radio</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="factory_cab_air"
@@ -126,9 +126,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Factory Cab Air')
               }}
             />
-            <label class="fieldlabels">Factory Cab Air</label>
+            <label className="fieldlabels">Factory Cab Air</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="rear_living"
@@ -143,9 +143,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Rear Living')
               }}
             />
-            <label class="fieldlabels">Rear Living</label>
+            <label className="fieldlabels">Rear Living</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="roof_air"
@@ -160,9 +160,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Roof Air')
               }}
             />
-            <label class="fieldlabels">Roof Air</label>
+            <label className="fieldlabels">Roof Air</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="refrigerator"
@@ -177,9 +177,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Refrigerator')
               }}
             />
-            <label class="fieldlabels">Refrigerator</label>
+            <label className="fieldlabels">Refrigerator</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="front_living"
@@ -194,9 +194,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Front Living')
               }}
             />
-            <label class="fieldlabels">Front Living</label>
+            <label className="fieldlabels">Front Living</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="stove"
@@ -211,9 +211,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Stove')
               }}
             />
-            <label class="fieldlabels">Stove</label>
+            <label className="fieldlabels">Stove</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="tv_dvd"
@@ -228,10 +228,10 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">TV/DVD</label>
+            <label className="fieldlabels">TV/DVD</label>
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="front_kitchen"
@@ -246,9 +246,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Front Kitchen')
               }}
             />
-            <label class="fieldlabels">Front Kitchen</label>
+            <label className="fieldlabels">Front Kitchen</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="shower"
@@ -263,9 +263,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Shower</label>
+            <label className="fieldlabels">Shower</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="kitchen_sink"
@@ -280,9 +280,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Kitchen Sink')
               }}
             />
-            <label class="fieldlabels">Kitchen Sink</label>
+            <label className="fieldlabels">Kitchen Sink</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="wash_basin"
@@ -297,9 +297,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Wash Basin</label>
+            <label className="fieldlabels">Wash Basin</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="toilet"
@@ -314,10 +314,10 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Toilet</label>
+            <label className="fieldlabels">Toilet</label>
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="kitchen_table"
@@ -332,9 +332,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'Kitchen Table')
               }}
             />
-            <label class="fieldlabels">Kitchen Table</label>
+            <label className="fieldlabels">Kitchen Table</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="gps"
@@ -349,9 +349,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 generateData(e, 'inside', 'GPS Navigation')
               }}
             />
-            <label class="fieldlabels">GPS Navigation</label>
+            <label className="fieldlabels">GPS Navigation</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="dinette"
@@ -366,9 +366,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Kitchen Dinette</label>
+            <label className="fieldlabels">Kitchen Dinette</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="radio"
@@ -383,9 +383,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Satellite Radio</label>
+            <label className="fieldlabels">Satellite Radio</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="tv_satellite"
@@ -400,9 +400,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">Satellite TV</label>
+            <label className="fieldlabels">Satellite TV</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="wifi"
@@ -417,15 +417,15 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.inside')
               }}
             />
-            <label class="fieldlabels">WiFi</label>
+            <label className="fieldlabels">WiFi</label>
           </div>
         </div>
 
-        <div class="row mt-3">
+        <div className="row mt-3">
           <div>
             <h4>Outside</h4>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="bbq_grill"
@@ -440,9 +440,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">BBQ/Grill</label>
+            <label className="fieldlabels">BBQ/Grill</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="kitchen"
@@ -457,9 +457,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside Kitchen</label>
+            <label className="fieldlabels">Outside Kitchen</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="sink"
@@ -474,9 +474,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside Sink</label>
+            <label className="fieldlabels">Outside Sink</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="tv"
@@ -491,9 +491,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside TV</label>
+            <label className="fieldlabels">Outside TV</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="shower"
@@ -508,9 +508,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside Shower</label>
+            <label className="fieldlabels">Outside Shower</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="balcony"
@@ -525,9 +525,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Balcony</label>
+            <label className="fieldlabels">Balcony</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="stereo"
@@ -542,9 +542,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside Stereo</label>
+            <label className="fieldlabels">Outside Stereo</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="refrigerator_outside"
@@ -559,15 +559,15 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.outside')
               }}
             />
-            <label class="fieldlabels">Outside Refrigerator</label>
+            <label className="fieldlabels">Outside Refrigerator</label>
           </div>
         </div>
 
-        <div class="row mt-3">
+        <div className="row mt-3">
           <div>
             <h4>Others</h4>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="tank"
@@ -582,9 +582,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Propane Tank</label>
+            <label className="fieldlabels">Propane Tank</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="bike_rack"
@@ -599,9 +599,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Bike Rack</label>
+            <label className="fieldlabels">Bike Rack</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="level_system"
@@ -616,9 +616,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Leveling System</label>
+            <label className="fieldlabels">Leveling System</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="awning"
@@ -633,9 +633,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Awning</label>
+            <label className="fieldlabels">Awning</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="arctic"
@@ -650,9 +650,9 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Arctic Package</label>
+            <label className="fieldlabels">Arctic Package</label>
           </div>
-          <div class="col-md-3 mb-3">
+          <div className="col-md-3 mb-3">
             <input
               type="checkbox"
               name="trailer"
@@ -667,15 +667,15 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features.others')
               }}
             />
-            <label class="fieldlabels">Trailer</label>
+            <label className="fieldlabels">Trailer</label>
           </div>
         </div>
 
-        <div class="row mt-3">
+        <div className="row mt-3">
           <div>
             <h4>Finalize And List</h4>
           </div>
-          <div class="col-md-12 mb-3">
+          <div className="col-md-12 mb-3">
             <input
               type="checkbox"
               name="finalize"
@@ -684,12 +684,12 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
                 handleCheck(e, 'Features')
               }}
             />
-            <label class="fieldlabels">
+            <label className="fieldlabels">
               Activate Listing{' '}
               <em> (Your listing will not appear until this is checked.)</em>
             </label>
           </div>
-          <div class="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert">
             Please note that in addition to making this listing "Active", you
             must also complete your Host Account profile. This is necessary so
             we may process payments made by the guest to you. Once you "Submit"
@@ -699,18 +699,18 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
         </div>
       </div>
       
-      {loading && <i class="fa fa-spinner fa-spin"></i>}
+      {loading && <i className="fa fa-spinner fa-spin"></i>}
       <input
         type="button"
         name="next"
-        class="next action-button"
+        className="next action-button"
         value="Submit"
         onClick={handleSubmit}
       />
       <input
         type="button"
         name="previous"
-        class="previous action-button-previous"
+        className="previous action-button-previous"
         value="Previous"
         onClick={prevStep}
       />

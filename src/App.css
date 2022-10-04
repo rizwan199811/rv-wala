@@ -31,6 +31,7 @@ h1{
 ul {
   margin: 0px;
   padding: 0px !important;
+  margin-bottom: 0 !important;
 }
 .footer-section {
   background: #f9f8f8;
@@ -117,14 +118,14 @@ ul {
   color: #000;
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 40px;
+  margin-bottom: 25px !important;
   position: relative;
 }
 .footer-widget-heading h3::before {
   content: "";
   position: absolute;
   left: 0px;
-  bottom: -3px;
+  bottom: -8px;
   height: 2px;
   width: 57px;
   background: #cb5644;
@@ -169,7 +170,7 @@ width: 50%; */
 }
 .copyright-area {
   background: #f9f8f8;
-  padding: 25px 0;
+  padding: 18px 0;
   border-top: 1px solid #cb5644;
 }
 .copyright-text p {
@@ -596,9 +597,12 @@ hr {
   height: 100%;
   background-color: #f1f1f1e6;
   transition: 1s;
-
   z-index: 1;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .loaction-card-wrap .from-left {
@@ -938,10 +942,15 @@ a {
   border-top-left-radius: 20px;
   background-color: #cb5644;
   height: 100%;
+  display: flex;
   color: #fff;
   padding-left: 13%;
   padding-right: 13%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 
 .logo {
   margin-top: 30px;
@@ -1118,7 +1127,7 @@ button:focus {
 }
 
 .social {
-  margin-top: 150px;
+  margin-top: 20px;
 }
 
 @media screen and (max-width: 991px) {
@@ -2299,6 +2308,61 @@ border: 1px solid black;
   margin: 0;
   font-size: 12px;
 }
+
+.invoice-accor .panel-body p{
+  font-size: 11px;
+}
+
+        
+        .panel-default>.panel-heading {
+          color: #333;
+          background-color: #fff;
+          border-color: #e4e5e7;
+          padding: 0;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        
+        .panel-default>.panel-heading a {
+          display: block;
+          /* padding: 10px 15px; */
+        }
+        
+        .panel-default>.panel-heading a:after {
+          content: "";
+          position: relative;
+          top: 1px;
+          display: inline-block;
+          font-family: 'Glyphicons Halflings';
+          font-style: normal;
+          font-weight: 400;
+          line-height: 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          float: right;
+          transition: transform .25s linear;
+          -webkit-transition: -webkit-transform .25s linear;
+        }
+        
+        .panel-default>.panel-heading a[aria-expanded="true"] {
+          background-color: #eee;
+        }
+        
+        .panel-default>.panel-heading a[aria-expanded="true"]:after {
+          content: "\2212";
+          -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
+        
+        .panel-default>.panel-heading a[aria-expanded="false"]:after {
+          content: "\002b";
+          -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+        }
+  
+
 /* =================Detail Listing RV ends ======================= */
 
 
@@ -2374,7 +2438,11 @@ width:100px;
 
   width:100%;
 }
-.thumnail-carousel .carousel-control-next-icon, .carousel-control-prev-icon {
+.thumnail-carousel .carousel-control-next-icon,.thumnail-carousel  .carousel-control-prev-icon {
+  background: rgba(0, 0, 0, 0.5);
+
+}
+.thumnail-carousel .carousel-control-next-icon,.thumnail-carousel  .carousel-control-next-icon {
   background: rgba(0, 0, 0, 0.5);
 
 }
@@ -2791,56 +2859,13 @@ color: #000 !important;
 
 
 
-.invoice-accor .panel-body p{
-  font-size: 11px;
-}
+/* ==============MEDIA QURIES STARTS========== */
 
-        
-        .panel-default>.panel-heading {
-          color: #333;
-          background-color: #fff;
-          border-color: #e4e5e7;
-          padding: 0;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-        
-        .panel-default>.panel-heading a {
-          display: block;
-          /* padding: 10px 15px; */
-        }
-        
-        .panel-default>.panel-heading a:after {
-          content: "";
-          position: relative;
-          top: 1px;
-          display: inline-block;
-          font-family: 'Glyphicons Halflings';
-          font-style: normal;
-          font-weight: 400;
-          line-height: 1;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          float: right;
-          transition: transform .25s linear;
-          -webkit-transition: -webkit-transform .25s linear;
-        }
-        
-        .panel-default>.panel-heading a[aria-expanded="true"] {
-          background-color: #eee;
-        }
-        
-        .panel-default>.panel-heading a[aria-expanded="true"]:after {
-          content: "\2212";
-          -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
-        }
-        
-        .panel-default>.panel-heading a[aria-expanded="false"]:after {
-          content: "\002b";
-          -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
-        }
-  
+        @media (max-width: 768px) {
+          .booking-form-wrapper{
+            max-width: 100%;
+          }
+        }        
+
+
+/* ==============MEDIA QURIES ENDS========== */

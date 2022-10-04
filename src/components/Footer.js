@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <footer className="footer-section">
         <div className="container">
-          <div className="footer-cta pt-5 pb-5">
+          <div className="footer-cta py-5">
             <div className="row">
               <div className="col-xl-4 col-md-4 mb-30">
                 <div className="single-cta">
@@ -36,7 +36,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="footer-content pt-5 pb-5">
+          <div className="footer-content py-4">
             <div className="row">
               <div className="col-xl-4 col-lg-4 mb-50">
                 <div className="footer-widget">
@@ -91,7 +91,7 @@ const Footer = () => {
         </div>
         <div className="copyright-area">
           <div className="container">
-            <div className="row">
+            <div className="row align-items-center">
               <div className="col-xl-6 col-lg-6 text-center text-lg-left">
                 <div className="copyright-text">
                   <p>Copyright ©  RV Wala | 2022, All Right Reserved</p>

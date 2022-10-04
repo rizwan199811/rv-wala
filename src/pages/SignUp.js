@@ -88,7 +88,7 @@ const SignUp = () => {
       <div className="card card0 border-0">
         <div className="row d-flex">
           <div className="col-lg-5">
-            <div className="card1 pb-5">
+            <div className="card1 ">
               <div className="row px-3">
                 <h5 className="logo">
                   {/* <u>izylearning</u> */}
@@ -283,7 +283,7 @@ const SignUp = () => {
                 <div className="col-md-6">
                   <button className="btn btn-blue text-center mb-1 py-2"
                   onClick={createAccount}>
-                    {loading && <i class="fa fa-spinner fa-spin"></i>}
+                    {loading && <i className="fa fa-spinner fa-spin"></i>}
                     Create Account
                   </button>
                 </div>

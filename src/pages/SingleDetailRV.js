@@ -255,10 +255,10 @@ const SingleDetailRV = () => {
                 </div>
               </div>
               <div className="col-12 rv_details_tabs mb-3">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item" role="presentation">
+                <ul className="nav nav-tabs" id="myTab" role="tablist">
+                  <li className="nav-item" role="presentation">
                     <button
-                      class="nav-link active"
+                      className="nav-link active"
                       id="home-tab"
                       data-bs-toggle="tab"
                       data-bs-target="#home"
@@ -270,9 +270,9 @@ const SingleDetailRV = () => {
                       Pricing
                     </button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation">
                     <button
-                      class="nav-link"
+                      className="nav-link"
                       id="profile-tab"
                       data-bs-toggle="tab"
                       data-bs-target="#profile"
@@ -284,9 +284,9 @@ const SingleDetailRV = () => {
                       Listing
                     </button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation">
                     <button
-                      class="nav-link"
+                      className="nav-link"
                       id="contact-tab"
                       data-bs-toggle="tab"
                       data-bs-target="#contact"
@@ -299,9 +299,9 @@ const SingleDetailRV = () => {
                     </button>
                   </li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
+                <div className="tab-content" id="myTabContent">
                   <div
-                    class="tab-pane fade show active"
+                    className="tab-pane fade show active"
                     id="home"
                     role="tabpanel"
                     aria-labelledby="home-tab"
@@ -473,7 +473,7 @@ const SingleDetailRV = () => {
                     </div>
                   </div>
                   <div
-                    class="tab-pane fade"
+                    className="tab-pane fade"
                     id="profile"
                     role="tabpanel"
                     aria-labelledby="profile-tab"
@@ -956,25 +956,23 @@ const SingleDetailRV = () => {
                   </ul>
                 </div>
               </div>
-              {!token && (
-                <div class="alert alert-warning" role="alert">
-                  To make an inquiry for this listing, please log-in or sign-up.
-                  Once logged-in, you'll be brought back here to complete your
-                  inquiry.
-                  <div className="d-flex justify-content-center mt-3">
-                    <div className="nav-item">
-                      <Link to="/login" className="nav-link log" href="#">
-                        Login
-                      </Link>
-                    </div>
-                    <div className="nav-item">
-                      <Link to="/signup" className="nav-link reg" href="#">
-                        Sign up
-                      </Link>
-                    </div>
+              {!token && <div className="alert alert-warning" role="alert">
+                To make an inquiry for this listing, please log-in or sign-up.
+                Once logged-in, you'll be brought back here to complete your
+                inquiry.
+                <div className="d-flex justify-content-center mt-3">
+                  <div className="nav-item">
+                    <Link to="/login" className="nav-link log" href="#">
+                      Login
+                    </Link>
+                  </div>
+                  <div className="nav-item">
+                    <Link to="/signup" className="nav-link reg" href="#">
+                      Sign up
+                    </Link>
                   </div>
                 </div>
-              )}
+              }
 
               {token && (
                 <button
@@ -992,7 +990,7 @@ const SingleDetailRV = () => {
           <div className="mb-3 mt-2">
             <h2 className="mb-3 border-bottom"> Nearby RVs</h2>
             <Slider {...settings}>
-              <div class="col-md-4 near-rv-card">
+              <div className="col-md-4 near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img

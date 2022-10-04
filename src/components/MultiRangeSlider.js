@@ -13,8 +13,8 @@ export default function MultiRangeSlider({handleChange,value,search}) {
   return (
     <Box >
        <div className="multirange-wrap">
-        <div class="wrapper">
-          <div class="values">
+        <div className="wrapper">
+          <div className="values">
             <span id="range1">${value[0]}</span>
             <span> - </span>
             <span id="range2">${value[1]}</span>

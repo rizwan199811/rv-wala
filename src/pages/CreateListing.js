@@ -68,10 +68,10 @@ export const CreateListing = () => {
   }
   return (
     <>
-      <div class="container my-3 listing-form-wrapper">
-        <div class="row justify-content-center">
-          <div class="col-11 col-sm-10 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
-            <div class="card p-2 pt-4 pb-0 mt-3 mb-3">
+      <div className="container my-3 listing-form-wrapper">
+        <div className="row justify-content-center">
+          <div className="col-11 col-sm-10 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
+            <div className="card p-2 pt-4 pb-0 mt-3 mb-3">
               <h2 id="heading">Create Your Listing</h2>
               <p>Fill all form field to go to next step</p>
               <form id="msform">
@@ -102,9 +102,9 @@ export const CreateListing = () => {
                   </li> */}
                   {/* <!-- <li id="confirm"><strong>Finish</strong></li> --> */}
                 </ul>
-                <div class="progress">
+                <div className="progress">
                   <div
-                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    className="progress-bar progress-bar-striped progress-bar-animated"
                     role="progressbar"
                     aria-valuemin="0"
                     style={{ width: `${progressWidth}%` }}
