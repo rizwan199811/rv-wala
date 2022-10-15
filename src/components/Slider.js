@@ -1,6 +1,7 @@
 import React from 'react'
-import Slider2 from '../images/slider2.jpeg'
-import Slider1 from '../images/slider1.jpg'
+import Slider2 from '../images/slider2.jpg';
+import Slider1 from '../images/slider1.jpg';
+import Slider3 from '../images/slider3.jpg';
 
 const Slider = () => {
   return (
@@ -51,7 +52,7 @@ const Slider = () => {
         </div>
         <div className="carousel-inner" role="listbox">
               <div className="carousel-item home-slider-img active">
-                <img src={Slider1} className="w-100"/>
+                <img src={Slider2} className="w-100"/>
                 <div className="carousel-caption">
                   <h2 className="animated bounceInRight" style={{animationDelay: '1s'}}>How to Rent an <span>RV</span></h2>
                   <h3 className="animated bounceInLeft" style={{animationDelay: '2s'}}>Plan an Epic, Socially Distant Road Trip</h3>
@@ -67,7 +68,7 @@ const Slider = () => {
                 </div>
               </div>
               <div className="carousel-item home-slider-img">
-                <img src={Slider1} className="w-100"/>
+                <img src={Slider3} className="w-100"/>
                 <div className="carousel-caption">
                   <h2 className="animated zoomIn" style={{animationDelay: '1s'}}>How to Rent an <span>RV</span></h2>
                   <h3 className="animated fadeInLeft" style={{animationDelay: '2s'}}>Plan an Epic, Socially Distant Road Trip</h3>

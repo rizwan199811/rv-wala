@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import login from '../images/loigin.jpg'
+import forgotPassword from '../images/forgot-password.jpg'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { baseURL } from '../config/apiURL'
@@ -7,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { setToken } from '../app/slice/AuthSlice'
 
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast,ToastContainer } from 'react-toastify';
 import toastOptions from "../config/toast";
 import { setProfileImage } from '../app/slice/ProfileSlice'
@@ -168,10 +169,12 @@ const LogIn = () => {
                     </small>
                   </div>
                 </div>
-                <div className="col-md-6 text-right">
+                <div className="col-md-6 text-end">
+                  <Link to="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <small className="form-check-label" htmlFor="exampleCheck1">
-                    Lost password
+                    Forgot Password?
                   </small>
+                  </Link>
                 </div>
               </div>
               <button
@@ -188,6 +191,35 @@ const LogIn = () => {
           <ToastContainer />
         </div>
       </div>
+
+      {/* ============= FORGOT MODAL =============== */}
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <div className='p-4'>
+        <div className='text-center'>
+        <img src={forgotPassword} className="w-50"/>
+        </div>
+        <p>Please enter your username or email address, you will receive a link to create a new password via email.</p>
+        <input type="email" class="form-control mt-3" placeholder='USERNAME OR EMAIL'/>
+              <button
+                className="btn btn-primary login-wrapper-btn"
+                type="submit"
+              >
+                Reset Password
+              </button>
+       </div>
+      </div>
+  
+    </div>
+  </div>
+</div>
+      {/* ============= FORGOT MODAL =============== */}
     </>
   )
 }

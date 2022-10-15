@@ -4,13 +4,25 @@ import Slider from "react-slick";
 import { Link, useNavigate } from "react-router-dom";
 const Home = (props) => {
   let history = useNavigate();
-  const settings = {
-    className: "center",
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 3,
-    speed: 500
+  var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    responsive: [
+      
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+
+    ]
   };
   return (
     <>
@@ -559,8 +571,35 @@ const Home = (props) => {
 
 <div className="container">
         <div className="row">
+        
           <h1 className='text-center py-5'>What Our Client Says</h1>
+          <Slider {...settings}>
+        <div className="col-lg-6">
+            <div id="testimonial-slider" className="owl-carousel">
+              <div className="testimonial">
+                <div className="pic">
+                  <img src="https://images.pexels.com/photos/8035299/pexels-photo-8035299.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" className="img-responsive" />
+                </div>
+                <h3 className="testimonial-info">
+                  Alex Jhon
+                </h3>
+                <p className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi facilisis.</p>
+              </div>
+            </div>
+          </div>
           <div className="col-lg-6">
+            <div id="testimonial-slider" className="owl-carousel">
+              <div className="testimonial">
+                <div className="pic">
+                  <img src="https://media.istockphoto.com/photos/shot-of-an-attractive-young-businesswoman-standing-alone-outside-and-picture-id1348830933?b=1&k=20&m=1348830933&s=170667a&w=0&h=GpYjlzghbtqMmZNZhRBIqZb0_d8HGmQl1WA9dBZHO6w=" alt="" className="img-responsive" />
+                </div>
+                <h3 className="testimonial-info">
+                  Diana Steve
+                </h3>
+                <p className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi facilisis.</p>
+              </div>
+            </div>
+          </div>   <div className="col-lg-6">
             <div id="testimonial-slider" className="owl-carousel">
               <div className="testimonial">
                 <div className="pic">
@@ -586,6 +625,8 @@ const Home = (props) => {
               </div>
             </div>
           </div>
+
+            </Slider>
         </div>
       </div>
 
