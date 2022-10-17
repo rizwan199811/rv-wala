@@ -1,28 +1,69 @@
 import React from 'react'
+import { useFormik } from "formik";
+import { paymentSchema } from "../schemas";
 
 const Checkout = () => {
+  
+  
+  const initialValues = {
+    card_name: "",
+    email: "",
+    company_name: "",
+    phone: "",
+    country: "",
+    postal_code: "",
+    state: "",
+    city: "",
+    address: "",
+    cardNumber: "",
+    cvc: "",
+    expiryMonth: "",
+    expiryYear: "",
+
+  };
+
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      initialValues,
+      validationSchema: paymentSchema,
+      validateOnChange: true,
+      validateOnBlur: false,
+      //// By disabling validation onChange and onBlur formik will validate on submit.
+      onSubmit: (values, action) => {
+        console.log(" values", values);
+        // action.resetForm();
+      },
+    });
+    console.log(errors);
+
+  
   return (
-
-
     <div className="container">
       <div className="row my-3">
         <div className="col-md-7">
           <div className="payment-form-wrap">
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
-              <form>
-                <div className="mb-3">
+              <form >
+                <div className="mb-3 position-relative">
                   <label className="form-label">
                     Card Holder Name
                   </label>
                   <input
                     type="text"
                     className="form-control mt-1"
-                    id=""
                     placeholder="Anas Murtaza"
+                    name="card_name"
+                    id="card_name"
+                    value={values.card_name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                   {touched.card_name && errors.card_name ? (
+                      <p className="form-error">{errors.card_name}</p>
+                    ) : null}
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <label className="form-label">
                     COMPANY NAME <em>(OPTIONAL)</em>
                   </label>
@@ -32,11 +73,19 @@ const Checkout = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
+                      name="company_name"
+                      id="company_name"
+                      value={values.company_name}
+                      onChange={handleChange}
+                      // onBlur={handleBlur}
                     />
+                     {/* {touched.name && errors.name ? (
+                        <p className="form-error">{errors.name}</p>
+                      ) : null} */}
                   </div>
                 </div>
-                <div className="row mb-3">
-                  <div className='col-md-6'>
+                <div className="row mb-3 position-relative">
+                  <div className='col-md-6 mb-2 position-relative'>
                     <label className="form-label">
                       Email
                     </label>
@@ -46,24 +95,40 @@ const Checkout = () => {
                         type="text"
                         className="form-control"
                         placeholder=""
+                        name="email"
+                        id="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
+                       {touched.email && errors.email ? (
+                          <p className="form-error">{errors.email}</p>
+                        ) : null}
                     </div>
                   </div>
-                  <div className='col-md-6'>
+                  <div className='col-md-6 mb-2 position-relative'>
                     <label className="form-label">
                       Phone
                     </label>
                     <div className="input-group">
 
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         placeholder=""
+                        name="phone"
+                        id="phone"
+                        value={values.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
+                       {touched.phone && errors.phone ? (
+                          <p className="form-error">{errors.phone}</p>
+                        ) : null}
                     </div>
                   </div>
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <label className="form-label">
                     Country
                   </label>
@@ -73,56 +138,90 @@ const Checkout = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
+                      name="country"
+                      id="country"
+                      value={values.country}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
+                     {touched.country && errors.country ? (
+                        <p className="form-error">{errors.country}</p>
+                      ) : null}
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-4 mb-3">
+                  <div className="col-md-4 mb-3 position-relative">
                     <label className="form-label">
                       Postal Code
                     </label>
                     <input
                       type="number"
                       className="form-control mt-3"
-                      id=""
                       placeholder="Postal Code"
+                      name="postal_code"
+                      id="postal_code"
+                      value={values.postal_code}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
+                     {touched.postal_code && errors.postal_code ? (
+                        <p className="form-error">{errors.postal_code}</p>
+                      ) : null}
                   </div>
-                  <div className="col-md-4 mb-3">
+                  <div className="col-md-4 mb-3 position-relative">
                     <label className="form-label">
                       State
                     </label>
                     <input
                       type="text"
                       className="form-control mt-3"
-                      id=""
                       placeholder="State"
+                      name="state"
+                      id="state"
+                      value={values.state}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
+                     {touched.state && errors.state ? (
+                        <p className="form-error">{errors.state}</p>
+                      ) : null}
                   </div>
-                  <div className="col-md-4 mb-3">
+                  <div className="col-md-4 mb-3 position-relative">
                     <label htmlFor="exampleInputEmail1" className="form-label">
                       City
                     </label>
                     <input
                       type="text"
                       className="form-control mt-3"
-                      id="exampleInputEmail1"
                       placeholder="City"
-                      aria-describedby="emailHelp"
+                      name="city"
+                      id="city"
+                      value={values.city}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
+                     {touched.city && errors.city ? (
+                        <p className="form-error">{errors.city}</p>
+                      ) : null}
                   </div>
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <label htmlFor="exampleInputEmail1" className="form-label">
                     Address
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="exampleInputEmail1"
                     placeholder="Address"
-                    aria-describedby="emailHelp"
+                    name="address"
+                    id="address"
+                    value={values.address}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                   {touched.address && errors.address ? (
+                      <p className="form-error">{errors.address}</p>
+                    ) : null}
                 </div>
                 {/* <button type="submit" className="btn btn-primary">
                 Pay Now
@@ -171,7 +270,7 @@ const Checkout = () => {
                     data-bs-parent="#accordionFlushExample"
                   >
                     <div className="accordion-body">
-                      <div className="card mb-3">
+                      <div className="card mb-3 position-relative">
                         <div className="row g-0">
                           <div className="d-flex">
                             <div className="image-wrap-inner">
@@ -227,7 +326,7 @@ const Checkout = () => {
         </div>
       </div>
 
-      <div className="row mt-1 mb-3">
+      <div className="row mt-1 mb-3 position-relative">
         <div className="col-md-12">
           <h4 className='py-3'>Payment Method</h4>
           <div className="card payment-meth">
@@ -270,20 +369,57 @@ const Checkout = () => {
                         type="text"
                         className="form-control"
                         placeholder="0000 0000 0000 0000"
+                        name="cardNumber"
+                        id="cardNumber"
+                        value={values.cardNumber}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
+                       {touched.cardNumber && errors.cardNumber ? (
+                          <p className="form-error">{errors.cardNumber}</p>
+                        ) : null}
                     </div>
-                    <div className="row mt-3 mb-3">
-                      <div className="col-md-6">
+                    <div className="row mt-3 mb-3 position-relative">
+                      <div className="col-md-3">
                         <span className="font-weight-normal card-text">
-                          Expiry Date
+                          Expiry Month
                         </span>
                         <div className="input">
                           <i className="fa fa-calendar" />
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="MM/YY"
+                            placeholder="MM"
+                            name="expiryMonth"
+                            id="expiryMonth"
+                            value={values.expiryMonth}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                           />
+                           {touched.expiryMonth && errors.expiryMonth ? (
+                              <p className="form-error">{errors.expiryMonth}</p>
+                            ) : null}
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <span className="font-weight-normal card-text">
+                          Expiry Year
+                        </span>
+                        <div className="input">
+                          <i className="fa fa-calendar" />
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="YYYY"
+                            name="expiryYear"
+                            id="expiryYear"
+                            value={values.expiryYear}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                          />
+                           {touched.expiryYear && errors.expiryYear ? (
+                              <p className="form-error">{errors.expiryYear}</p>
+                            ) : null}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -295,8 +431,15 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="form-control"
-                          // placeholder={000}
+                            name="cvc"
+                            id="cvc"
+                            value={values.cvc}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                           />
+                           {touched.cvc && errors.cvc ? (
+                              <p className="form-error">{errors.cvc}</p>
+                            ) : null}
                         </div>
                       </div>
                     </div>
@@ -342,7 +485,7 @@ const Checkout = () => {
                         placeholder="0000 0000 0000 0000"
                       />
                     </div>
-                    <div className="row mt-3 mb-3">
+                    <div className="row mt-3 mb-3 position-relative">
                       <div className="col-md-6">
                         <span className="font-weight-normal card-text">
                           Expiry Date
@@ -379,7 +522,7 @@ const Checkout = () => {
 
             </div>
           </div>
-          <button type="submit" className="btn btn-primary my-3 w-100">
+          <button type="button" className="btn btn-primary my-3 w-100" onClick={handleSubmit}>
             Place Order
           </button>
         </div>

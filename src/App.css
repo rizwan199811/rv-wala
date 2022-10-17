@@ -2918,7 +2918,13 @@ color: #000 !important;
 
 
 
-
+.form-error{
+  position: absolute;
+    right: 0;
+    font-size: 13px;
+    color: red;
+    bottom: -20px;
+}
 
 
 
