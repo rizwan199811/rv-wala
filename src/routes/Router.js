@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
-
+import Login from "../pages/Login.js";
+import {  useSelector } from 'react-redux';
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
@@ -21,26 +22,64 @@ const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 
 /*****Routes******/
 
-const ThemeRoutes = [
-  {
-    path: "/",
-    element: <FullLayout />,
-    children: [
-      { path: "/", element: <Navigate to="/starter" /> },
-      { path: "/starter", exact: true, element: <Starter /> },
-      { path: "/about", exact: true, element: <About /> },
-      { path: "/alerts", exact: true, element: <Alerts /> },
-      { path: "/badges", exact: true, element: <Badges /> },
-      { path: "/buttons", exact: true, element: <Buttons /> },
-      { path: "/cards", exact: true, element: <Cards /> },
-      { path: "/grid", exact: true, element: <Grid /> },
-      { path: "/table", exact: true, element: <Tables /> },
-      { path: "/forms", exact: true, element: <Forms /> },
-      { path: "/rv-request", exact: true, element: <RVrequest /> },
-      { path: "/rv-request/details", exact: true, element: <RVDetails /> },
-      { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
-    ],
-  },
-];
+// const ThemeRoutes = [
+//   {
+//     path: "/",
+//     element: <FullLayout />,
+//     children: [
+//       { path: "/", element: <Navigate to="/starter" /> },
+//       { path: "/starter", exact: true, element: <Starter /> },
+//       { path: "/about", exact: true, element: <About /> },
+//       { path: "/alerts", exact: true, element: <Alerts /> },
+//       { path: "/badges", exact: true, element: <Badges /> },
+//       { path: "/buttons", exact: true, element: <Buttons /> },
+//       { path: "/cards", exact: true, element: <Cards /> },
+//       { path: "/grid", exact: true, element: <Grid /> },
+//       { path: "/table", exact: true, element: <Tables /> },
+//       { path: "/forms", exact: true, element: <Forms /> },
+//       { path: "/rv-request", exact: true, element: <RVrequest /> },
+//       { path: "/rv-request/details", exact: true, element: <RVDetails /> },
+//       { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
+//     ],
+//   },
+// ];
 
-export default ThemeRoutes;
+// export default ThemeRoutes;
+
+
+
+
+const Router = () => {
+  console.log("called")  
+  const token = useSelector((state) => state.auth.token);
+  const ThemeRoutes = token? [
+    {
+      path: "/",
+      element: <FullLayout />,
+      children: [
+        { path: "/", element: <Navigate to="/starter" replace ={true}/> },
+        { path: "/starter", exact: true , element: <Starter /> },
+        { path: "/about", exact: true, element: <About /> },
+        { path: "/alerts", exact: true, element: <Alerts /> },
+        { path: "/badges", exact: true, element: <Badges /> },
+        { path: "/buttons", exact: true, element: <Buttons /> },
+        { path: "/cards", exact: true, element: <Cards /> },
+        { path: "/grid", exact: true, element: <Grid /> },
+        { path: "/table", exact: true, element: <Tables /> },
+        { path: "/forms", exact: true, element: <Forms /> },
+        { path: "/rv-request", exact: true, element: <RVrequest /> },
+        { path: "/rv-request/details", exact: true, element: <RVDetails /> },
+        { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
+      ],
+    },
+  ]:[
+    {
+      path: "/",
+      exact:true,
+      element: <Login />
+    }
+  ];
+  return ThemeRoutes
+}
+
+export default Router

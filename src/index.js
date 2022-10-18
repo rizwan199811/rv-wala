@@ -3,14 +3,18 @@ import ReactDOM from "react-dom";
 import "./assets/scss/style.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Loader from "./layouts/loader/Loader";
+import { store } from './app/store'
+import { Provider } from 'react-redux'
 
 ReactDOM.render(
   <Suspense fallback={<Loader />}>
-    <HashRouter>
+    <BrowserRouter>
+    <Provider store={store}>
       <App />
-    </HashRouter>
+    </Provider>
+    </BrowserRouter>
   </Suspense>,
 
   document.getElementById("root")

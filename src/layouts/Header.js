@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import {
   Navbar,
   Collapse,
@@ -16,11 +16,16 @@ import {
 import Logo from "./Logo";
 import { ReactComponent as LogoWhite } from "../assets/images/logos/materialprowhite.svg";
 import user1 from "../assets/images/users/user4.jpg";
+import {  useSelector,useDispatch } from 'react-redux';
+import { setToken } from '../app/slice/AuthSlice';
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
+  const dispatch = useDispatch()
+  let history = useNavigate()
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const Handletoggle = () => {
@@ -102,7 +107,11 @@ const Header = () => {
             <DropdownItem divider />
             <DropdownItem>My Balance</DropdownItem>
             <DropdownItem>Inbox</DropdownItem>
-            <DropdownItem>Logout</DropdownItem>
+            <DropdownItem onClick={()=>{ 
+            localStorage.clear();
+            dispatch(setToken(''));
+            history('/', { replace: true }) 
+            }}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </Collapse>
