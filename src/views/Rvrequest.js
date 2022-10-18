@@ -146,7 +146,7 @@ const Rvrequest = () => {
                     )}
                   </td>
                   <td>
-                <Link to="/rv-request/details">
+                <Link to={`/rv-request/${tdata.id}`}>
                 <Button className="btn" outline color="info" size="sm">
                   Details
                 </Button>

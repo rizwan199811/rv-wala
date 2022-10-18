@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import Loader from "./layouts/loader/Loader";
 import { store } from './app/store'
 import { Provider } from 'react-redux'
+import './assets/style/customStyles.css'
 
 ReactDOM.render(
   <Suspense fallback={<Loader />}>

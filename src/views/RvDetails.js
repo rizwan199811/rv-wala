@@ -1,6 +1,55 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { baseURL } from '../config/apiURL'
 
 const RvDetails = () => {
+  let history = useNavigate()
+  const { id } = useParams()
+
+  useEffect(() => {
+    
+    fetchRV()
+  }, [])
+  const [RV, setRV] = useState({})
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const fetchRV = async () => {
+    try {
+    
+      setLoading(true)
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const {
+        data: { data },
+      } = await axios.get(baseURL + '/rv/' + id, { headers })
+      console.log({ data })
+  
+      let hostServices =[{value:data.Pricing.cleaning_fee,label:'Cleaning fee'},{value:data.Pricing.prep_fee,label:'Prep fee'}]
+      const sum = hostServices.reduce((accumulator, object) => {
+        return accumulator + parseInt(object.value);
+      }, 0);
+      // setInvoiceInfo({...invoiceInfo,hostServices,hostServicesTotal:sum})
+      setRV(data)
+      const images = data.ImageInfo.files.map((x, index) => {
+        if (index == 0) {
+          return {
+            ...x,
+            active: true,
+          }
+        }
+        return {
+          ...x,
+          active: false,
+        }
+      })
+      console.log({ images })
+      setImages(images)
+      setLoading(false)
+    } catch (e) {}
+  }
   return (
     <div>
           <div className="col-12 rv_details_tabs mb-3">
@@ -49,7 +98,7 @@ const RvDetails = () => {
                   </li>
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                  <div
+                <div
                     className="tab-pane fade show active"
                     id="home"
                     role="tabpanel"
@@ -59,80 +108,91 @@ const RvDetails = () => {
                       <div className="d-flex justify-content-evenly py-4">
                         <h5>
                           <sup>$</sup>
-                          1200
+                          {RV.Pricing && RV.Pricing.nightly}
                           <sup>/night</sup>
                         </h5>
                         <h5>
                           <sup>$</sup>
-                          1200
+                          {RV.Pricing && RV.Pricing.weekly}
                           <sup>/week</sup>
                         </h5>
                         <h5>
                           <sup>$</sup>
-                          1200
+                          {RV.Pricing && RV.Pricing.monthly}
                           <sup>/month</sup>
                         </h5>
                       </div>
-                      <div className="row">
-                        <div className="col-md-6">
+                      <div className="row my-4">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Deposits</h4>
                             <div>
                               <h6>BOOKING DEPOSIT</h6>
-                              <p>$3000</p>
+                              <p>${RV.Pricing && RV.Pricing.deposit}</p>
                               <h6>SECURITY DEPOSIT (REFUNDABLE)</h6>
-                              <p>$200</p>
+                              <p>${RV.Pricing && RV.Pricing.damage_deposit}</p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Cancellation Policy</h4>
                             <div>
                               <h6>
-                               
-                               abcd
+                                {RV.ListInfo &&
+                                  RV.ListInfo.cancel_policy
+                                    .charAt(0)
+                                    .toUpperCase() +
+                                    RV.ListInfo.cancel_policy.slice(1)}
                               </h6>
                               <p>More Details </p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Fees</h4>
                             <div>
                               <h6>CLEANING FEE</h6>
-                              <p>$50</p>
+                              <p>${RV.Pricing && RV.Pricing.cleaning_fee}</p>
                             </div>
                           </div>
                         </div>
-                        {/* {RV.RVInfo && RV.Pricing.mileage && (
-                          <div className="col-md-6">
+                        {RV.RVInfo && RV.Pricing.mileage && (
+                          <div className="col-md-6 mb-3">
                             <div>
                               <h4>Mileage</h4>
                               <div>
                                 <h6>INCLUDED</h6>
                                 <p>
-                                 600
+                                  {(RV.RVInfo &&
+                                    RV.Pricing.mileage &&
+                                    RV.Pricing.mileage
+                                      .max_free_miles_per_night) ||
+                                    0}{' '}
                                   miles/day
                                 </p>
                                 <h6>EXCESS</h6>
                                 <p>
                                   $
-                                  10
+                                  {(RV.RVInfo &&
+                                    RV.Pricing.mileage &&
+                                    RV.Pricing.mileage
+                                      .per_extra_miles_charge) ||
+                                    0}
                                   /mile
                                 </p>
                               </div>
                             </div>
                           </div>
-                        )} */}
+                        )}
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Electric Generator</h4>
-                            {/* <div>
+                            <div>
                               {RV.Pricing && RV.Pricing.generator && (
                                 <>
                                   <h6>INCLUDED</h6>
@@ -147,16 +207,16 @@ const RvDetails = () => {
                                   <h6>NOT INCLUDED</h6>
                                 </>
                               )}
-                            </div> */}
+                            </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Pets</h4>
                             <div>
                               <h6>ALLOWED</h6>
-                              {/* <p>
+                              <p>
                                 {(RV.Pricing && RV.Pricing.pet && 'Yes') ||
                                   'No'}
                               </p>
@@ -165,40 +225,40 @@ const RvDetails = () => {
                                   <h6>FEE</h6>
                                   <p>${RV.Pricing.pet.pet_fee}/pet</p>
                                 </>
-                              )} */}
+                              )}
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Delivery</h4>
                             <div>
                               <h6>AVAILABLE</h6>
-                              {/* <p>
+                              <p>
                                 {(RV.Pricing && RV.Pricing.delivery && 'Yes') ||
                                   'No'}
-                              </p> */}
+                              </p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>One-Way Rentals</h4>
                             <div>
                               <h6>AVAILABLE</h6>
-                              {/* <p>
+                              <p>
                                 {(RV.Pricing &&
                                   RV.Pricing.rental_avaliability &&
                                   'Yes') ||
                                   'No'}
-                              </p> */}
+                              </p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                           <div>
                             <h4>Other Prices</h4>
                             <div>
@@ -210,13 +270,15 @@ const RvDetails = () => {
                       </div>
                     </div>
                   </div>
+
+
                   <div
                     className="tab-pane fade"
                     id="profile"
                     role="tabpanel"
                     aria-labelledby="profile-tab"
                   >
-                    {/* {RV.RVInfo && (
+                    {RV.RVInfo && (
                       <div>
                         <div>
                           <h4>Vehicle</h4>
@@ -281,10 +343,10 @@ const RvDetails = () => {
                           </div>
                         </div>
                       </div>
-                    )} */}
+                    )}
                   </div>
 
-                  {/* <div
+                  <div
                     class="tab-pane fade"
                     id="contact"
                     role="tabpanel"
@@ -355,7 +417,7 @@ const RvDetails = () => {
                         </div>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
     </div>

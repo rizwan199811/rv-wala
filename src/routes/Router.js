@@ -68,7 +68,7 @@ const Router = () => {
         { path: "/table", exact: true, element: <Tables /> },
         { path: "/forms", exact: true, element: <Forms /> },
         { path: "/rv-request", exact: true, element: <RVrequest /> },
-        { path: "/rv-request/details", exact: true, element: <RVDetails /> },
+        { path: "/rv-request/:id", exact: true, element: <RVDetails /> },
         { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
       ],
     },
