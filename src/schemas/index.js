@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const paymentSchema = Yup.object({
-    card_name: Yup.string().min(2).max(25).required("Please enter your name"),
+  card_name: Yup.string().min(2).max(25).required("Please enter your name"),
   email: Yup.string().email().required("Please enter your email"),
   phone: Yup.string().min(10).max(11).required("Please enter your phone number"),
   country: Yup.string().required("Please enter your county"),

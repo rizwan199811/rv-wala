@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import { useFormik} from "formik";
 import * as Yup from "yup";
+
 export const ListingInfo = ({
   nextStep,
   prevStep,
@@ -92,6 +93,25 @@ export const ListingInfo = ({
     }
   };
 
+useEffect(() => {
+
+  function initMap() {
+      
+      
+      var input = document.getElementById("address");
+         var options = {
+          fields: ["formatted_address", "geometry", "name"],
+          strictBounds: false,
+          types: ["establishment"],
+      };
+      
+      var autocomplete = new window.google.maps.places.Autocomplete(input, options);
+      
+  }
+  initMap()
+  
+}, [])
+
   return (
     <>
       <div class="form-card">
@@ -156,6 +176,7 @@ export const ListingInfo = ({
               type="text"
               placeholder="Full address of vehicle's location"
               name="address"
+              id="address"
               defaultValue={
                 listObj && listObj.ListInfo && listObj.ListInfo.address
               }
@@ -170,6 +191,7 @@ export const ListingInfo = ({
               <p className="text-danger">{errors.address} </p>
             )}
           </div>
+          
           <div class="col-md-3 mb-3 m-auto d-flex justify-content-around">
             <label class="fieldlabels">For Rent: *</label>
             <input

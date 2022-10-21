@@ -43,13 +43,15 @@ const ListingRv = () => {
         limit: itemsPerPage,
         searchCriteria: {
           ...searchCriteria,
-          ...queryParams
-        }
+          ...queryParams,
+          disabled:false
+        },
+        token:localStorage.getItem('token')
       }
       let headers = {
         Authorization: localStorage.getItem('token'),
       }
-      const {
+      const { 
         data: {
           data: { docs, totalPages, limit, page },
         },

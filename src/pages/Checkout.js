@@ -1,42 +1,142 @@
-import React from 'react'
-import { useFormik } from "formik";
-import { paymentSchema } from "../schemas";
+import React, { useEffect, useRef } from 'react'
+import { useFormik } from 'formik'
+import { paymentSchema } from '../schemas'
+import MaskedInput from 'react-text-mask'
+import {
+  AMERICANEXPRESS,
+  OTHERCARDS,
+  EXPIRYDATE,
+  CVC,
+  CARDARR,
+  CARDICON,
+} from '../config/constant'
+
+import {
+  stripeCardNumberValidation,
+  stripeCardExpirValidation,
+  textWithSpacesOnly,
+  minLength,
+} from '../config/validations'
 
 const Checkout = () => {
-  
-  
+  const reducer = (state, action) => {
+    console.log('action', action.data)
+    switch (action.type) {
+      case 'card':
+        return { ...state, card: action.data }
+      case 'expiry':
+        return { ...state, expiry: action.data }
+      case 'securityCode':
+        return { ...state, securityCode: action.data }
+      case 'cardHodler':
+        return { ...state, cardHodler: action.data }
+      case 'cleanState':
+        return { ...action.data }
+      default:
+        return state
+    }
+  }
+  const [error, setError] = React.useState({})
+  const [cardType, setCardType] = React.useState()
+  const [state, dispatch] = React.useReducer(reducer, {
+    card: '',
+    expiry: '',
+    securityCode: '',
+    cardHodler: '',
+  })
+
+  function findDebitCardType(cardNumber) {
+    const regexPattern = {
+      MASTERCARD: /^5[1-5][0-9]{1,}|^2[2-7][0-9]{1,}$/,
+      VISA: /^4[0-9]{2,}$/,
+      AMERICAN_EXPRESS: /^3[47][0-9]{5,}$/,
+      DISCOVER: /^6(?:011|5[0-9]{2})[0-9]{3,}$/,
+      DINERS_CLUB: /^3(?:0[0-5]|[68][0-9])[0-9]{4,}$/,
+      JCB: /^(?:2131|1800|35[0-9]{3})[0-9]{3,}$/,
+    }
+    for (const card in regexPattern) {
+      if (cardNumber.replace(/[^\d]/g, '').match(regexPattern[card]))
+        return card
+    }
+    return ''
+  }
+
+  const handleInputData = (e) => {
+    dispatch({ type: e.target.name, data: e.target.value })
+  }
+  const handleBlur = (e) => {
+    handleValidations(e.target.name, e.target.value)
+  }
+  const handleValidations = (type, value) => {
+    let errorText
+    switch (type) {
+      case 'card':
+        setCardType(findDebitCardType(value))
+        errorText = stripeCardNumberValidation(value)
+        setError({ ...error, cardError: errorText })
+        break
+      case 'cardHodler':
+        errorText = value === '' ? 'Required' : textWithSpacesOnly(value)
+        setError({ ...error, cardHodlerError: errorText })
+        break
+      case 'expiry':
+        errorText = value === '' ? 'Required' : stripeCardExpirValidation(value)
+        setError({ ...error, expiryError: errorText })
+        break
+      case 'securityCode':
+        errorText = value === '' ? 'Required' : minLength(3)(value)
+        setError({ ...error, securityCodeError: errorText })
+        break
+      default:
+        break
+    }
+  }
+
   const initialValues = {
-    card_name: "",
-    email: "",
-    company_name: "",
-    phone: "",
-    country: "",
-    postal_code: "",
-    state: "",
-    city: "",
-    address: "",
-    cardNumber: "",
-    cvc: "",
-    expiryMonth: "",
-    expiryYear: "",
+    card_name: '',
+    email: '',
+    company_name: '',
+    phone: '',
+    country: '',
+    postal_code: '',
+    state: '',
+    city: '',
+    address: '',
+    cardNumber: '',
+    cvc: '',
+    expiryMonth: '',
+    expiryYear: '',
+  }
 
-  };
+  const cardNumRef = useRef()
 
-  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-    useFormik({
-      initialValues,
-      validationSchema: paymentSchema,
-      validateOnChange: true,
-      validateOnBlur: false,
-      //// By disabling validation onChange and onBlur formik will validate on submit.
-      onSubmit: (values, action) => {
-        console.log(" values", values);
-        // action.resetForm();
-      },
-    });
-    console.log(errors);
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues,
+    validationSchema: paymentSchema,
+    validateOnChange: true,
+    validateOnBlur: false,
+    //// By disabling validation onChange and onBlur formik will validate on submit.
+    onSubmit: (values, action) => {
+      console.log(' values', values)
+      // action.resetForm();
+    },
+  })
+  console.log(errors)
 
-  
+  const handleCardChange = (e) => {
+    // require(["payform"], function (payform) {
+    //   // Format input for card number entry
+    //   var input = cardNumRef.current;
+    //   payform.cardNumberInput(input)
+    // });
+    // var input = document.getElementById('cardNumber');
+    // payform.cardNumberInput(input)
+  }
+  // useEffect(() => {
+  //   let input = document.getElementById('cardNumber');
+  //   payform.cardNumberInput(input)
+  // }, [])
+
   return (
     <div className="container">
       <div className="row my-3">
@@ -44,11 +144,9 @@ const Checkout = () => {
           <div className="payment-form-wrap">
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
-              <form >
+              <form>
                 <div className="mb-3 position-relative">
-                  <label className="form-label">
-                    Card Holder Name
-                  </label>
+                  <label className="form-label">Card Holder Name</label>
                   <input
                     type="text"
                     className="form-control mt-1"
@@ -59,16 +157,15 @@ const Checkout = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                   {touched.card_name && errors.card_name ? (
-                      <p className="form-error">{errors.card_name}</p>
-                    ) : null}
+                  {touched.card_name && errors.card_name ? (
+                    <p className="form-error">{errors.card_name}</p>
+                  ) : null}
                 </div>
                 <div className="mb-3 position-relative">
                   <label className="form-label">
                     COMPANY NAME <em>(OPTIONAL)</em>
                   </label>
                   <div className="input-group">
-
                     <input
                       type="text"
                       className="form-control"
@@ -79,18 +176,15 @@ const Checkout = () => {
                       onChange={handleChange}
                       // onBlur={handleBlur}
                     />
-                     {/* {touched.name && errors.name ? (
+                    {/* {touched.name && errors.name ? (
                         <p className="form-error">{errors.name}</p>
                       ) : null} */}
                   </div>
                 </div>
                 <div className="row mb-3 position-relative">
-                  <div className='col-md-6 mb-2 position-relative'>
-                    <label className="form-label">
-                      Email
-                    </label>
+                  <div className="col-md-6 mb-2 position-relative">
+                    <label className="form-label">Email</label>
                     <div className="input-group">
-
                       <input
                         type="text"
                         className="form-control"
@@ -101,17 +195,14 @@ const Checkout = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                       {touched.email && errors.email ? (
-                          <p className="form-error">{errors.email}</p>
-                        ) : null}
+                      {touched.email && errors.email ? (
+                        <p className="form-error">{errors.email}</p>
+                      ) : null}
                     </div>
                   </div>
-                  <div className='col-md-6 mb-2 position-relative'>
-                    <label className="form-label">
-                      Phone
-                    </label>
+                  <div className="col-md-6 mb-2 position-relative">
+                    <label className="form-label">Phone</label>
                     <div className="input-group">
-
                       <input
                         type="number"
                         className="form-control"
@@ -122,18 +213,15 @@ const Checkout = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                       {touched.phone && errors.phone ? (
-                          <p className="form-error">{errors.phone}</p>
-                        ) : null}
+                      {touched.phone && errors.phone ? (
+                        <p className="form-error">{errors.phone}</p>
+                      ) : null}
                     </div>
                   </div>
                 </div>
                 <div className="mb-3 position-relative">
-                  <label className="form-label">
-                    Country
-                  </label>
+                  <label className="form-label">Country</label>
                   <div className="input-group">
-
                     <input
                       type="text"
                       className="form-control"
@@ -144,16 +232,14 @@ const Checkout = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                     {touched.country && errors.country ? (
-                        <p className="form-error">{errors.country}</p>
-                      ) : null}
+                    {touched.country && errors.country ? (
+                      <p className="form-error">{errors.country}</p>
+                    ) : null}
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-4 mb-3 position-relative">
-                    <label className="form-label">
-                      Postal Code
-                    </label>
+                    <label className="form-label">Postal Code</label>
                     <input
                       type="number"
                       className="form-control mt-3"
@@ -164,14 +250,12 @@ const Checkout = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                     {touched.postal_code && errors.postal_code ? (
-                        <p className="form-error">{errors.postal_code}</p>
-                      ) : null}
+                    {touched.postal_code && errors.postal_code ? (
+                      <p className="form-error">{errors.postal_code}</p>
+                    ) : null}
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
-                    <label className="form-label">
-                      State
-                    </label>
+                    <label className="form-label">State</label>
                     <input
                       type="text"
                       className="form-control mt-3"
@@ -182,9 +266,9 @@ const Checkout = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                     {touched.state && errors.state ? (
-                        <p className="form-error">{errors.state}</p>
-                      ) : null}
+                    {touched.state && errors.state ? (
+                      <p className="form-error">{errors.state}</p>
+                    ) : null}
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
                     <label htmlFor="exampleInputEmail1" className="form-label">
@@ -200,9 +284,9 @@ const Checkout = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                     {touched.city && errors.city ? (
-                        <p className="form-error">{errors.city}</p>
-                      ) : null}
+                    {touched.city && errors.city ? (
+                      <p className="form-error">{errors.city}</p>
+                    ) : null}
                   </div>
                 </div>
                 <div className="mb-3 position-relative">
@@ -219,9 +303,9 @@ const Checkout = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                   {touched.address && errors.address ? (
-                      <p className="form-error">{errors.address}</p>
-                    ) : null}
+                  {touched.address && errors.address ? (
+                    <p className="form-error">{errors.address}</p>
+                  ) : null}
                 </div>
                 {/* <button type="submit" className="btn btn-primary">
                 Pay Now
@@ -282,9 +366,9 @@ const Checkout = () => {
                             </div>
                             <div className="card-body">
                               <h5 className="card-title">
-                                2010 Edgewater  × 4
+                                2010 Edgewater × 4
                                 <span className="float-end">
-                                  <b> Price: 	$300</b>
+                                  <b> Price: $300</b>
                                 </span>
                               </h5>
                               <p className="card-text">
@@ -296,7 +380,7 @@ const Checkout = () => {
                               <p className="card-text">
                                 Sanitization & Cleaning Fee
                                 <span className="float-end">
-                                  <b> Price: 	$60</b>
+                                  <b> Price: $60</b>
                                 </span>
                               </p>
                               <p className="card-text">
@@ -308,15 +392,12 @@ const Checkout = () => {
                               <h6 className="float-end border-top pt-1">
                                 Subtotal:$500
                               </h6>
-
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      <div>
-
-                      </div>
+                      <div></div>
                     </div>
                   </div>
                 </div>
@@ -328,7 +409,7 @@ const Checkout = () => {
 
       <div className="row mt-1 mb-3 position-relative">
         <div className="col-md-12">
-          <h4 className='py-3'>Payment Method</h4>
+          <h4 className="py-3">Payment Method</h4>
           <div className="card payment-meth">
             <div className="accordion" id="accordionExample">
               <div className="card">
@@ -344,10 +425,22 @@ const Checkout = () => {
                       <div className="d-flex align-items-center justify-content-between">
                         <span>Credit card / debit card</span>
                         <div className="icons">
-                          <img src="https://i.imgur.com/2ISgYja.png" width={30} />
-                          <img src="https://i.imgur.com/W1vtnOV.png" width={30} />
-                          <img src="https://i.imgur.com/35tC99g.png" width={30} />
-                          <img src="https://i.imgur.com/2ISgYja.png" width={30} />
+                          <img
+                            src="https://i.imgur.com/2ISgYja.png"
+                            width={30}
+                          />
+                          <img
+                            src="https://i.imgur.com/W1vtnOV.png"
+                            width={30}
+                          />
+                          <img
+                            src="https://i.imgur.com/35tC99g.png"
+                            width={30}
+                          />
+                          <img
+                            src="https://i.imgur.com/2ISgYja.png"
+                            width={30}
+                          />
                         </div>
                       </div>
                     </button>
@@ -364,41 +457,84 @@ const Checkout = () => {
                       Card Number
                     </span>
                     <div className="input">
-                      <i className="fa fa-credit-card" />
+                      {/* <i className="fa fa-credit-card" />
                       <input
                         type="text"
                         className="form-control"
                         placeholder="0000 0000 0000 0000"
                         name="cardNumber"
                         id="cardNumber"
+                        ref={cardNumRef}
                         value={values.cardNumber}
-                        onChange={handleChange}
+                        onChange={handleCardChange}
+                        onBlur={handleBlur}
+                      /> */}
+                      <i className="fa fa-credit-card" />
+                      <MaskedInput
+                        mask={
+                          ['37', '34'].includes(
+                            state && state.card.split('').splice(0, 2).join(''),
+                          )
+                            ? AMERICANEXPRESS
+                            : OTHERCARDS
+                        }
+                        guide={false}
+                        placeholderChar={'\u2000'}
+                        placeholder="Card Number"
+                        name="card"
+                        required
+                        value={state.card}
+                        onChange={handleInputData}
                         onBlur={handleBlur}
                       />
-                       {touched.cardNumber && errors.cardNumber ? (
-                          <p className="form-error">{errors.cardNumber}</p>
-                        ) : null}
+                      {(!error || !error.cardError) &&
+                        CARDARR.includes(cardType) && (
+                          <img
+                            style={{
+                              float: 'right',
+                              position: 'relative',
+                              top: '-35px',
+                            }}
+                            src={CARDICON[cardType]}
+                            alt="card"
+                            width="50px"
+                            height="33px"
+                          />
+                        )}
+
+                      {touched.cardNumber && errors.cardNumber ? (
+                        <p className="form-error">{errors.cardNumber}</p>
+                      ) : null}
                     </div>
                     <div className="row mt-3 mb-3 position-relative">
                       <div className="col-md-3">
                         <span className="font-weight-normal card-text">
-                          Expiry Month
+                          Card Holder Name
                         </span>
                         <div className="input">
-                          <i className="fa fa-calendar" />
-                          <input
+                          <i class="fa-solid fa-id-card"></i>
+                          {/* <input
                             type="text"
                             className="form-control"
                             placeholder="MM"
                             name="expiryMonth"
                             id="expiryMonth"
                             value={values.expiryMonth}
-                            onChange={handleChange}
+                            onChange={handleCardChange}
+                            onBlur={handleBlur}
+                          /> */}
+                          <input
+                            type="text"
+                            name="cardHodler"
+                            required
+                            placeholder="CardHolder's Name"
+                            value={state.cardHodler}
+                            onChange={handleInputData}
                             onBlur={handleBlur}
                           />
-                           {touched.expiryMonth && errors.expiryMonth ? (
-                              <p className="form-error">{errors.expiryMonth}</p>
-                            ) : null}
+                          {touched.expiryMonth && errors.expiryMonth ? (
+                            <p className="form-error">{errors.expiryMonth}</p>
+                          ) : null}
                         </div>
                       </div>
                       <div className="col-md-3">
@@ -407,7 +543,7 @@ const Checkout = () => {
                         </span>
                         <div className="input">
                           <i className="fa fa-calendar" />
-                          <input
+                          {/* <input
                             type="text"
                             className="form-control"
                             placeholder="YYYY"
@@ -416,10 +552,26 @@ const Checkout = () => {
                             value={values.expiryYear}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                          /> */}
+                          <MaskedInput
+                            mask={EXPIRYDATE}
+                            guide={false}
+                            name="expiry"
+                            required
+                            placeholderChar={'\u2000'}
+                            placeholder="Expiry Date (MM/YY)"
+                            value={state.expiry}
+                            onChange={handleInputData}
+                            onBlur={handleBlur}
                           />
-                           {touched.expiryYear && errors.expiryYear ? (
-                              <p className="form-error">{errors.expiryYear}</p>
-                            ) : null}
+                          {/* {error &&
+                    error.expiryError &&
+                    error.expiryError.length > 1 && (
+                      <Error>{error.expiryError}</Error>
+                    )} */}
+                          {touched.expiryYear && errors.expiryYear ? (
+                            <p className="form-error">{errors.expiryYear}</p>
+                          ) : null}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -428,7 +580,7 @@ const Checkout = () => {
                         </span>
                         <div className="input">
                           <i className="fa fa-lock" />
-                          <input
+                          {/* <input
                             type="text"
                             className="form-control"
                             name="cvc"
@@ -436,10 +588,21 @@ const Checkout = () => {
                             value={values.cvc}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                          /> */}
+                          <MaskedInput
+                            mask={CVC}
+                            guide={false}
+                            name="securityCode"
+                            required
+                            placeholderChar={'\u2000'}
+                            placeholder="Secuirty Code"
+                            value={state.securityCode}
+                            onChange={handleInputData}
+                            onBlur={handleBlur}
                           />
-                           {touched.cvc && errors.cvc ? (
-                              <p className="form-error">{errors.cvc}</p>
-                            ) : null}
+                          {touched.cvc && errors.cvc ? (
+                            <p className="form-error">{errors.cvc}</p>
+                          ) : null}
                         </div>
                       </div>
                     </div>
@@ -508,7 +671,7 @@ const Checkout = () => {
                           <input
                             type="text"
                             className="form-control"
-                          // placeholder={000}
+                            // placeholder={000}
                           />
                         </div>
                       </div>
@@ -519,22 +682,18 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
-          <button type="button" className="btn btn-primary my-3 w-100" onClick={handleSubmit}>
+          <button
+            type="button"
+            className="btn btn-primary my-3 w-100"
+            onClick={handleSubmit}
+          >
             Place Order
           </button>
         </div>
-
       </div>
-
-
     </div>
-
-
-
-
   )
 }
 
