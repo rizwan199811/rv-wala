@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
-import { paymentSchema } from '../schemas'
+import { paymentSchema } from '../../schemas'
 import MaskedInput from 'react-text-mask'
 import {
   AMERICANEXPRESS,
@@ -9,16 +9,25 @@ import {
   CVC,
   CARDARR,
   CARDICON,
-} from '../config/constant'
+} from '../../config/constant'
+import {Elements,useStripe,useElements,CardElement} from '@stripe/react-stripe-js';
+
+
 
 import {
   stripeCardNumberValidation,
   stripeCardExpirValidation,
   textWithSpacesOnly,
   minLength,
-} from '../config/validations'
+} from '../../config/validations'
+import {PaymentElement} from '@stripe/react-stripe-js';
+
 
 const Checkout = () => {
+  // const options = {
+  //   // passing the client secret obtained from the server
+  //   clientSecret: 'sk_test_51ISVyOC4CGAQHYFq4mOcIhf7T7lNEBcMjcehwNbI2qbeLi5Y68pB5iaPzjaglhKKAyA6QzcnBgcFdTGSEPiw0duz00F4OGxuCV',
+  // };
   const reducer = (state, action) => {
     console.log('action', action.data)
     switch (action.type) {
@@ -44,6 +53,9 @@ const Checkout = () => {
     securityCode: '',
     cardHodler: '',
   })
+
+  const stripe = useStripe();
+  const elements = useElements();
 
   function findDebitCardType(cardNumber) {
     const regexPattern = {
@@ -110,7 +122,7 @@ const Checkout = () => {
 
   const cardNumRef = useRef()
 
-  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+  const { values, handleChange, errors, touched } = useFormik({
     initialValues,
     validationSchema: paymentSchema,
     validateOnChange: true,
@@ -132,12 +144,43 @@ const Checkout = () => {
     // var input = document.getElementById('cardNumber');
     // payform.cardNumberInput(input)
   }
+  
   // useEffect(() => {
   //   let input = document.getElementById('cardNumber');
   //   payform.cardNumberInput(input)
   // }, [])
+  const handleSubmit = async (event) => {
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const result = await stripe.confirmPayment({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      // confirmParams: {
+      //   return_url: "https://example.com/order/123/complete",
+      // },
+    });
+
+
+    if (result.error) {
+      // Show error to your customer (for example, payment details incomplete)
+      console.log(result.error.message);
+    } else {
+      // Your customer will be redirected to your `return_url`. For some payment
+      // methods like iDEAL, your customer will be redirected to an intermediate
+      // site first to authorize the payment, then redirected to the `return_url`.
+    }
+  };
 
   return (
+   
     <div className="container">
       <div className="row my-3">
         <div className="col-md-7">
@@ -307,9 +350,9 @@ const Checkout = () => {
                     <p className="form-error">{errors.address}</p>
                   ) : null}
                 </div>
-                {/* <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                 Pay Now
-              </button> */}
+              </button>
               </form>
             </div>
           </div>
@@ -693,7 +736,10 @@ const Checkout = () => {
           </button>
         </div>
       </div>
+  
     </div>
+    
+
   )
 }
 

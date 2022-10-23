@@ -11,7 +11,7 @@ import ListingRv from './pages/ListingRv'
 import SingleDetailRV from './pages/SingleDetailRV'
 import {  useSelector } from 'react-redux';
 import AddDetails from './pages/AddDetails'
-import Checkout from './pages/Checkout'
+import Checkout from './pages/Checkout/CheckoutContainer'
 function App() {
   const token = useSelector((state) => state.auth.token);
 
