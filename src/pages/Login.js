@@ -24,10 +24,6 @@ const LogIn = () => {
       email: Yup.string().required('Required').email('Invalid email'),
       password: Yup.string()
         .required('Required')
-        .min(8, 'Password must be 8 characters long')
-        .matches(/[0-9]/, 'Password requires a number')
-        .matches(/[a-z]/, 'Password requires a lowercase letter')
-        .matches(/[!@#_\$%\^&\*]/, 'Password requires a special character'),
     }),
     enableReinitialize: true,
 
@@ -50,7 +46,7 @@ const LogIn = () => {
       let body = {
         email: values.email,
         password: values.password,
-        logged_as_admin:true
+        is_admin:true
       }
       const {
         data: { data, token, refreshToken ,message},
