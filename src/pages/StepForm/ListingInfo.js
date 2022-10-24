@@ -1,12 +1,14 @@
-import {useState,useEffect} from "react";
+import {useState,useEffect,useRef} from "react";
 import { useFormik} from "formik";
 import * as Yup from "yup";
+import $ from 'jquery';
 
 export const ListingInfo = ({
   nextStep,
   prevStep,
   handleChange,
   handleCheck,
+  handleCheckMount
 }) => {
   let initialValues ={
     title: "",
@@ -14,7 +16,8 @@ export const ListingInfo = ({
     address: "",
     for_rent: "",
     cancel_policy: "",
-    for_sale: ""
+    for_rent: "",
+    min_nights:""
   }
 
   let policies = [
@@ -42,7 +45,11 @@ export const ListingInfo = ({
       address: Yup.string().required("Required"),
       for_rent: Yup.string().required("Required"),
       cancel_policy: Yup.string().required("Required"),
-      for_sale: Yup.string().required("Required")
+      for_sale: Yup.string().required("Required"),
+      min_nights: Yup.number()
+      .required('Required')
+      .positive('Must be positive')
+      .integer(),
     }),
     enableReinitialize: true,
 
@@ -51,10 +58,13 @@ export const ListingInfo = ({
     },
   });
 
+  const rvRentRef =useRef();
+
 
   const { errors, touched, handleBlur,values } = formik;
 
   const [proceedNext, setProceedNext] = useState(true);
+  const [minNightsToggle, setMinNightsToggle] = useState(null);
 
   const validateFields = () => {
     const {
@@ -62,36 +72,45 @@ export const ListingInfo = ({
       description,
       address,
       for_rent,
-      cancel_policy,
-      for_sale,
-      value
+      cancel_policy
     } = values;
+    const {
+      title:titleError,
+      description :descriptionError,
+      address :addressError,
+      for_rent :for_rentError,
+      cancel_policy :cancel_policyError,
+      min_nights:min_nightsError
+    } = errors;
   
     console.log({
       title,
       description,
       address,
       for_rent,
-      cancel_policy,
-      for_sale
+      cancel_policy
     }
     )
+ 
+    
+
     if (
-      title   &&
-      description &&
-      address &&
-      // for_rent &&
-      cancel_policy 
-      // &&
-      // for_sale 
+     !titleError && !descriptionError && !addressError && !cancel_policyError
     ) {
-      // 
+      console.log({min_nightsError})
+      if(for_rent && min_nightsError){
+        setProceedNext(false);
+        return
+      }
+     
+      console.log("called")
       setProceedNext(true);
       nextStep();
     } else {
       setProceedNext(false);
     }
   };
+
 
 useEffect(() => {
 
@@ -106,10 +125,20 @@ useEffect(() => {
       };
       
       var autocomplete = new window.google.maps.places.Autocomplete(input, options);
-      
+   
   }
-  initMap()
+  if(listObj && listObj.ListInfo==undefined){
+    handleCheckMount('for_rent',true,'ListInfo')
+    setMinNightsToggle(true)
+  }
+
+  if(listObj && listObj.ListInfo && listObj.ListInfo.for_rent ){
+    setMinNightsToggle(true)
+  }
+
   
+
+
 }, [])
 
   return (
@@ -195,13 +224,14 @@ useEffect(() => {
           <div class="col-md-3 mb-3 m-auto d-flex justify-content-around">
             <label class="fieldlabels">For Rent: *</label>
             <input
-              type="checkbox"
+              type="radio"
               name="for_rent"
               checked={listObj && listObj.ListInfo && listObj.ListInfo.for_rent}
               onChange={(e) => {
                 formik.handleChange(e);
                 setProceedNext(true);
-                handleCheck(e, "ListInfo");
+                handleCheck(e, "ListInfo",true);
+                setMinNightsToggle(true)
               }}
               onBlur={handleBlur}
             />
@@ -221,6 +251,7 @@ useEffect(() => {
               onChange={(e) => {
                 formik.handleChange(e);
                 setProceedNext(true);
+
                 handleChange(e, "ListInfo");
               }}
               onBlur={handleBlur}
@@ -239,22 +270,49 @@ useEffect(() => {
               For Sale: *
             </label>
             <input
-              type="checkbox"
-              name="for_sale"
+              type="radio"
+              name="for_rent"
+              id="for_rent"
               onChange={(e) => {
                 formik.handleChange(e);
                 setProceedNext(true);
-                handleCheck(e, "ListInfo");
+                handleCheck(e, "ListInfo",false);
+                setMinNightsToggle(false)
               }}
               onBlur={handleBlur}
               checked={
-                listObj && listObj.ListInfo && listObj.ListInfo.for_sale
+                listObj && listObj.ListInfo && !listObj.ListInfo.for_rent
               }
             />
               {errors.for_sale && touched.for_sale && (
               <p className="text-danger">{errors.for_sale} </p>
             )}
           </div>
+          {minNightsToggle &&
+            <div class="col-md-9 mb-3">
+            <label class="fieldlabels">
+              Minimum nights: *
+            </label>
+            <input
+              type="number"
+              placeholder="Minimum nights for rent "
+              name="min_nights"
+              min="1"
+              defaultValue={
+                listObj && listObj.ListInfo && listObj.ListInfo.min_nights
+              }
+              onChange={(e) => {
+                formik.handleChange(e);
+                setProceedNext(true);
+                handleChange(e, "ListInfo");
+              }}
+              onBlur={handleBlur}
+            />
+              {errors.min_nights && touched.min_nights && (
+              <p className="text-danger">{errors.min_nights} </p>
+            )}
+          </div> }
+        
         </div>
       </div>
       <input

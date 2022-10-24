@@ -6,9 +6,9 @@ import { Route, Routes,Navigate} from 'react-router-dom'
 import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
 import Contact from './pages/Contact'
-import { CreateListing } from './pages/CreateListing'
+import { CreateListing } from './pages/RV/CreateListing'
 import ListingRv from './pages/ListingRv'
-import SingleDetailRV from './pages/SingleDetailRV'
+import {SingleDetailContainer} from './pages/RV/SingleRV/SingleDetailContainer'
 import {  useSelector } from 'react-redux';
 import AddDetails from './pages/AddDetails'
 import Checkout from './pages/Checkout/CheckoutContainer'
@@ -29,7 +29,7 @@ function App() {
             <Route path="/contactus" element={<Contact />} />
             <Route path="/listRV" element={<CreateListing />} />
             <Route path="/rvs-for-rent" element={<ListingRv />} />
-            <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailRV />} />
+            <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailContainer />} />
           </>
         )}
 

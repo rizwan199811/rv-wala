@@ -1,14 +1,14 @@
 import React from "react";
-import { Fieldset } from "../components/Fieldset";
+import { Fieldset } from "../../components/Fieldset";
 import { useState } from "react";
-import { RVInfo } from "./StepForm/RVInfo";
-import { ListingInfo } from "./StepForm/ListingInfo";
-import { InsuranceInfo } from "./StepForm/InsuranceInfo";
-import { PricingInfo } from "./StepForm/PricingInfo";
-import { ImagesInfo } from "./StepForm/ImagesInfo";
-import { FeaturesInfo } from "./StepForm/FeaturesInfo";
-import { UrlsInfo } from "./StepForm/UrlsInfo";
-import { Finish } from "./StepForm/Finish";
+import { RVInfo } from "../StepForm/RVInfo";
+import { ListingInfo } from "../StepForm/ListingInfo";
+import { InsuranceInfo } from "../StepForm/InsuranceInfo";
+import { PricingInfo } from "../StepForm/PricingInfo";
+import { ImagesInfo } from "../StepForm/ImagesInfo";
+import { FeaturesInfo } from "../StepForm/FeaturesInfo";
+import { UrlsInfo } from "../StepForm/UrlsInfo";
+import { Finish } from "../StepForm/Finish";
 
 export const CreateListing = () => {
   const [step, setStep] = useState(1);
@@ -47,16 +47,33 @@ export const CreateListing = () => {
     localStorage.setItem("listObj", JSON.stringify(obj));
     setListObj(obj);
   };
-  const handleCheck = (e, identifier) => {
-    let { name, checked } = e.target;
+  const handleCheck = (e, identifier,radioChecked) => {
+    let { name,checked } = e.target;
     let path = `${identifier}.${name}`;
     // let obj = { ...listObj };
+    
+    let obj = localStorage.getItem("listObj") ? JSON.parse(localStorage.getItem("listObj")) :{}
+    if(radioChecked!==undefined){
+      set(obj, path, radioChecked);
+    }
+    else{
+      set(obj, path, checked);
+    }
+ 
+    console.log({ obj });
+    localStorage.setItem("listObj", JSON.stringify(obj));
+    setListObj(obj);
+  };
+
+  const handleCheckMount = (name,checked, identifier) => {
+    let path = `${identifier}.${name}`;
     let obj = localStorage.getItem("listObj") ? JSON.parse(localStorage.getItem("listObj")) :{}
     set(obj, path, checked);
     console.log({ obj });
     localStorage.setItem("listObj", JSON.stringify(obj));
     setListObj(obj);
   };
+
 
   const onUpload =(files,identifier)=>{
     let path =`${identifier}.files`
@@ -127,6 +144,7 @@ export const CreateListing = () => {
                       prevStep={prevStep}
                       handleChange={handleChange}
                       handleCheck={handleCheck}
+                      handleCheckMount={handleCheckMount}
                     />
                   )}
                   {step == 3 && (
@@ -135,6 +153,7 @@ export const CreateListing = () => {
                       prevStep={prevStep}
                       handleChange={handleChange}
                       handleCheck={handleCheck}
+                     
                     />
                   )}
                   {step == 4 && (

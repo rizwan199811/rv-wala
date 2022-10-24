@@ -1,145 +1,24 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { baseURL } from '../config/apiURL'
+import { baseURL } from '../../../config/apiURL'
 import Slider from 'react-slick'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBookingDetails } from '../app/slice/BookSlice'
+import { setBookingDetails } from '../../../app/slice/BookSlice'
 import { toast, ToastContainer } from 'react-toastify'
-import { toastOptionsDate } from '../config/toast'
-const SingleDetailRV = () => {
-  let history = useNavigate()
-
-  useEffect(() => {
-    
-    fetchRV()
-  }, [])
-  const token = useSelector((state) => state.auth.token)
-  const dispatch = useDispatch()
-  const [RV, setRV] = useState({})
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [dateRange, setDateRange] = useState([
-    moment().format('YYYY-MM-DD'),
-    moment().format('YYYY-MM-DD'),
-  ])
-  const [invoiceInfo, setInvoiceInfo] = useState({
-    reservation: [],
-    hostServices: [],
-    reservationTotal:0,
-    hostServicesTotal:0
-  })
-
-  const { id } = useParams()
-  const enumerateDaysBetweenDates = (startDate, endDate,nightly_rate) => {
-    var now = startDate,
-      dates = []
-    while (now.isSameOrBefore(endDate)) {
-      dates.push({date:now.format('YYYY-MM-DD'),rate:nightly_rate})
-      now.add(1, 'days')
-    }
-    console.log({ dates })
-    const sum = dates.reduce((accumulator, object) => {
-      return accumulator + parseInt(object.rate);
-    }, 0);
-    return {dates,sum}
-  }
-  const handleDateChange = async (e) => {
-    const { name, value } = e.target;
-    console.log(value)
-    switch (name) {
-      case 'checkIn':
-        if (moment(dateRange[1]).isBefore(value)) {
-          setError(true)
-          toast.error('Wrong date range', toastOptionsDate)
-          break
-        }
-        setError(false)
-         const {dates:checkInDates,sum:sumCheckIn} = enumerateDaysBetweenDates(
-          moment(value),
-          moment(dateRange[1]),
-          RV.Pricing.nightly
-        )
-        setInvoiceInfo({
-          ...invoiceInfo,
-          reservation: checkInDates,
-          reservationTotal:sumCheckIn
-        })
-        setDateRange([value, dateRange[1]])
-        break
-      case 'checkOut':
-        if (moment(dateRange[0]).isAfter(value)) {
-          setError(true)
-          toast.error('Wrong date range', toastOptionsDate)
-          break
-        }
-        const {dates:checkOutDates,sum:sumCheckOut} = enumerateDaysBetweenDates(
-          moment(dateRange[0]),
-          moment(value),
-          RV.Pricing.nightly
-        )
-        setInvoiceInfo({
-          ...invoiceInfo,
-          reservation: checkOutDates,
-          reservationTotal:sumCheckOut
-        })
-        setError(false)
-        setDateRange([dateRange[0], value])
-        break
-      default:
-        break
-    }
-    // if (!error) {
-    //   console.log('called')
-    //   const dateRanges = enumerateDaysBetweenDates(
-    //     moment(dateRange[0]),
-    //     moment(dateRange[1]),
-    //   )
-    //   setInvoiceInfo({
-    //     ...invoiceInfo,
-    //     reservation: dateRanges,
-    //   })
-    // }
-    console.log({ dateRange })
-  }
-  const fetchRV = async () => {
-    try {
-    
-      setLoading(true)
-      let headers = {
-        Authorization: localStorage.getItem('token'),
-      }
-      const {
-        data: { data },
-      } = await axios.get(baseURL + '/rv/' + id, { headers })
-      console.log({ data })
-  
-      let hostServices =[{value:data.Pricing.cleaning_fee,label:'Cleaning fee'},{value:data.Pricing.prep_fee,label:'Prep fee'}]
-      const sum = hostServices.reduce((accumulator, object) => {
-        return accumulator + parseInt(object.value);
-      }, 0);
-      setInvoiceInfo({...invoiceInfo,hostServices,hostServicesTotal:sum})
-      setRV(data)
-      const images = data.ImageInfo.files.map((x, index) => {
-        if (index == 0) {
-          return {
-            ...x,
-            active: true,
-          }
-        }
-        return {
-          ...x,
-          active: false,
-        }
-      })
-      console.log({ images })
-      setImages(images)
-      setLoading(false)
-    } catch (e) {}
-  }
-
+import { toastOptionsDate } from '../../../config/toast'
+const SingleDetailRV = ({
+  RV,
+  images,
+  loading,
+  error,
+  dateRange,
+  invoiceInfo,
+  handleDateChange,
+  token,
+  bookNow,
+}) => {
   const settings = {
     className: 'center',
     centerMode: true,
@@ -148,27 +27,6 @@ const SingleDetailRV = () => {
     slidesToShow: 3,
     speed: 500,
     autoplay: true,
-  }
-  if (loading) {
-    return (
-      <section className="single-product-carousel">
-        <div className="container">
-          <lottie-player
-            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
-            background="transparent"
-            speed="1"
-            style={{ width: '300px', height: '300px', margin: 'auto' }}
-            loop
-            autoplay
-          ></lottie-player>
-        </div>
-      </section>
-    )
-  }
-
-  const bookNow = async () => {
-    dispatch(setBookingDetails(RV))
-    history('/booking-details', { replace: true })
   }
 
   return (
@@ -480,60 +338,60 @@ const SingleDetailRV = () => {
                   >
                     {RV.RVInfo && (
                       <div>
-                          <h4>Vehicle</h4>
-                          <div className="row py-3">
-                            <div className='col-sm-6 mb-2'>
-                              <h6>MAKE</h6>
-                              <p>{RV.RVInfo.make}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>MODEL</h6>
-                              <p>{RV.RVInfo.model}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>YEAR</h6>
-                              <p>{RV.RVInfo.year}</p>
-                            </div>
+                        <h4>Vehicle</h4>
+                        <div className="row py-3">
+                          <div className="col-sm-6 mb-2">
+                            <h6>MAKE</h6>
+                            <p>{RV.RVInfo.make}</p>
+                          </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>MODEL</h6>
+                            <p>{RV.RVInfo.model}</p>
+                          </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>YEAR</h6>
+                            <p>{RV.RVInfo.year}</p>
+                          </div>
 
-                            <div className='col-sm-6 mb-2'>
-                              <h6>TYPE</h6>
-                              <p>{RV.RVInfo.type}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>LENGTH</h6>
-                              <p>{RV.RVInfo.length}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>WEIGHT</h6>
-                              <p>{RV.RVInfo.weight}</p>
-                            </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>TYPE</h6>
+                            <p>{RV.RVInfo.type}</p>
+                          </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>LENGTH</h6>
+                            <p>{RV.RVInfo.length}</p>
+                          </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>WEIGHT</h6>
+                            <p>{RV.RVInfo.weight}</p>
+                          </div>
                         </div>
 
-                          <h4>Accommodations</h4>
-                          <div className="row py-3">
-                            <div className='col-sm-6 mb-2'>
-                              <h6>BEDS</h6>
-                              <p>{RV.RVInfo.sleep}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>SEATBELTS</h6>
-                              <p>{RV.RVInfo.seatbelts}</p>
-                            </div>
-                            <div className='col-sm-6 mb-2'>
-                              <h6>SLIDE-OUTS</h6>
-                              <p>{RV.RVInfo.slides}</p>
-                            </div>
+                        <h4>Accommodations</h4>
+                        <div className="row py-3">
+                          <div className="col-sm-6 mb-2">
+                            <h6>BEDS</h6>
+                            <p>{RV.RVInfo.sleep}</p>
                           </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>SEATBELTS</h6>
+                            <p>{RV.RVInfo.seatbelts}</p>
+                          </div>
+                          <div className="col-sm-6 mb-2">
+                            <h6>SLIDE-OUTS</h6>
+                            <p>{RV.RVInfo.slides}</p>
+                          </div>
+                        </div>
 
-                          <h4>Full Description</h4>
-                          <div className="row py-3">
-                            <div>
-                              <p>
-                                {(RV.ListInfo && RV.ListInfo.description) ||
-                                  'No description provided'}
-                              </p>
-                            </div>
+                        <h4>Full Description</h4>
+                        <div className="row py-3">
+                          <div>
+                            <p>
+                              {(RV.ListInfo && RV.ListInfo.description) ||
+                                'No description provided'}
+                            </p>
                           </div>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -615,7 +473,10 @@ const SingleDetailRV = () => {
 
               <div className="single-detail-user-card">
                 <div className="card">
-                  <p className='your-host-text'>Your<br/> Host</p>
+                  <p className="your-host-text">
+                    Your
+                    <br /> Host
+                  </p>
                   <div className="img">
                     <img
                       src={
@@ -623,32 +484,32 @@ const SingleDetailRV = () => {
                         'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
                       }
                     />
-                      <h2>{RV.user && RV.user.fullname}</h2>
+                    <h2>{RV.user && RV.user.fullname}</h2>
                   </div>
                   <div className="infos">
                     {/* <div className="name">
                       <h2>{RV.user && RV.user.fullname}</h2>
                     </div> */}
-                    <div className='row'>
-                        <div className='col-sm-6 col-12'>
+                    <div className="row">
+                      <div className="col-sm-6 col-12">
                         <div className="name">
                           <h2>Member Since</h2>
                           <h4>{moment(RV.user.createdAt).year()}</h4>
                         </div>
-                        </div>
-                        <div className='col-sm-6 col-12'>
+                      </div>
+                      <div className="col-sm-6 col-12">
                         <div className="name">
                           <h2>Responds to Inquiries</h2>
                           <h4>More often than not</h4>
                         </div>
-                        </div>
-                      <div className='col-sm-6 col-12'>
+                      </div>
+                      <div className="col-sm-6 col-12">
                         <div className="name">
                           <h2># Listings</h2>
                           <h4>{RV.listingCount}</h4>
                         </div>
-                        </div>
-                        <div className='col-sm-6 col-12'>
+                      </div>
+                      <div className="col-sm-6 col-12">
                         <div className="name">
                           <h2>Verified Member</h2>
                           <img
@@ -656,7 +517,7 @@ const SingleDetailRV = () => {
                             style={{ width: 'auto' }}
                           />
                         </div>
-                        </div>
+                      </div>
                       {/* <div className="name">
                             <h2>Host Rules</h2>
                             <a>Click to View</a>
@@ -716,7 +577,11 @@ const SingleDetailRV = () => {
                       onChange={handleDateChange}
                     />
                   </div>
-                  <em className="text-center">(minimum 1 night rental)</em>
+                  {RV.ListInfo.for_rent && (
+                    <em className="text-center">
+                      (minimum {RV.ListInfo.min_nights} night(s) rental)
+                    </em>
+                  )}
                 </div>
               </div>
               <div className="my-3">
@@ -758,10 +623,12 @@ const SingleDetailRV = () => {
                           >
                             <div className="panel-body">
                               {invoiceInfo.reservation.map((x) => {
-                               return <p>
-                                  <b>{x.date}</b>{' '}
-                                  <span className="float-end">${x.rate}</span>{' '}
-                                </p>
+                                return (
+                                  <p>
+                                    <b>{x.date}</b>{' '}
+                                    <span className="float-end">${x.rate}</span>{' '}
+                                  </p>
+                                )
                               })}
 
                               {/* <p>
@@ -814,12 +681,16 @@ const SingleDetailRV = () => {
                             aria-labelledby="headingThree"
                           >
                             <div className="panel-body">
-                              {invoiceInfo.hostServices.map(x=>{
-                                return <p>
-                                <b>{x.label}</b>{' '}
-                                <span className="float-end">${x.value}</span>{' '}
-                              </p>
-                              }) }
+                              {invoiceInfo.hostServices.map((x) => {
+                                return (
+                                  <p>
+                                    <b>{x.label}</b>{' '}
+                                    <span className="float-end">
+                                      ${x.value}
+                                    </span>{' '}
+                                  </p>
+                                )
+                              })}
                             </div>
                           </div>
                         </div>
@@ -878,7 +749,14 @@ const SingleDetailRV = () => {
                     </li>
                     <li className="list-group-item d-flex justify-content-between">
                       <b>Total</b>
-                      <span>${invoiceInfo.reservationTotal+invoiceInfo.hostServicesTotal+(invoiceInfo.reservationTotal+invoiceInfo.hostServicesTotal)*0.13}</span>
+                      <span>
+                        $
+                        {invoiceInfo.reservationTotal +
+                          invoiceInfo.hostServicesTotal +
+                          (invoiceInfo.reservationTotal +
+                            invoiceInfo.hostServicesTotal) *
+                            0.13}
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -954,29 +832,31 @@ const SingleDetailRV = () => {
                   </ul>
                 </div>
               </div>
-              {!token && <div className="alert alert-warning" role="alert">
-                To make an inquiry for this listing, please log-in or sign-up.
-                Once logged-in, you'll be brought back here to complete your
-                inquiry.
-                <div className="d-flex justify-content-center mt-3">
-                  <div className="nav-item">
-                    <Link to="/login" className="nav-link log" href="#">
-                      Login
-                    </Link>
-                  </div>
-                  <div className="nav-item">
-                    <Link to="/signup" className="nav-link reg" href="#">
-                      Sign up
-                    </Link>
+              {!token && (
+                <div className="alert alert-warning" role="alert">
+                  To make an inquiry for this listing, please log-in or sign-up.
+                  Once logged-in, you'll be brought back here to complete your
+                  inquiry.
+                  <div className="d-flex justify-content-center mt-3">
+                    <div className="nav-item">
+                      <Link to="/login" className="nav-link log" href="#">
+                        Login
+                      </Link>
+                    </div>
+                    <div className="nav-item">
+                      <Link to="/signup" className="nav-link reg" href="#">
+                        Sign up
+                      </Link>
+                    </div>
                   </div>
                 </div>
-                </div>
-              }
+              )}
 
               {token && (
                 <button
                   className="btn btn-primary login-wrapper-btn"
                   type="submit"
+                  style={invoiceInfo.reservation.length==0 ? { opacity: 0.5, pointerEvents: 'none' } : {}}
                   onClick={bookNow}
                 >
                   {loading && <i class="fa fa-spinner fa-spin"></i>}
