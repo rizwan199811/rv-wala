@@ -82,7 +82,9 @@ export const SingleDetailContainer = () => {
 
   const bookNow = async () => {
     dispatch(setBookingDetails(RV))
-    history('/booking-details', { replace: true })
+    // checkout
+    // history('/booking-details', { replace: true })
+    history('/checkout', { replace: true })
   }
   const handleDateChange = async (e) => {
     const { name, value } = e.target;
