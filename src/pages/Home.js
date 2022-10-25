@@ -509,7 +509,7 @@ const Home = (props) => {
             </div>
           </div>
           <div className="card__link">
-            <a href className="button">Learn More</a>
+            <a  className="button">Learn More</a>
           </div>
         </div>
       </div>
@@ -529,7 +529,7 @@ const Home = (props) => {
             </div>
           </div>
           <div className="card__link">
-            <a href className="button">Learn More</a>
+            <a  className="button">Learn More</a>
           </div>
         </div>
       </div>
@@ -549,7 +549,7 @@ const Home = (props) => {
             </div>
           </div>
           <div className="card__link">
-            <a href className="button">Learn More</a>
+            <a  className="button">Learn More</a>
           </div>
         </div>
       </div>

@@ -239,7 +239,7 @@ const SplitForm = () => {
                     ) : null}
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
-                    <label className="form-label">State</label>
+                    <label className="form-label mb-3">State</label>
                     <select
                       class="form-select"
                       aria-label="Default select example"
@@ -286,7 +286,7 @@ const SplitForm = () => {
                     ) : null}
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
+                    <label htmlFor="exampleInputEmail1" className="form-label mb-3">
                       City
                     </label>
                     <select
@@ -327,7 +327,7 @@ const SplitForm = () => {
                   </div>
                 </div>
                 <div className="mb-3 position-relative">
-                  <label htmlFor="exampleInputEmail1" className="form-label">
+                  <label className="form-label">
                     Address
                   </label>
                   <input
@@ -344,8 +344,9 @@ const SplitForm = () => {
                     <p className="form-error">{errors.address}</p>
                   ) : null}
                 </div>
-                <div className="mb-3 position-relative">
-                  <label>Card number</label>
+                
+                <div className="mb-3 position-relative stripe-div">
+                  <label className="form-label">Card number</label>
                   <CardNumberElement
                     options={options}
                     onReady={() => {
@@ -362,9 +363,9 @@ const SplitForm = () => {
                     }}
                   />
                 </div>
-                <div className="row">
-                  <div className="col-md-4 mb-3 position-relative">
-                    <label>Expiration date</label>
+                <div className="row stripe-div">
+                  <div className="col-sm-6 mb-3 position-relative">
+                    <label className="form-label">Expiration date</label>
                     <CardExpiryElement
                       options={options}
                       onReady={() => {
@@ -381,8 +382,8 @@ const SplitForm = () => {
                       }}
                     />
                   </div>
-                  <div className="col-md-4 mb-3 position-relative">
-                    <label>CVC</label>
+                  <div className="col-sm-6 mb-3 position-relative">
+                    <label className="form-label">CVC</label>
                     <CardCvcElement
                       options={options}
                       onReady={() => {

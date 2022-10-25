@@ -2707,12 +2707,14 @@ width:100px;
 }
 .payment-form-wrap button{
   border: none;
-  background-color: #0d6efd;
+  background-color: #cb5644;
   font-size: 20px;
   font-weight: 800;
   border-radius: 10px;
   padding: 15px 0;
   width: 100%;
+  color: white;
+
 }
 .payment-order-summary-wrap .card{
   box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -2913,7 +2915,9 @@ color: #000 !important;
 
 
 
-
+.payment-form-wrap .form-select{
+  line-height: 2;
+}
 
 
 
@@ -2954,11 +2958,11 @@ color: #000 !important;
 	width: 100%;
 	padding: 11px 15px 11px 0;
 } */
-input,
+.stripe-div input,
 .StripeElement {
   display: block;
   margin: 10px 0 20px 0;
-  max-width: 500px;
+  /* max-width: 500px; */
   padding: 10px 14px;
   font-size: 1em;
   font-family: "Source Code Pro", monospace;
@@ -2970,7 +2974,7 @@ input,
   background: white;
 }
 
-button {
+.stripe-div button {
 	display: block;
 	font-size: 16px;
 	width: calc(100% - 30px);
@@ -2987,19 +2991,19 @@ button {
 	border: none;
 }
 
-button:active {
+.stripe-div button:active {
 	background-color: #d782d9;
 	box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08), inset 0 1px 0 #e298d8;
 	transform: scale(0.99);
 }
 
-.App {
+/* .App {
 	margin-left: 25%;
 	margin-top: 5%;
 	margin-right: 25%;
-}
+} */
 
-h1,
+/* h1,
 h3 {
 	text-align: center;
-}
+} */
