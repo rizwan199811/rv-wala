@@ -4,3 +4,26 @@
 @import "~bootstrap-icons/font/bootstrap-icons.scss";
 @import "./layout/sidebar";
 @import "./layout/container";
+
+
+.fleet-div p{
+    margin: 0;
+
+}
+
+.fleet-div p b{
+padding-left: 20px;
+float: right;
+}
+.fleet-div{
+    align-items: center;
+    justify-content: space-around;
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    margin: auto;
+    padding: 15px;
+    margin-top: -28px;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

@@ -19,6 +19,7 @@ const Grid = lazy(() => import("../views/ui/Grid"));
 const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
+const Fleet = lazy(() => import("../views/Fleet"));
 
 /*****Routes******/
 
@@ -70,6 +71,7 @@ const Router = () => {
         { path: "/rv-request", exact: true, element: <RVrequest /> },
         { path: "/rv-request/:id", exact: true, element: <RVDetails /> },
         { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
+        { path: "/fleet", exact: true, element: <Fleet /> },
       ],
     },
   ]:[
