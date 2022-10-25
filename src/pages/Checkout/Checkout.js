@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import React, { useMemo,useState } from 'react'
+import { useSelector } from 'react-redux'
 import {
   useStripe,
   useElements,
@@ -9,6 +10,8 @@ import {
 import { useFormik } from 'formik'
 import { paymentSchema } from '../../schemas'
 import useResponsiveFontSize from './useResponsiveFont'
+
+import { Country, State, City }  from 'country-state-city';
 
 const useOptions = () => {
   const fontSize = useResponsiveFontSize()
@@ -35,6 +38,8 @@ const useOptions = () => {
   return options
 }
 
+
+
 const initialValues = {
   card_name: '',
   email: '',
@@ -50,7 +55,15 @@ const initialValues = {
   expiryMonth: '',
   expiryYear: '',
 }
+const optionsCountry = Country.getAllCountries().map(x=>{return {label:x.name,value:x.isoCode}})
 const SplitForm = () => {
+  const [cities, setCities] = useState([])
+  const [states, setStates] = useState([])
+
+  console.log({ optionsCountry })
+  const bookingDetails = localStorage.getItem('bookingDetails')
+    ? JSON.parse(localStorage.getItem('bookingDetails'))
+    : {}
   const stripe = useStripe()
   const elements = useElements()
   const options = useOptions()
@@ -91,7 +104,7 @@ const SplitForm = () => {
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
               <form>
-                <div className="mb-3 position-relative">
+                {/* <div className="mb-3 position-relative">
                   <label className="form-label">Card Holder Name</label>
                   <input
                     type="text"
@@ -106,7 +119,7 @@ const SplitForm = () => {
                   {touched.card_name && errors.card_name ? (
                     <p className="form-error">{errors.card_name}</p>
                   ) : null}
-                </div>
+                </div> */}
                 <div className="mb-3 position-relative">
                   <label className="form-label">
                     COMPANY NAME <em>(OPTIONAL)</em>
@@ -165,19 +178,44 @@ const SplitForm = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="mb-3 position-relative">
                   <label className="form-label">Country</label>
                   <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder=""
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
                       name="country"
-                      id="country"
-                      value={values.country}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        handleChange(e)
+                        console.log(e.target.value)
+                        let state =State.getStatesOfCountry(e.target.value)
+                        console.log({state})
+                        state = state.length >0 ? state.map(x=>{
+                          return {
+                            label:x.name,
+                            value:x.isoCode
+                          }
+                        }) : []
+                        setCities([])
+                        setStates(state)
+                        // setProceedNext(true)
+                        // handleChange(e, 'RVInfo')
+                      }}
                       onBlur={handleBlur}
-                    />
+                    >
+                    
+                      {optionsCountry.length > 0 &&
+                        optionsCountry.map((x) => {
+                          return (
+                            <option
+                              value={x.value}
+                            >
+                              {x.label}
+                            </option>
+                          )
+                        })}
+                    </select>
                     {touched.country && errors.country ? (
                       <p className="form-error">{errors.country}</p>
                     ) : null}
@@ -202,16 +240,47 @@ const SplitForm = () => {
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
                     <label className="form-label">State</label>
-                    <input
-                      type="text"
-                      className="form-control mt-3"
-                      placeholder="State"
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
                       name="state"
-                      id="state"
-                      value={values.state}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        handleChange(e)
+                        console.log({values:values.country})
+                        let cities = City.getCitiesOfState(values.country, e.target.value)
+                        cities = cities.length >0 ? cities.map(x=>{
+                          return {
+                            label:x.name,
+                            value:x.name
+                          }
+                        }) : []
+                        setCities(cities)
+                        // console.log(e.target.value)
+                        // let cities = City.getCitiesOfCountry(e.target.value)
+                        // cities = cities.length >0 ? cities.map(x=>{
+                        //   return {
+                        //     label:x.name,
+                        //     value:x.name
+                        //   }
+                        // }) : []
+                        // setCities(cities)
+                        // // setProceedNext(true)
+                        // // handleChange(e, 'RVInfo')
+                      }}
                       onBlur={handleBlur}
-                    />
+                    >
+                    
+                      {states.length > 0 &&
+                        states.map((x) => {
+                          return (
+                            <option
+                              value={x.value}
+                            >
+                              {x.label}
+                            </option>
+                          )
+                        })}
+                    </select>
                     {touched.state && errors.state ? (
                       <p className="form-error">{errors.state}</p>
                     ) : null}
@@ -220,16 +289,38 @@ const SplitForm = () => {
                     <label htmlFor="exampleInputEmail1" className="form-label">
                       City
                     </label>
-                    <input
-                      type="text"
-                      className="form-control mt-3"
-                      placeholder="City"
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
                       name="city"
-                      id="city"
-                      value={values.city}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        handleChange(e)
+                        // console.log(e.target.value)
+                        // let cities = City.getCitiesOfCountry(e.target.value)
+                        // cities = cities.length >0 ? cities.map(x=>{
+                        //   return {
+                        //     label:x.name,
+                        //     value:x.name
+                        //   }
+                        // }) : []
+                        // setCities(cities)
+                        // // setProceedNext(true)
+                        // // handleChange(e, 'RVInfo')
+                      }}
                       onBlur={handleBlur}
-                    />
+                    >
+                    
+                      {cities.length > 0 &&
+                        cities.map((x) => {
+                          return (
+                            <option
+                              value={x.value}
+                            >
+                              {x.label}
+                            </option>
+                          )
+                        })}
+                    </select>
                     {touched.city && errors.city ? (
                       <p className="form-error">{errors.city}</p>
                     ) : null}
@@ -254,10 +345,8 @@ const SplitForm = () => {
                   ) : null}
                 </div>
                 <div className="mb-3 position-relative">
-                <label>
-                  Card number
-                </label>
-                <CardNumberElement
+                  <label>Card number</label>
+                  <CardNumberElement
                     options={options}
                     onReady={() => {
                       console.log('CardNumberElement [ready]')
@@ -274,49 +363,45 @@ const SplitForm = () => {
                   />
                 </div>
                 <div className="row">
-                <div className="col-md-4 mb-3 position-relative">
-                <label>
-                  Expiration date
-                </label>
-                <CardExpiryElement
-                    options={options}
-                    onReady={() => {
-                      console.log('CardExpiryElement [ready]')
-                    }}
-                    onChange={(event) => {
-                      console.log('CardExpiryElement [change]', event)
-                    }}
-                    onBlur={() => {
-                      console.log('CardExpiryElement [blur]')
-                    }}
-                    onFocus={() => {
-                      console.log('CardExpiryElement [focus]')
-                    }}
-                  />
+                  <div className="col-md-4 mb-3 position-relative">
+                    <label>Expiration date</label>
+                    <CardExpiryElement
+                      options={options}
+                      onReady={() => {
+                        console.log('CardExpiryElement [ready]')
+                      }}
+                      onChange={(event) => {
+                        console.log('CardExpiryElement [change]', event)
+                      }}
+                      onBlur={() => {
+                        console.log('CardExpiryElement [blur]')
+                      }}
+                      onFocus={() => {
+                        console.log('CardExpiryElement [focus]')
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-4 mb-3 position-relative">
+                    <label>CVC</label>
+                    <CardCvcElement
+                      options={options}
+                      onReady={() => {
+                        console.log('CardCvcElement [ready]')
+                      }}
+                      onChange={(event) => {
+                        console.log('CardCvcElement [change]', event)
+                      }}
+                      onBlur={() => {
+                        console.log('CardCvcElement [blur]')
+                      }}
+                      onFocus={() => {
+                        console.log('CardCvcElement [focus]')
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="col-md-4 mb-3 position-relative">
-                <label>
-                  CVC
-                </label>
-                <CardCvcElement
-                    options={options}
-                    onReady={() => {
-                      console.log('CardCvcElement [ready]')
-                    }}
-                    onChange={(event) => {
-                      console.log('CardCvcElement [change]', event)
-                    }}
-                    onBlur={() => {
-                      console.log('CardCvcElement [blur]')
-                    }}
-                    onFocus={() => {
-                      console.log('CardCvcElement [focus]')
-                    }}
-                  />
-                </div>  
-                </div>
-               
-                <button type="submit" disabled={!stripe}>
+
+                <button type="submit" disabled={!stripe} onClick={handleSubmit}>
                   Pay
                 </button>
                 {/* <button type="submit" className="btn btn-primary">
@@ -333,10 +418,10 @@ const SplitForm = () => {
                 <div className="card-header">Order Summary</div>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    Total Cost <span>$1234</span>
+                    Total Cost <span>${bookingDetails.total}</span>
                   </li>
                   <li className="list-group-item">
-                    To be Paid <span>$1234</span>
+                    To be Paid <span>${bookingDetails.total}</span>
                   </li>
                 </ul>
               </div>
@@ -378,31 +463,70 @@ const SplitForm = () => {
                             </div>
                             <div className="card-body">
                               <h5 className="card-title">
-                                2010 Edgewater × 4
+                                {bookingDetails.RVInfo.year}{' '}
+                                {bookingDetails.RVInfo.make} ×{' '}
+                                {bookingDetails.invoiceInfo.reservation.length}
                                 <span className="float-end">
-                                  <b> Price: $300</b>
+                                  <b>
+                                    {' '}
+                                    Price: $
+                                    {
+                                      bookingDetails.invoiceInfo
+                                        .reservationTotal
+                                    }
+                                  </b>
                                 </span>
                               </h5>
                               <p className="card-text">
-                                Propane Refill Fee
+                                Booking Deposit
                                 <span className="float-end">
-                                  <b> Price: $40</b>
+                                  <b>
+                                    {' '}
+                                    Price: ${bookingDetails.booking_deposit}
+                                  </b>
                                 </span>
                               </p>
                               <p className="card-text">
-                                Sanitization & Cleaning Fee
+                                Security Deposit
                                 <span className="float-end">
-                                  <b> Price: $60</b>
+                                  <b>
+                                    {' '}
+                                    Price: ${bookingDetails.damage_deposit}
+                                  </b>
                                 </span>
                               </p>
+                              {bookingDetails.invoiceInfo.hostServices &&
+                                bookingDetails.invoiceInfo.hostServices.length >
+                                  0 &&
+                                bookingDetails.invoiceInfo.hostServices.map(
+                                  (x) => {
+                                    return (
+                                      <p className="card-text">
+                                        {x.label}
+                                        <span className="float-end">
+                                          <b> Price: ${x.value}</b>
+                                        </span>
+                                      </p>
+                                    )
+                                  },
+                                )}
                               <p className="card-text">
-                                Generator
+                                Tax
                                 <span className="float-end">
-                                  <b> Price: $40</b>
+                                  <b>
+                                    {' '}
+                                    Price: $
+                                    {(bookingDetails.invoiceInfo
+                                      .reservationTotal +
+                                      bookingDetails.invoiceInfo
+                                        .hostServicesTotal) *
+                                      0.13}
+                                  </b>
                                 </span>
                               </p>
+
                               <h6 className="float-end border-top pt-1">
-                                Subtotal:$500
+                                Subtotal:${bookingDetails.total}
                               </h6>
                             </div>
                           </div>

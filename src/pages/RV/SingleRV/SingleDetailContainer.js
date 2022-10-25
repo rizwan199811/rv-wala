@@ -81,7 +81,13 @@ export const SingleDetailContainer = () => {
   }
 
   const bookNow = async () => {
-    dispatch(setBookingDetails(RV))
+    let total = invoiceInfo.reservationTotal + invoiceInfo.hostServicesTotal;
+    total =total +total * 0.13 +parseFloat(RV.Pricing.deposit) + parseFloat(RV.Pricing.damage_deposit);
+    const bookingDetails ={...RV,invoiceInfo,total,booking_deposit:parseFloat(RV.Pricing.deposit),damage_deposit:parseFloat(RV.Pricing.damage_deposit)}
+    console.log({bookingDetails})
+    // return
+    localStorage.setItem("bookingDetails",JSON.stringify(bookingDetails))
+    dispatch(setBookingDetails(bookingDetails))
     // checkout
     // history('/booking-details', { replace: true })
     history('/checkout', { replace: true })
