@@ -5,19 +5,20 @@ import { useNavigate } from 'react-router-dom';
 
 const AddDetails = () => {
     let history = useNavigate();
-    const proceedToCheckOut = async()=>{
-        history('/checkout', { replace: true }) 
-      }
-      const booking_details = useSelector((state) => state.booking.details);
-      const dateChange=(e)=>{
-  console.log({value:e.target.value})
-      }
+    const proceedToCheckOut = async () => {
+        history('/checkout', { replace: true })
+    }
+    const booking_details = useSelector((state) => state.booking.details);
+    const dateChange = (e) => {
+        console.log({ value: e.target.value })
+    }
     return (
-        <div className='container'>
-            <div className='row my-4'>
-                <h3 className='pb-3'>Add Details</h3>
-                <div className="col-md-4 mb-2">
-                    <div
+        <>
+            <div className='container'>
+                <div className='row my-4'>
+                    <h3 className='pb-3'>Add Details</h3>
+                    <div className="col-md-4 mb-2">
+                        {/* <div
                         className="product-card m-0"
                     >
                         <div className="badge">${booking_details.Pricing.nightly}/night</div>
@@ -41,16 +42,15 @@ const AddDetails = () => {
                             <div className="product-bottom-details">
                                 <div className="product-price">
                                     <h6>Model</h6>
-                                    {/* model */}
                                     <p>{booking_details.RVInfo.model}</p>
                                 </div>
                             </div>
                         </div>
+                    </div> */}
                     </div>
-                </div>
-                <div className='col-md-8'>
-                <div className="booking-form-wrapper bg-white mw-100 m-0">
-                    <form action="#">
+                    <div className='col-md-8'>
+                        <div className="booking-form-wrapper bg-white mw-100 m-0">
+                            {/* <form action="#">
                         <div className="form-group d-sm-flex margin">
                             <div className="d-flex align-items-center flex-fill me-sm-1 my-sm-0 my-4 border-bottom position-relative">
                                 <input
@@ -116,11 +116,98 @@ const AddDetails = () => {
                                 Proceed to Payment
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </form> */}
+                        </div>
+
+                        <div className="form-group my-3">
+                            <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Proceed to Payment
+                            </div>
+                        </div>
+
+                        <div className='selected_pay_card'>
+                            <div className='d-flex'>
+                                <img src='https://cdn-icons-png.flaticon.com/512/179/179457.png' width={50} />
+                                <div className='ps-3'>
+                                    <p><b>**** **** 2345</b></p>
+                                    <small>Anas Murtaza</small>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p><b>Expires</b> 02/2030</p>
+                            </div>
+
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input p-0"
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="flexRadioDefault1"
+                                />
+                            </div>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+
+
+            {/* <!-- Modal --> */}
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="staticBackdropLabel">Add your card details</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <form>
+                                <div className="mb-3 position-relative">
+                                    <label className="form-label">
+                                        Card number
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Card number"
+                                        name="address"
+                                        id="address"
+                                    />
+                                </div>
+                                <div className="row mb-3 position-relative">
+                                    <div className="col-md-6 mb-2 position-relative">
+                                        <label className="form-label">Expiration date</label>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Expiration date"
+                                                name="email"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 mb-2 position-relative">
+                                        <label className="form-label">CVC</label>
+                                        <div className="input-group">
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                placeholder="CVC"
+                                                name="phone"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" className="btn btn-secondary" >Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
 

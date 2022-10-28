@@ -3007,3 +3007,21 @@ color: #000 !important;
 h3 {
 	text-align: center;
 } */
+
+
+
+
+
+
+
+
+
+
+.selected_pay_card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding:0 20px;
+  border-radius: 10px;
+}
