@@ -535,23 +535,23 @@ const SingleDetailRV = ({
                 <p>in {RV.ListInfo.address}</p>
                 <div class="rate">
                   <input type="radio" id="star5" name="rate" value="5" />
-                  <label for="star5" title="text">
+                  <label htmlFor="star5" title="text">
                     5 stars
                   </label>
                   <input type="radio" id="star4" name="rate" value="4" />
-                  <label for="star4" title="text">
+                  <label htmlFor="star4" title="text">
                     4 stars
                   </label>
                   <input type="radio" id="star3" name="rate" value="3" />
-                  <label for="star3" title="text">
+                  <label htmlFor="star3" title="text">
                     3 stars
                   </label>
                   <input type="radio" id="star2" name="rate" value="2" />
-                  <label for="star2" title="text">
+                  <label htmlFor="star2" title="text">
                     2 stars
                   </label>
                   <input type="radio" id="star1" name="rate" value="1" />
-                  <label for="star1" title="text">
+                  <label htmlFor="star1" title="text">
                     1 star
                   </label>
                 </div>
@@ -864,6 +864,13 @@ const SingleDetailRV = ({
                 </button>
               )}
               <ToastContainer />
+
+              {/* <button
+                  className="btn btn-primary login-wrapper-btn"
+                  type="submit"
+                >
+                  Send Message
+                </button> */}
             </div>
           </div>
           <div className="mb-3 mt-2">
@@ -929,6 +936,152 @@ const SingleDetailRV = ({
           </div>
         </div>
       </section>
+
+
+{/* ============== SEND MESSAGE MODAL =============== */}
+  {/* <button
+    type="button"
+    className="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Launch demo modal
+  </button>
+  <div
+    className="modal fade"
+    id="exampleModal"
+    tabIndex={-1}
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLabel">
+          Send Message
+          </h5>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          />
+        </div>
+        <div className="modal-body">
+        <div className=" bg-white mw-100 m-0">
+        <form action="#">
+
+        <label  class="form-label">Message</label>
+        <div className="form-group border-bottom d-flex align-items-center position-relative">
+                  <textarea
+                    type="text"
+                    required=""
+                    placeholder="Enter Message"
+                    className="form-control"
+                    rows={4}
+                  />
+            
+
+                </div>
+                <div className="form-group my-3">
+                  <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
+                   Send
+                  </div>
+                </div>
+                </form>
+                </div>
+        </div>
+     
+      </div>
+    </div>
+  </div> */}
+{/* ============== SEND MESSAGE MODAL =============== */}
+
+
+{/* ============== REVIEW MODAL =============== */}
+{/* <button
+    type="button"
+    className="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#reviewModal"
+  >
+    Launch demo modal
+  </button>
+  <div
+    className="modal fade"
+    id="reviewModal"
+    tabIndex={-1}
+    aria-labelledby="reviewModalLabel"
+    aria-hidden="true"
+  >
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="reviewModalLabel">
+          Write a Review
+          </h5>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          />
+        </div>
+        <div className="modal-body">
+        <div class="rate">
+                  <input type="radio" id="star5" name="rate" value="5" />
+                  <label for="star5" title="text">
+                    5 stars
+                  </label>
+                  <input type="radio" id="star4" name="rate" value="4" />
+                  <label for="star4" title="text">
+                    4 stars
+                  </label>
+                  <input type="radio" id="star3" name="rate" value="3" />
+                  <label for="star3" title="text">
+                    3 stars
+                  </label>
+                  <input type="radio" id="star2" name="rate" value="2" />
+                  <label for="star2" title="text">
+                    2 stars
+                  </label>
+                  <input type="radio" id="star1" name="rate" value="1" />
+                  <label for="star1" title="text">
+                    1 star
+                  </label>
+                </div>
+        <div className=" bg-white mw-100 m-0">
+     
+        <form action="#">
+      
+        <label  class="form-label">REVIEW
+</label>
+        <div className="form-group border-bottom d-flex align-items-center position-relative">
+                  <textarea
+                    type="text"
+                    required=""
+                    placeholder="Enter REVIEW"
+                    className="form-control"
+                    rows={4}
+                  />
+
+                </div>
+                <div className="form-group my-3">
+                  <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
+                   SUBMIT REVIEW
+                  </div>
+                </div>
+                </form>
+                </div>
+        </div>
+     
+      </div>
+    </div>
+  </div> */}
+{/* ============== REVIEW MODAL =============== */}
+
+
+
     </>
   )
 }
