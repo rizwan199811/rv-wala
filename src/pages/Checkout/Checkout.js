@@ -98,12 +98,17 @@ const SplitForm = () => {
 
   return (
     <div className="container">
-      <div className="row my-3">
+      <div className="row my-4">
         <div className="col-md-7">
           <div className="payment-form-wrap">
+          
+                  
+                   
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
               <form>
+                    
+
                 {/* <div className="mb-3 position-relative">
                   <label className="form-label">Card Holder Name</label>
                   <input
@@ -401,7 +406,19 @@ const SplitForm = () => {
                     />
                   </div>
                 </div>
-
+                <div className="form-check mb-4">
+                  <input
+                    className="form-check-input w-auto p-2 me-2"
+                    type="checkbox"
+                    id="flexCheckDefault"
+                  />
+                  <small>
+                  SAVE PAYMENT INFORMATION TO MY ACCOUNT FOR FUTURE PURCHASES.
+                  </small>
+                </div>
+                <div className="alert alert-primary">
+                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
+                </div>
                 <button type="submit" disabled={!stripe} onClick={handleSubmit}>
                   Pay
                 </button>
@@ -413,7 +430,26 @@ const SplitForm = () => {
           </div>
         </div>
         <div className="col-md-5">
-          <div>
+        <div className="mb-3 coupon-div-wrap">
+                      <label className="form-label">
+                      If you have a coupon code, please apply it below.
+                      </label>
+                      <div className='row'>
+                      <div className='col-7'>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder='coupon code'
+                      />
+                      </div>
+                      <div className='col-5'>
+                      <button type="submit" className="btn ">
+                      Apply Coupon
+                    </button>
+                    </div>
+                    </div>
+
+                    </div>
             <div className="row payment-order-summary-wrap">
               <div className="card">
                 <div className="card-header">Order Summary</div>
@@ -538,7 +574,6 @@ const SplitForm = () => {
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>

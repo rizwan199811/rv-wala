@@ -12,6 +12,7 @@ import {SingleDetailContainer} from './pages/RV/SingleRV/SingleDetailContainer'
 import {  useSelector } from 'react-redux';
 import AddDetails from './pages/AddDetails'
 import Checkout from './pages/Checkout/CheckoutContainer'
+import Setting from './pages/Setting'
 function App() {
   const token = useSelector((state) => state.auth.token);
 
@@ -23,10 +24,11 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/booking-details" element={<AddDetails />} />
+        <Route path="/account-settings" element={<Setting />} />
         <Route path="/checkout" element={<Checkout />} />
         {token && (
           <>
-            <Route path="/contactus" element={<Contact />} />
+            <Route path="/contact-us" element={<Contact />} />
             <Route path="/listRV" element={<CreateListing />} />
             <Route path="/rvs-for-rent" element={<ListingRv />} />
             <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailContainer />} />

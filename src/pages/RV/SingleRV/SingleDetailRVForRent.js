@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setBookingDetails } from '../../../app/slice/BookSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import { toastOptionsDate } from '../../../config/toast'
+import DatePicker from 'react-multi-date-picker'
 const SingleDetailRV = ({
   RV,
   images,
@@ -28,7 +29,10 @@ const SingleDetailRV = ({
     speed: 500,
     autoplay: true,
   }
-
+  const [values, setValues] = useState([
+    // new DateObject().subtract(4, "days"),
+    // new DateObject().add(4, "days")
+  ])
   return (
     <>
       <section className="single-product-carousel">
@@ -204,7 +208,7 @@ const SingleDetailRV = ({
                                   RV.ListInfo.cancel_policy
                                     .charAt(0)
                                     .toUpperCase() +
-                                    RV.ListInfo.cancel_policy.slice(1)}
+                                  RV.ListInfo.cancel_policy.slice(1)}
                               </h6>
                               <p>More Details </p>
                             </div>
@@ -557,6 +561,17 @@ const SingleDetailRV = ({
                 </div>
                 <hr />
                 <div className="row">
+
+                  {/* <div className="col-md-12">
+                  <DatePicker
+                      value={values}
+                      onChange={setValues}
+                      range
+                      rangeHover
+                      placeholder='Enter Dates'
+                    />
+                  </div> */}
+
                   <div className="col-md-6">
                     <label>Check In*</label>
                     <input
@@ -755,7 +770,7 @@ const SingleDetailRV = ({
                           invoiceInfo.hostServicesTotal +
                           (invoiceInfo.reservationTotal +
                             invoiceInfo.hostServicesTotal) *
-                            0.13}
+                          0.13}
                       </span>
                     </li>
                   </ul>
@@ -856,7 +871,7 @@ const SingleDetailRV = ({
                 <button
                   className="btn btn-primary login-wrapper-btn"
                   type="submit"
-                  style={invoiceInfo.reservation.length==0 ? { opacity: 0.5, pointerEvents: 'none' } : {}}
+                  style={invoiceInfo.reservation.length == 0 ? { opacity: 0.5, pointerEvents: 'none' } : {}}
                   onClick={bookNow}
                 >
                   {loading && <i class="fa fa-spinner fa-spin"></i>}
@@ -938,8 +953,8 @@ const SingleDetailRV = ({
       </section>
 
 
-{/* ============== SEND MESSAGE MODAL =============== */}
-  {/* <button
+      {/* ============== SEND MESSAGE MODAL =============== */}
+      {/* <button
     type="button"
     className="btn btn-primary"
     data-bs-toggle="modal"
@@ -995,11 +1010,11 @@ const SingleDetailRV = ({
       </div>
     </div>
   </div> */}
-{/* ============== SEND MESSAGE MODAL =============== */}
+      {/* ============== SEND MESSAGE MODAL =============== */}
 
 
-{/* ============== REVIEW MODAL =============== */}
-{/* <button
+      {/* ============== REVIEW MODAL =============== */}
+      {/* <button
     type="button"
     className="btn btn-primary"
     data-bs-toggle="modal"
@@ -1078,7 +1093,7 @@ const SingleDetailRV = ({
       </div>
     </div>
   </div> */}
-{/* ============== REVIEW MODAL =============== */}
+      {/* ============== REVIEW MODAL =============== */}
 
 
 

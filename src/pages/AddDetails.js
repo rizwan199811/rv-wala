@@ -78,7 +78,7 @@ const AddDetails = () => {
             <div className="booking-form-wrapper bg-white mw-100 m-0">
               <span className='change-date'>
                 <i class="fa-solid fa-arrow-left me-2"></i>Change Dates
-                </span>
+              </span>
               <form action="#">
                 <div className="mb-3">
                   <label className="form-label">
