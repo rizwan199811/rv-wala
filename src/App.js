@@ -13,6 +13,8 @@ import {  useSelector } from 'react-redux';
 import AddDetails from './pages/AddDetails'
 import Checkout from './pages/Checkout/CheckoutContainer'
 import Setting from './pages/Setting'
+import VerificationCode from './components/VerificationCode'
+import CancellationPolicy from './pages/CancellationPolicy'
 function App() {
   const token = useSelector((state) => state.auth.token);
 
@@ -32,6 +34,9 @@ function App() {
             <Route path="/listRV" element={<CreateListing />} />
             <Route path="/rvs-for-rent" element={<ListingRv />} />
             <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailContainer />} />
+            <Route path="/verification-code" element={<VerificationCode />} />
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+         
           </>
         )}
 

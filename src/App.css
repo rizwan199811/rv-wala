@@ -3326,7 +3326,7 @@ text-align: center;
 .coupon-div-wrap{
   
   box-shadow: 0 6px 20px 0 rgb(0 0 0 / 19%);
-padding: 15px;
+  padding: 15px;
 }
 
 
@@ -3354,3 +3354,90 @@ padding: 15px;
   border: 1px solid #ddd;
   border-radius: 3px;
 } */
+
+
+/* =================VERIFCATION CODE STARTS=========================== */
+
+.verification-code-wrapper form {
+  padding: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* max-width: 400px; */
+  background: #fff;
+}
+.verification-code-wrapper form .form-control {
+  display: block;
+  height: 50px;
+  margin-right: 0.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  min-width: 0;
+}
+.verification-code-wrapper form .form-control:last-child {
+  margin-right: 0;
+}
+
+
+/* =================VERIFCATION CODE ENDS=========================== */
+
+
+/* =================CANCELLATION POLICY STARTS=========================== */
+
+.terms-container {
+  /* font-family: 'Open Sans', sans-serif; */
+  color: #262626;
+}
+
+.terms-title h1{
+  font-size: 38px;
+  font-family: "RobotoCondensed-Bold";
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 10px;  
+}
+
+.terms-body h4 {
+  color: #EB573D;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.terms-body h3{
+  font-family: "RobotoCondensed-Bold";
+  color: #262626;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: -10px;
+  font-size: 18px;
+}
+
+.terms-body p{
+  font-size: 16px;
+  line-height: 25px
+}
+
+/* .terms-body a{
+  color: #EB573D;
+} */
+
+/* .terms-body a:hover{
+  color: #EB573D;
+  text-decoration: none;
+} */
+
+/* .terms_footer h3 {
+  margin-top: 60px;
+  margin-bottom: 125px;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 3px;
+  line-height: 1.5;
+  color: #262626;
+} */
+
+/* .terms_footer h3 a:link {
+  color: #EB573D; 
+  text-decoration: none;
+} */
+
+/* =================CANCELLATION POLICY ENDS=========================== */
