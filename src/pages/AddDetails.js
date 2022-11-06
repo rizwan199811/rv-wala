@@ -12,6 +12,11 @@ const AddDetails = () => {
   const dateChange = (e) => {
     console.log({ value: e.target.value })
   }
+  const backToPreviousPage = ()=>{
+    console.log({booking_details})
+    // return
+    history('/rvs-for-rent/detail/'+booking_details._id, { replace: true })
+  }
   return (
     <>
       <div className='container'>
@@ -23,7 +28,7 @@ const AddDetails = () => {
               <div className="box">
                 <span className='sf'>TRAVEL TRAILER</span>
                 <div className="top">
-                  <img src="https://rvwala.com/wp-content/uploads/2022/07/f7ff8810-d21b-4fc3-9310-2c619c8e02a0-800x600.jpg" alt="" />
+                  <img src={booking_details.ImageInfo.files[0] ?  booking_details.ImageInfo.files[0].path :booking_details.ImageInfo.files[0].location} alt="" />
 
                   <span>
                     <i class="fas fa-circle-check"></i>
@@ -33,19 +38,19 @@ const AddDetails = () => {
                   </span>
                 </div>
                 <div className="bottom">
-                  <h3>2010 Edgewater</h3>
+                  <h3>{booking_details.RVInfo.year} {booking_details.RVInfo.make}</h3>
                   <p><i class="fa-solid fa-location-dot me-2"></i>
                     Saskatoon
                   </p>
                   <div className='d-flex justify-content-between detail-card-inner'>
                     <div>
-                      <p>  <b>Model :</b> 255RKE</p>
-                      <p>  <b>Weight :</b> 7500 lbs.</p>
-                      <p>  <b>Make :</b> EdgeWater</p>
+                      <p>  <b>Model :</b> {booking_details.RVInfo.model}</p>
+                      <p>  <b>Weight :</b>{booking_details.RVInfo.weight}lbs.</p>
+                      <p>  <b>Make :</b> {booking_details.RVInfo.make}</p>
                     </div>
                     <div>
-                      <p>  <b>Length :</b> 25 ft.</p>
-                      <p>  <b>Year :</b> 2010</p>
+                      <p>  <b>Length :</b>{booking_details.RVInfo.length} ft.</p>
+                      <p>  <b>Year :</b> {booking_details.RVInfo.year}</p>
                     </div>
                   </div>
 
@@ -53,7 +58,7 @@ const AddDetails = () => {
                     <div>
                       <div>
                         <i class="fa-solid fa-bed"></i>
-                        <span>3</span>
+                        <span>{booking_details.RVInfo.sleep}</span>
                       </div>
                     </div>
 
@@ -67,7 +72,7 @@ const AddDetails = () => {
 
                   <div className="price">
                     <span>Price</span>
-                    <span>$99 / day</span>
+                    <span>${booking_details.Pricing.nightly} / day</span>
                   </div>
                 </div>
               </div>
@@ -76,7 +81,7 @@ const AddDetails = () => {
           </div>
           <div className='col-md-8'>
             <div className="booking-form-wrapper bg-white mw-100 m-0">
-              <span className='change-date'>
+              <span className='change-date' onClick={backToPreviousPage}>
                 <i class="fa-solid fa-arrow-left me-2"></i>Change Dates
               </span>
               <form action="#">
@@ -87,8 +92,9 @@ const AddDetails = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder='sdsfsdsd'
+                    placeholder=''
                     disabled
+                    value={moment(booking_details.startDate).format('dddd, MMMM Do YYYY')}
                   />
                 </div>
 
@@ -97,10 +103,12 @@ const AddDetails = () => {
                     END DATE
                   </label>
                   <input
+                  
                     type="text"
                     className="form-control"
-                    placeholder='sdsfsdsd'
+                    placeholder=''
                     disabled
+                    value={moment(booking_details.endDate).format('dddd, MMMM Do YYYY')}
                   />
                 </div>
 

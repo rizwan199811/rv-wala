@@ -17,10 +17,8 @@ export const SingleDetailContainer = () => {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [dateRange, setDateRange] = useState([
-    moment().format('YYYY-MM-DD'),
-    moment().format('YYYY-MM-DD'),
-  ])
+  const [dateRange, setDateRange] = useState([null, null])
+  const [startDate, endDate] = dateRange
   const [invoiceInfo, setInvoiceInfo] = useState({
     reservation: [],
     hostServices: [],
@@ -66,35 +64,118 @@ export const SingleDetailContainer = () => {
       setLoading(false)
     } catch (e) {}
   }
-  const enumerateDaysBetweenDates = (startDate, endDate,nightly_rate) => {
+  const enumerateDaysBetweenDates = (startDate, endDate, nightly_rate) => {
     var now = startDate,
       dates = []
     while (now.isSameOrBefore(endDate)) {
-      dates.push({date:now.format('YYYY-MM-DD'),rate:nightly_rate})
+      dates.push({ date: now.format('YYYY-MM-DD'), rate: nightly_rate })
       now.add(1, 'days')
     }
     console.log({ dates })
     const sum = dates.reduce((accumulator, object) => {
-      return accumulator + parseInt(object.rate);
-    }, 0);
-    return {dates,sum}
+      return accumulator + parseInt(object.rate)
+    }, 0)
+    return { dates, sum }
+  }
+  const checkReservedDates =(startDateParam,endDateParam,reservedDates)=>{
+   let comparedChecks=[];
+   console.log({startDateParam,endDateParam,reservedDates})
+  //  let compareDate = moment("15/02/2013", "DD/MM/YYYY");
+   let startDate   = moment(startDateParam).format("YYYY-MM-DD");
+   let endDate     = moment(endDateParam).format("YYYY-MM-DD");
+   for(let i=0;i<reservedDates.length;i++){
+    let compareDate = moment(reservedDates[i]).format("YYYY-MM-DD");
+    console.log({compareDate,startDate,endDate})
+    
+    comparedChecks[i]=moment(compareDate).isBetween(moment(startDate), moment(endDate));
+    // console.log(compareDate.isBetween(startDate, endDate))
+
+   }
+   console.log({comparedChecks})
+   const isBetween = (element) => element === true;
+   console.log(comparedChecks.some(isBetween))
+   return comparedChecks.some(isBetween)
   }
 
   const bookNow = async () => {
-    let total = invoiceInfo.reservationTotal + invoiceInfo.hostServicesTotal;
-    total =total +total * 0.13 +parseFloat(RV.Pricing.deposit) + parseFloat(RV.Pricing.damage_deposit);
-    const bookingDetails ={...RV,invoiceInfo,total,booking_deposit:parseFloat(RV.Pricing.deposit),damage_deposit:parseFloat(RV.Pricing.damage_deposit)}
-    console.log({bookingDetails})
+    let total = invoiceInfo.reservationTotal + invoiceInfo.hostServicesTotal
+    total =
+      total +
+      total * 0.13 +
+      parseFloat(RV.Pricing.deposit) +
+      parseFloat(RV.Pricing.damage_deposit)
+    const bookingDetails = {
+      ...RV,
+      invoiceInfo,
+      total,
+      startDate,
+      endDate,
+      booking_deposit: parseFloat(RV.Pricing.deposit),
+      damage_deposit: parseFloat(RV.Pricing.damage_deposit),
+    }
+    console.log({ bookingDetails })
+
     // return
-    localStorage.setItem("bookingDetails",JSON.stringify(bookingDetails))
+    localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails))
     dispatch(setBookingDetails(bookingDetails))
     // checkout
-    // history('/booking-details', { replace: true })
-    history('/checkout', { replace: true })
+    history('/booking-details', { replace: true })
+    // history('/checkout', { replace: true })
   }
-  const handleDateChange = async (e) => {
-    const { name, value } = e.target;
-    console.log(value)
+
+  const validateDates = (dates) => {
+    let formattedDates = []
+ 
+ 
+    setDateRange(dates)
+    for (let i = 0; i < dates.length; i++) {
+      if (dates[i] !== null) {
+        formattedDates.push(moment(dates[i]).format('YYYY-MM-DD'))
+        console.log({ formattedDates })
+      }
+
+    }
+    if(dates[0] && dates[1]){
+      if ( moment(dates[1]).diff(moment(dates[0]), 'days') < RV.ListInfo.min_nights ) {
+        setError(true)
+        setDateRange([dates[0],null])
+        toast.error(
+          `Minimum nights for this RV is ${RV.ListInfo.min_nights}`,
+          toastOptionsDate
+        )
+       return
+      }
+
+     if(checkReservedDates(dates[0],dates[1], RV.reserved_dates)){
+      setError(true)
+      setDateRange([null,null])
+      toast.error(
+        `Please select dates other than previously reserved dates`,
+        toastOptionsDate
+      )
+     return
+     }
+
+    console.log(moment(dates[0]))
+      setError(false)
+        const {
+          dates: checkInDates,
+          sum: sumCheckIn,
+        } = enumerateDaysBetweenDates(
+          moment(dates[0]),
+          moment(dates[1]),
+          RV.Pricing.nightly,
+        )
+        setInvoiceInfo({
+          ...invoiceInfo,
+          reservation: checkInDates,
+          reservationTotal: sumCheckIn,
+        })
+    }
+
+  }
+  const handleDateChange = async (name, value) => {
+    // const { name, value } = e.target;
     switch (name) {
       case 'checkIn':
         // if (moment(dateRange[1]).isBefore(value)) {
@@ -102,40 +183,58 @@ export const SingleDetailContainer = () => {
         //   toast.error('Wrong date range', toastOptionsDate)
         //   break
         // }
-        if (moment(dateRange[1]).diff(moment(value),'days')<RV.ListInfo.min_nights) {
+        if (
+          moment(dateRange[1]).diff(moment(value), 'days') <
+          RV.ListInfo.min_nights
+        ) {
           setError(true)
-          toast.error(`Minimum nights for this RV is ${RV.ListInfo.min_nights}`, toastOptionsDate)
+          toast.error(
+            `Minimum nights for this RV is ${RV.ListInfo.min_nights}`,
+            toastOptionsDate,
+          )
           break
         }
         setError(false)
-         const {dates:checkInDates,sum:sumCheckIn} = enumerateDaysBetweenDates(
+        const {
+          dates: checkInDates,
+          sum: sumCheckIn,
+        } = enumerateDaysBetweenDates(
           moment(value),
           moment(dateRange[1]),
-          RV.Pricing.nightly
+          RV.Pricing.nightly,
         )
         setInvoiceInfo({
           ...invoiceInfo,
           reservation: checkInDates,
-          reservationTotal:sumCheckIn
+          reservationTotal: sumCheckIn,
         })
         setDateRange([value, dateRange[1]])
         break
       case 'checkOut':
-        console.log(moment(value).diff(moment(dateRange[0]),'days'))
-        if (moment(value).diff(moment(dateRange[0]),'days')<RV.ListInfo.min_nights) {
+        console.log(moment(value).diff(moment(dateRange[0]), 'days'))
+        if (
+          moment(value).diff(moment(dateRange[0]), 'days') <
+          RV.ListInfo.min_nights
+        ) {
           setError(true)
-          toast.error(`Minimum nights for this RV is ${RV.ListInfo.min_nights}`, toastOptionsDate)
+          toast.error(
+            `Minimum nights for this RV is ${RV.ListInfo.min_nights}`,
+            toastOptionsDate,
+          )
           break
         }
-        const {dates:checkOutDates,sum:sumCheckOut} = enumerateDaysBetweenDates(
+        const {
+          dates: checkOutDates,
+          sum: sumCheckOut,
+        } = enumerateDaysBetweenDates(
           moment(dateRange[0]),
           moment(value),
-          RV.Pricing.nightly
+          RV.Pricing.nightly,
         )
         setInvoiceInfo({
           ...invoiceInfo,
           reservation: checkOutDates,
-          reservationTotal:sumCheckOut
+          reservationTotal: sumCheckOut,
         })
         setError(false)
         setDateRange([dateRange[0], value])
@@ -178,8 +277,21 @@ export const SingleDetailContainer = () => {
       </section>
     )
   }
-  if(RV.ListInfo.for_rent){
-      return <SingleDetailRV RV={RV} images={images} loading={loading} error={error} dateRange={dateRange}
-      invoiceInfo={invoiceInfo} handleDateChange={handleDateChange} token={token} bookNow={bookNow}></SingleDetailRV>
+  if (RV.ListInfo.for_rent) {
+    return (
+      <SingleDetailRV
+        RV={RV}
+        images={images}
+        loading={loading}
+        error={error}
+        dateRange={dateRange}
+        startDate={startDate}
+        endDate={endDate}
+        invoiceInfo={invoiceInfo}
+        handleDateChange={validateDates}
+        token={token}
+        bookNow={bookNow}
+      ></SingleDetailRV>
+    )
   }
 }

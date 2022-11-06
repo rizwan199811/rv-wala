@@ -53,6 +53,10 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
       },
     }) {
       toast.error(message, toastOptions)
+      setTimeout(()=>{
+        setLoading(false)
+      },6000)
+      
     }
   }
 
@@ -114,11 +118,11 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
           <i class="fa-solid fa-circle-xmark"></i>
         </a>
         <img
-          src={file.path}
+          src={file.path ? file.path : file.location}
           style={img}
           // Revoke data uri after image is loaded
           onLoad={() => {
-            URL.revokeObjectURL(file.path)
+            URL.revokeObjectURL(file.path ? file.path : file.location)
           }}
         />
       </div>

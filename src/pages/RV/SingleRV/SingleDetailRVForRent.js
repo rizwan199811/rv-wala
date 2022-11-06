@@ -7,19 +7,23 @@ import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBookingDetails } from '../../../app/slice/BookSlice'
 import { toast, ToastContainer } from 'react-toastify'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import { toastOptionsDate } from '../../../config/toast'
-import DatePicker from 'react-multi-date-picker'
+// import DatePicker from 'react-multi-date-picker'
 const SingleDetailRV = ({
   RV,
   images,
   loading,
   error,
-  dateRange,
   invoiceInfo,
   handleDateChange,
   token,
   bookNow,
+  startDate,
+  endDate
 }) => {
+  console.log({startDate})
   const settings = {
     className: 'center',
     centerMode: true,
@@ -29,10 +33,10 @@ const SingleDetailRV = ({
     speed: 500,
     autoplay: true,
   }
-  const [values, setValues] = useState([
-    // new DateObject().subtract(4, "days"),
-    // new DateObject().add(4, "days")
-  ])
+
+
+
+ 
   return (
     <>
       <section className="single-product-carousel">
@@ -208,7 +212,7 @@ const SingleDetailRV = ({
                                   RV.ListInfo.cancel_policy
                                     .charAt(0)
                                     .toUpperCase() +
-                                  RV.ListInfo.cancel_policy.slice(1)}
+                                    RV.ListInfo.cancel_policy.slice(1)}
                               </h6>
                               <p>More Details </p>
                             </div>
@@ -561,37 +565,28 @@ const SingleDetailRV = ({
                 </div>
                 <hr />
                 <div className="row">
-
-                  {/* <div className="col-md-12">
-                  <DatePicker
-                      value={values}
-                      onChange={setValues}
-                      range
-                      rangeHover
-                      placeholder='Enter Dates'
-                    />
-                  </div> */}
-
-                  <div className="col-md-6">
-                    <label>Check In*</label>
-                    <input
-                      type="date"
-                      name="checkIn"
-                      min={moment().format('YYYY-MM-DD')}
-                      value={dateRange[0]}
-                      onChange={handleDateChange}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>Check Out*</label>
-                    <input
-                      type="date"
-                      name="checkOut"
-                      min={moment().format('YYYY-MM-DD')}
-                      value={dateRange[1]}
-                      onChange={handleDateChange}
+                  <div className="col-md-12">
+                    <DatePicker
+                      selectsRange={true}
+                      startDate={startDate}
+                      endDate={endDate}
+                      dateFormat="MMMM d, yyy"
+                      onChange={(dates) => {
+                        handleDateChange(dates)
+                      }}
+                     
+                      isClearable={true}
+                      selected={startDate}
+                      excludeDates={
+                        RV.reserved_dates
+                          ? RV.reserved_dates.map((x) => {
+                              return new Date(x)
+                            })
+                          : []
+                      }
                     />
                   </div>
+
                   {RV.ListInfo.for_rent && (
                     <em className="text-center">
                       (minimum {RV.ListInfo.min_nights} night(s) rental)
@@ -770,7 +765,7 @@ const SingleDetailRV = ({
                           invoiceInfo.hostServicesTotal +
                           (invoiceInfo.reservationTotal +
                             invoiceInfo.hostServicesTotal) *
-                          0.13}
+                            0.13}
                       </span>
                     </li>
                   </ul>
@@ -871,7 +866,11 @@ const SingleDetailRV = ({
                 <button
                   className="btn btn-primary login-wrapper-btn"
                   type="submit"
-                  style={invoiceInfo.reservation.length == 0 ? { opacity: 0.5, pointerEvents: 'none' } : {}}
+                  style={
+                    invoiceInfo.reservation.length == 0
+                      ? { opacity: 0.5, pointerEvents: 'none' }
+                      : {}
+                  }
                   onClick={bookNow}
                 >
                   {loading && <i class="fa fa-spinner fa-spin"></i>}
@@ -952,151 +951,139 @@ const SingleDetailRV = ({
         </div>
       </section>
 
-
       {/* ============== SEND MESSAGE MODAL =============== */}
       {/* <button
-    type="button"
-    className="btn btn-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
-  >
-    Launch demo modal
-  </button>
-  <div
-    className="modal fade"
-    id="exampleModal"
-    tabIndex={-1}
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">
-          Send Message
-          </h5>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          />
-        </div>
-        <div className="modal-body">
-        <div className=" bg-white mw-100 m-0">
-        <form action="#">
-
-        <label  class="form-label">Message</label>
-        <div className="form-group border-bottom d-flex align-items-center position-relative">
-                  <textarea
-                    type="text"
-                    required=""
-                    placeholder="Enter Message"
-                    className="form-control"
-                    rows={4}
-                  />
-            
-
-                </div>
-                <div className="form-group my-3">
-                  <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
-                   Send
+{/* ============== SEND MESSAGE MODAL =============== */}
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Launch demo modal
+      </button>
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Send Message
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <div className=" bg-white mw-100 m-0">
+                <form action="#">
+                  <label class="form-label">Message</label>
+                  <div className="form-group border-bottom d-flex align-items-center position-relative">
+                    <textarea
+                      type="text"
+                      required=""
+                      placeholder="Enter Message"
+                      className="form-control"
+                      rows={4}
+                    />
                   </div>
-                </div>
+                  <div className="form-group my-3">
+                    <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
+                      Send
+                    </div>
+                  </div>
                 </form>
-                </div>
+              </div>
+            </div>
+          </div>
         </div>
-     
       </div>
-    </div>
-  </div> */}
       {/* ============== SEND MESSAGE MODAL =============== */}
 
-
       {/* ============== REVIEW MODAL =============== */}
-      {/* <button
-    type="button"
-    className="btn btn-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#reviewModal"
-  >
-    Launch demo modal
-  </button>
-  <div
-    className="modal fade"
-    id="reviewModal"
-    tabIndex={-1}
-    aria-labelledby="reviewModalLabel"
-    aria-hidden="true"
-  >
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="reviewModalLabel">
-          Write a Review
-          </h5>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          />
-        </div>
-        <div className="modal-body">
-        <div class="rate">
-                  <input type="radio" id="star5" name="rate" value="5" />
-                  <label for="star5" title="text">
-                    5 stars
-                  </label>
-                  <input type="radio" id="star4" name="rate" value="4" />
-                  <label for="star4" title="text">
-                    4 stars
-                  </label>
-                  <input type="radio" id="star3" name="rate" value="3" />
-                  <label for="star3" title="text">
-                    3 stars
-                  </label>
-                  <input type="radio" id="star2" name="rate" value="2" />
-                  <label for="star2" title="text">
-                    2 stars
-                  </label>
-                  <input type="radio" id="star1" name="rate" value="1" />
-                  <label for="star1" title="text">
-                    1 star
-                  </label>
-                </div>
-        <div className=" bg-white mw-100 m-0">
-     
-        <form action="#">
-      
-        <label  class="form-label">REVIEW
-</label>
-        <div className="form-group border-bottom d-flex align-items-center position-relative">
-                  <textarea
-                    type="text"
-                    required=""
-                    placeholder="Enter REVIEW"
-                    className="form-control"
-                    rows={4}
-                  />
-
-                </div>
-                <div className="form-group my-3">
-                  <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
-                   SUBMIT REVIEW
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#reviewModal"
+      >
+        Launch demo modal
+      </button>
+      <div
+        className="modal fade"
+        id="reviewModal"
+        tabIndex={-1}
+        aria-labelledby="reviewModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="reviewModalLabel">
+                Write a Review
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <div class="rate">
+                <input type="radio" id="star5" name="rate" value="5" />
+                <label for="star5" title="text">
+                  5 stars
+                </label>
+                <input type="radio" id="star4" name="rate" value="4" />
+                <label for="star4" title="text">
+                  4 stars
+                </label>
+                <input type="radio" id="star3" name="rate" value="3" />
+                <label for="star3" title="text">
+                  3 stars
+                </label>
+                <input type="radio" id="star2" name="rate" value="2" />
+                <label for="star2" title="text">
+                  2 stars
+                </label>
+                <input type="radio" id="star1" name="rate" value="1" />
+                <label for="star1" title="text">
+                  1 star
+                </label>
+              </div>
+              <div className=" bg-white mw-100 m-0">
+                <form action="#">
+                  <label class="form-label">REVIEW</label>
+                  <div className="form-group border-bottom d-flex align-items-center position-relative">
+                    <textarea
+                      type="text"
+                      required=""
+                      placeholder="Enter REVIEW"
+                      className="form-control"
+                      rows={4}
+                    />
                   </div>
-                </div>
+                  <div className="form-group my-3">
+                    <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
+                      SUBMIT REVIEW
+                    </div>
+                  </div>
                 </form>
-                </div>
+              </div>
+            </div>
+          </div>
         </div>
-     
       </div>
-    </div>
-  </div> */}
       {/* ============== REVIEW MODAL =============== */}
-
-
-
     </>
   )
 }

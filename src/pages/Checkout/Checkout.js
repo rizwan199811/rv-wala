@@ -1,4 +1,4 @@
-import React, { useMemo,useState } from 'react'
+import React, { useMemo, useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   useStripe,
@@ -6,12 +6,20 @@ import {
   CardNumberElement,
   CardCvcElement,
   CardExpiryElement,
+  cardElement
 } from '@stripe/react-stripe-js'
+import { toast,ToastContainer } from 'react-toastify';
+import toastOptions from "../../config/toast";
+import { format } from "date-fns";
+
 import { useFormik } from 'formik'
 import { paymentSchema } from '../../schemas'
 import useResponsiveFontSize from './useResponsiveFont'
 
-import { Country, State, City }  from 'country-state-city';
+import { Country, State, City } from 'country-state-city'
+import axios from 'axios'
+import { baseURL } from '../../config/apiURL'
+import { getCardImage } from '../../utils/helpers'
 
 const useOptions = () => {
   const fontSize = useResponsiveFontSize()
@@ -38,10 +46,7 @@ const useOptions = () => {
   return options
 }
 
-
-
 const initialValues = {
-  card_name: '',
   email: '',
   company_name: '',
   phone: '',
@@ -55,10 +60,16 @@ const initialValues = {
   expiryMonth: '',
   expiryYear: '',
 }
-const optionsCountry = Country.getAllCountries().map(x=>{return {label:x.name,value:x.isoCode}})
+const optionsCountry = Country.getAllCountries().map((x) => {
+  return { label: x.name, value: x.isoCode }
+})
 const SplitForm = () => {
   const [cities, setCities] = useState([])
   const [states, setStates] = useState([])
+  const [proceedNext, setProceedNext] = useState(false)
+  const [cardError, setCardError] = useState(false)
+  const [paymentMethods, setPaymentMethods] = useState(null);
+  const [paymentMethod, setSelectedMethod] = useState(null);
 
   console.log({ optionsCountry })
   const bookingDetails = localStorage.getItem('bookingDetails')
@@ -68,20 +79,102 @@ const SplitForm = () => {
   const elements = useElements()
   const options = useOptions()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
-      return
+  function getPaymentMethods() {
+    let headers = {
+      Authorization: localStorage.getItem('token'),
     }
+    axios.get(baseURL+`/payment/fetch-payment-methods`,{headers})
+      .then((resp) => {
+        console.log(resp.data.data);
+        setPaymentMethods(resp.data.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-    const payload = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardNumberElement),
-    })
-    console.log('[PaymentMethod]', payload)
+  
+
+ 
+
+  // useEffect(getPaymentMethods, []);
+
+  const handleSubmit = async (event) => {
+    try{
+      event.preventDefault()
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const { email, phone, country, postal_code, state, city, address } = errors
+     
+      if (!stripe || !elements) {
+        // Stripe.js has not loaded yet. Make sure to disable
+        // form submission until Stripe.js has loaded.
+        return
+      }
+      if (email || phone || country || postal_code || state || city || address) {
+        setProceedNext(false)
+        return
+      }
+  
+      setProceedNext(true)
+      const {
+        data: { data ,message},
+      } = await axios.post(baseURL + '/payment/create-client', {name:values.card_name,email:values.email,phone:values.phone},{headers})
+      console.log({data})
+  
+      const billingDetails = {
+        name: values.card_name,
+        address: {
+          country: values.country,
+          state: values.state,
+          city: values.city,
+          line1: values.address,
+        },
+      };
+      // return
+      const payload = await stripe.createPaymentMethod({
+        type: 'card',
+        billing_details: billingDetails,
+        card: elements.getElement(CardNumberElement),
+      })
+  
+    
+  
+      const {error} =payload;
+      if(error && error.message){
+        setCardError(error.message)
+        setProceedNext(false)
+        return
+      }
+  
+  
+      const {
+        data: { data:attachData ,message:attachMessage},
+      } = await axios.post(baseURL + '/payment/attach-payment', {paymentMethod: payload.paymentMethod},{headers})
+  
+      console.log({attachData})
+      
+  
+    const {token} = await stripe
+      .createToken(elements.getElement(CardNumberElement))
+      console.log({token})
+      const {
+        data: { data:paymentIntent},
+      } = await axios.post(baseURL + '/payment/intent', {amount:bookingDetails.total,paymentMethod:payload.paymentMethod.id},{headers})
+  
+      console.log({paymentIntent})
+      const {
+        data: { data:paymentConfirm,message:confirmPayment},
+      } = await axios.post(baseURL + '/payment/confirm', {paymentIntent:paymentIntent.id,paymentMethod:payload.paymentMethod.id,RVId:bookingDetails._id,dates:bookingDetails.invoiceInfo.reservation.map((x)=>{return x.date})},{headers})
+       console.log({paymentConfirm})
+       toast.success(confirmPayment, toastOptions)
+  
+    }
+    catch({message}){
+      toast.error(message, toastOptions)
+    }
+   
   }
 
   const { values, handleChange, handleBlur, errors, touched } = useFormik({
@@ -107,9 +200,7 @@ const SplitForm = () => {
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
               <form>
-                    
-
-                {/* <div className="mb-3 position-relative">
+                <div className="mb-3 position-relative">
                   <label className="form-label">Card Holder Name</label>
                   <input
                     type="text"
@@ -124,7 +215,7 @@ const SplitForm = () => {
                   {touched.card_name && errors.card_name ? (
                     <p className="form-error">{errors.card_name}</p>
                   ) : null}
-                </div> */}
+                </div>
                 <div className="mb-3 position-relative">
                   <label className="form-label">
                     COMPANY NAME <em>(OPTIONAL)</em>
@@ -194,14 +285,17 @@ const SplitForm = () => {
                       onChange={(e) => {
                         handleChange(e)
                         console.log(e.target.value)
-                        let state =State.getStatesOfCountry(e.target.value)
-                        console.log({state})
-                        state = state.length >0 ? state.map(x=>{
-                          return {
-                            label:x.name,
-                            value:x.isoCode
-                          }
-                        }) : []
+                        let state = State.getStatesOfCountry(e.target.value)
+                        console.log({ state })
+                        state =
+                          state.length > 0
+                            ? state.map((x) => {
+                                return {
+                                  label: x.name,
+                                  value: x.isoCode,
+                                }
+                              })
+                            : []
                         setCities([])
                         setStates(state)
                         // setProceedNext(true)
@@ -209,16 +303,10 @@ const SplitForm = () => {
                       }}
                       onBlur={handleBlur}
                     >
-                    
+                      <option value="">Select Country</option>
                       {optionsCountry.length > 0 &&
                         optionsCountry.map((x) => {
-                          return (
-                            <option
-                              value={x.value}
-                            >
-                              {x.label}
-                            </option>
-                          )
+                          return <option value={x.value}>{x.label}</option>
                         })}
                     </select>
                     {touched.country && errors.country ? (
@@ -251,39 +339,29 @@ const SplitForm = () => {
                       name="state"
                       onChange={(e) => {
                         handleChange(e)
-                        console.log({values:values.country})
-                        let cities = City.getCitiesOfState(values.country, e.target.value)
-                        cities = cities.length >0 ? cities.map(x=>{
-                          return {
-                            label:x.name,
-                            value:x.name
-                          }
-                        }) : []
+                        console.log({ values: values.country })
+                        let cities = City.getCitiesOfState(
+                          values.country,
+                          e.target.value,
+                        )
+                        cities =
+                          cities.length > 0
+                            ? cities.map((x) => {
+                                return {
+                                  label: x.name,
+                                  value: x.name,
+                                }
+                              })
+                            : []
                         setCities(cities)
-                        // console.log(e.target.value)
-                        // let cities = City.getCitiesOfCountry(e.target.value)
-                        // cities = cities.length >0 ? cities.map(x=>{
-                        //   return {
-                        //     label:x.name,
-                        //     value:x.name
-                        //   }
-                        // }) : []
-                        // setCities(cities)
-                        // // setProceedNext(true)
-                        // // handleChange(e, 'RVInfo')
                       }}
+                      disabled={states.length == 0}
                       onBlur={handleBlur}
                     >
-                    
+                      <option value="">Select State</option>
                       {states.length > 0 &&
                         states.map((x) => {
-                          return (
-                            <option
-                              value={x.value}
-                            >
-                              {x.label}
-                            </option>
-                          )
+                          return <option value={x.value}>{x.label}</option>
                         })}
                     </select>
                     {touched.state && errors.state ? (
@@ -291,39 +369,28 @@ const SplitForm = () => {
                     ) : null}
                   </div>
                   <div className="col-md-4 mb-3 position-relative">
-                    <label htmlFor="exampleInputEmail1" className="form-label mb-3">
+                    <label
+                      htmlFor="exampleInputEmail1"
+                      className="form-label mb-3"
+                    >
                       City
                     </label>
+
                     <select
                       class="form-select"
                       aria-label="Default select example"
                       name="city"
                       onChange={(e) => {
                         handleChange(e)
-                        // console.log(e.target.value)
-                        // let cities = City.getCitiesOfCountry(e.target.value)
-                        // cities = cities.length >0 ? cities.map(x=>{
-                        //   return {
-                        //     label:x.name,
-                        //     value:x.name
-                        //   }
-                        // }) : []
-                        // setCities(cities)
-                        // // setProceedNext(true)
-                        // // handleChange(e, 'RVInfo')
                       }}
+                      disabled={cities.length == 0}
                       onBlur={handleBlur}
                     >
-                    
+                      <option value="">Select City</option>
+
                       {cities.length > 0 &&
                         cities.map((x) => {
-                          return (
-                            <option
-                              value={x.value}
-                            >
-                              {x.label}
-                            </option>
-                          )
+                          return <option value={x.value}>{x.label}</option>
                         })}
                     </select>
                     {touched.city && errors.city ? (
@@ -332,9 +399,7 @@ const SplitForm = () => {
                   </div>
                 </div>
                 <div className="mb-3 position-relative">
-                  <label className="form-label">
-                    Address
-                  </label>
+                  <label className="form-label">Address</label>
                   <input
                     type="text"
                     className="form-control"
@@ -349,7 +414,7 @@ const SplitForm = () => {
                     <p className="form-error">{errors.address}</p>
                   ) : null}
                 </div>
-                
+
                 <div className="mb-3 position-relative stripe-div">
                   <label className="form-label">Card number</label>
                   <CardNumberElement
@@ -359,6 +424,8 @@ const SplitForm = () => {
                     }}
                     onChange={(event) => {
                       console.log('CardNumberElement [change]', event)
+                      setProceedNext(true)
+                      setCardError('')
                     }}
                     onBlur={() => {
                       console.log('CardNumberElement [blur]')
@@ -378,6 +445,8 @@ const SplitForm = () => {
                       }}
                       onChange={(event) => {
                         console.log('CardExpiryElement [change]', event)
+                        setProceedNext(true)
+                        setCardError('')
                       }}
                       onBlur={() => {
                         console.log('CardExpiryElement [blur]')
@@ -396,6 +465,8 @@ const SplitForm = () => {
                       }}
                       onChange={(event) => {
                         console.log('CardCvcElement [change]', event)
+                        setProceedNext(true)
+                        setCardError('')
                       }}
                       onBlur={() => {
                         console.log('CardCvcElement [blur]')
@@ -422,6 +493,9 @@ const SplitForm = () => {
                 <button type="submit" disabled={!stripe} onClick={handleSubmit}>
                   Pay
                 </button>
+                {cardError ? (
+                      <p className="form-error">{cardError}</p>
+                    ) : null}
                 {/* <button type="submit" className="btn btn-primary">
               Pay Now
             </button> */}
@@ -576,6 +650,30 @@ const SplitForm = () => {
             </div>
         </div>
       </div>
+      <ToastContainer />
+    {/* <div className={style.wrapper}>
+      <h3>Select your preferred payment method</h3>
+      {paymentMethods&& paymentMethods.length>0 &&
+        paymentMethods.map((method) => (
+          <div className={style.card} onClick={()=>{handleSelectCard(method)}} >
+            <div className={style.cardLogo}>
+              <img src={getCardImage(method.card.brand)} alt="" />
+            </div>
+
+            <div className={style.details}>
+              <p>
+                {method.card.brand} **** {method.card.last4}
+              </p>
+              <p>{method.billing_details.name}</p>
+            </div>
+
+            <div className={style.expire}>
+              Expires{" "}
+              {format(new Date(`${method.card.exp_year}/${method.card.exp_month}/01`), "MM/yyyy")}
+            </div>
+          </div>
+        ))}
+    </div> */}
     </div>
   )
 }

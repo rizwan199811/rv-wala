@@ -1,6 +1,6 @@
-import React,{useState} from 'react'
+import React, { useState, useRef,useEffect } from 'react'
 import login from '../images/loigin.jpg'
-import forgotPassword from '../images/forgot-password.jpg'
+
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { baseURL } from '../config/apiURL'
@@ -9,12 +9,15 @@ import { setToken } from '../app/slice/AuthSlice'
 
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast,ToastContainer } from 'react-toastify';
-import toastOptions from "../config/toast";
+import { toast, ToastContainer } from 'react-toastify'
+import toastOptions from '../config/toast'
 import { setProfileImage } from '../app/slice/ProfileSlice'
+import { ForgetPassword } from '../components/Modals/ResetPassword/ForgetPassword'
+import VerificationCode from '../components/Modals/ResetPassword/VerificationCode'
 
 const LogIn = () => {
   const [passwordShown, setPasswordShown] = useState(false);
+  const [toggleVerifyCode, setVerifyCode] = useState(false);
   let history = useNavigate()
   const dispatch = useDispatch()
   const formik = useFormik({
@@ -29,7 +32,7 @@ const LogIn = () => {
         .min(8, 'Password must be 8 characters long')
         .matches(/[0-9]/, 'Password requires a number')
         .matches(/[a-z]/, 'Password requires a lowercase letter')
-        .matches(/[!@#_\$%\^&\*]/, 'Password requires a special character'),
+        .matches(/[!@#_\$%\^&\*]/, 'Password requires a special character')
     }),
     enableReinitialize: true,
 
@@ -37,11 +40,23 @@ const LogIn = () => {
       alert(JSON.stringify(values, null, 2))
     },
   })
+
   const { errors, touched, handleBlur, values } = formik
   const [loading, setLoading] = useState(false)
+
+  const verifyRef = useRef(null)
+  const toggleVerificationModal = async () => {
+    setVerifyCode(true)
+  }
+  useEffect(() => {
+    if(toggleVerifyCode){
+      verifyRef.current.click()
+    }
+  }, [toggleVerifyCode]);
+
   const SignIn = async (e) => {
     try {
-      setLoading(true);
+      setLoading(true)
       e.preventDefault()
       if (!values.email && !values.password) {
         return
@@ -54,30 +69,35 @@ const LogIn = () => {
         password: values.password,
       }
       const {
-        data: { data, token, refreshToken ,message},
+        data: { data, token, refreshToken, message },
       } = await axios.post(baseURL + '/auth/login', body)
-        let profileImage =data.profileImage || 'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
-        toast.success(message,toastOptions);
-        setTimeout(() => {
-          setLoading(false);
-          dispatch(setToken(token))
-          dispatch(setProfileImage(profileImage))
-          localStorage.setItem('token', token)
-          localStorage.setItem('image', profileImage)
-          history('/', { replace: true })
-        },3000);
-    }     
-    catch({response :{ data :{message}}}){
-      console.log({message})
-      toast.error(message, toastOptions
-        );
+      let profileImage =
+        data.profileImage ||
+        'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
+      toast.success(message, toastOptions)
+      setTimeout(() => {
+        setLoading(false)
+        dispatch(setToken(token))
+        dispatch(setProfileImage(profileImage))
+        localStorage.setItem('token', token)
+        localStorage.setItem('image', profileImage)
+        localStorage.setItem('user', JSON.stringify(data))
+        history('/', { replace: true })
+      }, 3000)
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      console.log({ message })
+      toast.error(message, toastOptions)
     }
   }
   const togglePassword = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
-    setPasswordShown(!passwordShown);
-  };
+    setPasswordShown(!passwordShown)
+  }
   return (
     <>
       <div
@@ -140,14 +160,24 @@ const LogIn = () => {
                   className="form-control"
                   id="exampleInputPassword1"
                   placeholder="Password"
-                  type={passwordShown ? "text" : "password"}
+                  type={passwordShown ? 'text' : 'password'}
                   name="password"
                   onChange={(e) => {
                     formik.handleChange(e)
                   }}
                   onBlur={handleBlur}
                 />
-              {passwordShown? <i class="fa-solid fa-eye eye-pass" onClick={togglePassword}></i>:<i class="fa-solid fa-eye-slash eye-pass"  onClick={togglePassword}></i>} 
+                {passwordShown ? (
+                  <i
+                    class="fa-solid fa-eye eye-pass"
+                    onClick={togglePassword}
+                  ></i>
+                ) : (
+                  <i
+                    class="fa-solid fa-eye-slash eye-pass"
+                    onClick={togglePassword}
+                  ></i>
+                )}
                 <small className="form-text text-muted" id="passwordHelp">
                   {errors.password && touched.password ? (
                     <p className="text-danger">{errors.password} </p>
@@ -170,10 +200,14 @@ const LogIn = () => {
                   </div>
                 </div>
                 <div className="col-md-6 text-end">
-                  <Link to="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <small className="form-check-label" htmlFor="exampleCheck1">
-                    Forgot Password?
-                  </small>
+                  <Link
+                    to="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#forgetPassword"
+                  >
+                    <small className="form-check-label" htmlFor="exampleCheck1">
+                      Forgot Password?
+                    </small>
                   </Link>
                 </div>
               </div>
@@ -182,10 +216,9 @@ const LogIn = () => {
                 type="submit"
                 onClick={SignIn}
               >
-               {loading && <i class="fa fa-spinner fa-spin"></i>}
+                {loading && <i class="fa fa-spinner fa-spin"></i>}
                 Sign In
               </button>
-
             </form>
           </div>
           <ToastContainer />
@@ -193,100 +226,90 @@ const LogIn = () => {
       </div>
 
       {/* ============= FORGOT MODAL =============== */}
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <div className='p-4'>
-        <div className='text-center'>
-        <img src={forgotPassword} className="w-50"/>
-        </div>
-        <p>Please enter your username or email address, you will receive a link to create a new password via email.</p>
-        <input type="email" class="form-control mt-3" placeholder='USERNAME OR EMAIL'/>
-              <button
-                className="btn btn-primary login-wrapper-btn"
-                type="submit"
-              >
-                Reset Password
-              </button>
-       </div>
-      </div>
-  
-    </div>
-  </div>
-</div>
+
+      <ForgetPassword toggleVerificationModal={toggleVerificationModal} />
       {/* ============= FORGOT MODAL =============== */}
 
-
-
       {/* ============= RESET PASS MODAL =============== */}
-  {/* <button
-    type="button"
-    className="btn btn-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#staticBackdrop"
-  >
-    Launch static backdrop modal
-  </button>
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#verificationModal"
+        // style={{ display: 'none' }}
+        ref={verifyRef}
+      >
+        Launch VerificationCode
+      </button>
+      { toggleVerifyCode && <VerificationCode />}
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      >
+        Launch static backdrop modal
+      </button>
 
-  <div
-    className="modal fade"
-    id="staticBackdrop"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    tabIndex={-1}
-    aria-labelledby="staticBackdropLabel"
-    aria-hidden="true"
-  >
-    <div className="modal-dialog modal-dialog-centered">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="staticBackdropLabel">
-          Reset your password
-          </h5>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          />
+      <div
+        className="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="staticBackdropLabel">
+                Reset your password
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body reset-pass-wrap">
+              <div className="mainDiv">
+                <div className="cardStyle">
+                  <form action="">
+                    <div className="inputDiv">
+                      <label className="inputLabel" htmlFor="password">
+                        New Password
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required=""
+                      />
+                    </div>
+                    <div className="inputDiv">
+                      <label className="inputLabel" htmlFor="confirmPassword">
+                        Confirm Password
+                      </label>
+                      <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                      />
+                    </div>
+                    <div className="buttonWrapper">
+                      <button type="submit" className="btn">
+                        <span>Continue</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="modal-body reset-pass-wrap">
-        <div className="mainDiv">
-  <div className="cardStyle">
-    <form action="">
-      <div className="inputDiv">
-        <label className="inputLabel" htmlFor="password">
-          New Password
-        </label>
-        <input type="password" id="password" name="password" required="" />
       </div>
-      <div className="inputDiv">
-        <label className="inputLabel" htmlFor="confirmPassword">
-          Confirm Password
-        </label>
-        <input type="password" id="confirmPassword" name="confirmPassword" />
-      </div>
-      <div className="buttonWrapper">
-        <button
-          type="submit"
-          className="btn"
-        >
-          <span>Continue</span>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-
-        </div>
-      </div>
-    </div>
-  </div> */}
       {/* ============= RESET PASS MODAL =============== */}
     </>
   )
