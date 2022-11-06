@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const VerificationCode = () => {
-
+  const [counter, setCounter] = useState(90);
+    useEffect(() => {
+        const timer =
+        counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
   
 
   return (
@@ -45,9 +50,10 @@ const VerificationCode = () => {
                 <input type="tel" maxLength={1} pattern="[0-9]" className="form-control" />
                 <input type="tel" maxLength={1} pattern="[0-9]" className="form-control" />
             </div>
-            <button type="submit" className="w-100 btn btn-primary">
-                Verify account
+            <button type="submit" className="w-100 btn btn-primary mb-2">
+               {counter===0?"Resend Code":"Verify account"}
             </button>
+            <p className='text-end'> Resend in <span style={{color:"green",fontWeight:"bold"}}> 00:{counter}</span> </p>
             </form>
             </div>
         </div>
