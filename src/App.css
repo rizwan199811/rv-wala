@@ -3443,3 +3443,32 @@ text-align: center;
 } */
 
 /* =================CANCELLATION POLICY ENDS=========================== */
+
+
+/* =================BOOKING PAGE STARTS=========================== */
+.booking-wrap h1
+{
+  text-transform: uppercase;
+  font-weight: 900;
+  border-left: 10px solid #f89938;
+  padding-left: 10px;
+  margin-bottom: 30px !important;
+}
+.booking-wrap .card-header{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.booking-wrap .btn{
+  /* background-color: unset !important;
+    border: unset !important;
+    color: unset !important; */
+    border: var(--bs-btn-border-width) solid var(--bs-btn-border-color) !important;
+    color: var(--bs-btn-color) !important;
+    background-color: var(--bs-btn-bg) !important;
+}
+.booking-wrap a{
+  color: black;
+}
+.booking-wrap a:hover{
+  color: #f89938;
+}
+/* =================BOOKING PAGE ENDS=========================== */

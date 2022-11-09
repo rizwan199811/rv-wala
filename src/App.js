@@ -15,6 +15,7 @@ import Checkout from './pages/Checkout/CheckoutContainer'
 import Setting from './pages/Setting'
 import VerificationCode from './components/Modals/ResetPassword/VerificationCode'
 import CancellationPolicy from './pages/CancellationPolicy'
+import Booking from './pages/Booking'
 process.env.GENERATE_SOURCEMAP = 'false'
 function App() {
   const token = useSelector((state) => state.auth.token)
@@ -37,6 +38,7 @@ function App() {
             <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailContainer />} />
             <Route path="/verification-code" element={<VerificationCode />} />
             <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/booking" element={<Booking />} />
          
           </>
         )}
