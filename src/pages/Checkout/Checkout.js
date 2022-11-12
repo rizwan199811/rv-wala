@@ -14,7 +14,7 @@ import { format } from "date-fns";
 
 import { useFormik } from 'formik'
 import { paymentSchema } from '../../schemas'
-import useResponsiveFontSize from './useResponsiveFont'
+import useResponsiveFontSize from '../../components/useResponsiveFont'
 
 import { Country, State, City } from 'country-state-city'
 import axios from 'axios'

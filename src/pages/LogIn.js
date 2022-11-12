@@ -14,10 +14,15 @@ import toastOptions from '../config/toast'
 import { setProfileImage } from '../app/slice/ProfileSlice'
 import { ForgetPassword } from '../components/Modals/ResetPassword/ForgetPassword'
 import VerificationCode from '../components/Modals/ResetPassword/VerificationCode'
+import { ResetPassword } from '../components/Modals/ResetPassword/ResetPassword'
 
 const LogIn = () => {
   const [passwordShown, setPasswordShown] = useState(false);
-  const [toggleVerifyCode, setVerifyCode] = useState(false);
+  const [toggleVerifyCode, setVerifyCode] = useState(null);
+  const [renderVerifyCode, setRenderVerifyCode] = useState(false);
+  const [toggleResetModal, setToggleResetModal] = useState(null);
+  const [renderResetModal, setRenderResetModal] = useState(false);
+  
   let history = useNavigate()
   const dispatch = useDispatch()
   const formik = useFormik({
@@ -45,14 +50,24 @@ const LogIn = () => {
   const [loading, setLoading] = useState(false)
 
   const verifyRef = useRef(null)
+  const resetRef = useRef(null)
   const toggleVerificationModal = async () => {
-    setVerifyCode(true)
+    setRenderVerifyCode(true)
+    setVerifyCode(!toggleVerifyCode)
+  }
+
+  const toggleResetPassModal = () => {
+    console.log("toggleResetPassModal")
+    setRenderResetModal(true)
+    setToggleResetModal(!toggleResetModal)
   }
   useEffect(() => {
-    if(toggleVerifyCode){
-      verifyRef.current.click()
-    }
+  verifyRef.current.click()
   }, [toggleVerifyCode]);
+
+  useEffect(() => {
+    resetRef.current.click()
+    }, [toggleResetModal]);
 
   const SignIn = async (e) => {
     try {
@@ -75,8 +90,8 @@ const LogIn = () => {
         data.profileImage ||
         'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
       toast.success(message, toastOptions)
+      setLoading(false)
       setTimeout(() => {
-        setLoading(false)
         dispatch(setToken(token))
         dispatch(setProfileImage(profileImage))
         localStorage.setItem('token', token)
@@ -93,6 +108,8 @@ const LogIn = () => {
       toast.error(message, toastOptions)
     }
   }
+
+
   const togglePassword = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
@@ -241,26 +258,29 @@ const LogIn = () => {
       >
         Launch VerificationCode
       </button>
-      { toggleVerifyCode && <VerificationCode />}
+      { renderVerifyCode && <VerificationCode toggleResetModal ={ toggleResetPassModal}  />}
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#resetPassword"
+        ref={resetRef}
       >
-        Launch static backdrop modal
+        Launch Reset Password backdrop modal
       </button>
 
-      <div
+      {/* <div
         className="modal fade"
-        id="staticBackdrop"
+        id="resetPassword"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex={-1}
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
+      > */}
+      { <ResetPassword />}
+
+        {/* <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
@@ -308,8 +328,8 @@ const LogIn = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
       {/* ============= RESET PASS MODAL =============== */}
     </>
   )

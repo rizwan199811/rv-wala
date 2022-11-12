@@ -54,6 +54,7 @@ export const ForgetPassword = ({toggleVerificationModal}) => {
       } = await axios.post(baseURL + '/user/forgot-password', body)
 
       toast.success(message, toastOptions)
+      localStorage.setItem("forgetEmail",values.email)
       setLoading(false)
       toggleVerificationModal()
       // history('/', { replace: true })

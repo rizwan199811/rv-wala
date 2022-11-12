@@ -570,6 +570,7 @@ const SingleDetailRV = ({
                       selectsRange={true}
                       startDate={startDate}
                       endDate={endDate}
+                      minDate={new Date()}
                       dateFormat="MMMM d, yyy"
                       onChange={(dates) => {
                         handleDateChange(dates)

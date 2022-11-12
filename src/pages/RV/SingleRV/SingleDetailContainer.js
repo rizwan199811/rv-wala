@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { toastOptionsDate } from '../../../config/toast'
 import SingleDetailRV from './SingleDetailRVForRent'
 
+
 export const SingleDetailContainer = () => {
   const token = useSelector((state) => state.auth.token)
   const dispatch = useDispatch()
@@ -136,7 +137,9 @@ export const SingleDetailContainer = () => {
 
     }
     if(dates[0] && dates[1]){
-      if ( moment(dates[1]).diff(moment(dates[0]), 'days') < RV.ListInfo.min_nights ) {
+      if ( moment(dates[1]).diff(moment(dates[0]), 'days') < RV.ListInfo.min_nights-1 ) {
+        console.log(dates[1],dates[0])
+        console.log( moment(dates[1]).diff(moment(dates[0]), 'days'))
         setError(true)
         setDateRange([dates[0],null])
         toast.error(
