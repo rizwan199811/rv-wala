@@ -133,7 +133,14 @@ const Setting = () => {
       alert(JSON.stringify(values, null, 2))
     },
   })
-
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [c_passwordShown, setC_PasswordShown] = useState(false);
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown)
+  }
+  const toggleConfirmPassword = () => {
+    setC_PasswordShown(!c_passwordShown)
+  }
   return (
     <>
       <div className="container profile-setting-wrap my-4">
@@ -212,15 +219,19 @@ const Setting = () => {
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
+                    <div className="form-group position-relative">
                       <label htmlFor="password">Password</label>
                       <input
-                        type="password"
+                        type={passwordShown ? 'text' : 'password'}
                         className="form-control"
                         id="password"
+                        placeholder='********'
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
+                        {passwordShown ? (<i class="fa-solid fa-eye eye-pass" onClick={togglePassword} ></i>) :
+                         (<i class="fa-solid fa-eye-slash eye-pass" onClick={togglePassword} ></i> )}
+                        </div>
                       <small className="form-text text-muted" id="passwordHelp">
                         {errors.password && touched.password ? (
                           <p className="text-danger">{errors.password} </p>
@@ -228,19 +239,22 @@ const Setting = () => {
                           ''
                         )}
                       </small>
-                    </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
+                    <div className="form-group position-relative">
                       <label htmlFor="password">Confirm Password</label>
                       <input
-                        type="password"
+                        type={c_passwordShown ? 'text' : 'password'}
                         className="form-control"
                         id="confirmPassword"
                         name="confirmPassword"
+                        placeholder='********'
                         onChange={handleChange}
                         onBlur={handleBlur}
-                      />
+                        />
+                          {c_passwordShown ? (<i class="fa-solid fa-eye eye-pass" onClick={toggleConfirmPassword} ></i>) :
+                         (<i class="fa-solid fa-eye-slash eye-pass" onClick={toggleConfirmPassword} ></i> )}
+                        </div>
                       <small className="form-text text-muted" id="passwordHelp">
                         {errors.confirmPassword && touched.confirmPassword ? (
                           <p className="text-danger">
@@ -250,7 +264,6 @@ const Setting = () => {
                           ''
                         )}
                       </small>
-                    </div>
                   </div>
                 </div>
                 <div className="row gutters">

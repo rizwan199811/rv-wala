@@ -683,6 +683,7 @@ hr {
   position: absolute;
   right: 9px;
   bottom: 10px;
+  cursor: pointer;
 }
 
 .login-wrapper input {
@@ -3065,6 +3066,7 @@ margin-top: 24px;
   display: flex;
   flex-direction: column;
   margin: auto;
+  position: relative;
 }
 .reset-pass-wrap input {
 height: 40px;

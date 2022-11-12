@@ -111,8 +111,6 @@ const LogIn = () => {
 
 
   const togglePassword = () => {
-    // When the handler is invoked
-    // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown)
   }
   return (
@@ -232,6 +230,7 @@ const LogIn = () => {
                 className="btn btn-primary login-wrapper-btn"
                 type="submit"
                 onClick={SignIn}
+                disabled={loading?true:false}
               >
                 {loading && <i class="fa fa-spinner fa-spin"></i>}
                 Sign In

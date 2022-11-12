@@ -12,7 +12,9 @@ import toastOptions from "../config/toast";
 
  
 const SignUp = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [c_passwordShown, setC_PasswordShown] = useState(false);
   const formik = useFormik({
     initialValues: {
       fullname:'',
@@ -82,6 +84,12 @@ const SignUp = () => {
  
   }
 
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown)
+  }
+  const toggleConfirmPassword = () => {
+    setC_PasswordShown(!c_passwordShown)
+  }
 
   return (
     <div className="container-fluid px-2 px-md-4 py-5 mx-auto signup-wrapper">
@@ -195,7 +203,7 @@ const SignUp = () => {
               <div className="row mt-3">
                 <div className="col-md-6">
                   <label className="mb-0">
-                    <h6 className="mb-0 text-sm">Full Name</h6>
+                    <h6 className="mb-1 text-sm">Full Name</h6>
                   </label>
                   <input type="text" name="fullname" placeholder="John Doe" onChange={handleChange} onBlur={handleBlur} />
                   {errors.fullname && touched.fullname ? (
@@ -205,7 +213,7 @@ const SignUp = () => {
                   )}
                 </div>
                 <div className="col-md-6">
-                  <label className="mb-0">
+                  <label className="mb-1">
                     <h6 className="mb-0 text-sm">Username</h6>
                   </label>
                   <input type="text" name="username" placeholder="johndoe123" onChange={handleChange} onBlur={handleBlur} />
@@ -217,7 +225,7 @@ const SignUp = () => {
                 </div>
               </div>
               <div className="row my-3 px-3">
-                <label className="mb-0">
+                <label className="mb-1 p-0">
                   <h6 className="mb-0 text-sm">Email Address</h6>
                 </label>
                 <input
@@ -234,16 +242,23 @@ const SignUp = () => {
                   )}
               </div>
               <div className="row px-3 mb-3">
-                <label className="mb-0">
+                <label className="mb-1 p-0">
                   <h6 className="mb-0 text-sm">Password</h6>
                 </label>
+              <div className="position-relative p-0">
                 <input
-                  type="password"
+                  type={passwordShown ? 'text' : 'password'}
                   name="password"
                   placeholder="●●●●●●●●●●"
                   onChange={handleChange}
                   onBlur={handleBlur} 
                 />
+                   {passwordShown ? (
+                  <i class="fa-solid fa-eye eye-pass" onClick={togglePassword} ></i>
+                ) : (
+                  <i class="fa-solid fa-eye-slash eye-pass" onClick={togglePassword} ></i>
+                )}
+                    </div>
                   {errors.password && touched.password ? (
                     <p className="text-danger">{errors.password} </p>
                   ) : (
@@ -251,16 +266,23 @@ const SignUp = () => {
                   )}
               </div>
               <div className="row px-3">
-                <label className="mb-0">
+                <label className="mb-1 p-0">
                   <h6 className="mb-0 text-sm">Confirm Password</h6>
                 </label>
+                <div className="position-relative p-0">
                 <input
-                  type="password"
+                  type={c_passwordShown ? 'text' : 'password'}
                   name="confirmpassword"
                   placeholder="●●●●●●●●●●"
                   onChange={handleChange}
                   onBlur={handleBlur} 
                 />
+                  {c_passwordShown ? (
+                  <i class="fa-solid fa-eye eye-pass" onClick={toggleConfirmPassword} ></i>
+                ) : (
+                  <i class="fa-solid fa-eye-slash eye-pass" onClick={toggleConfirmPassword} ></i>
+                )}
+                    </div>
                  {errors.confirmpassword && touched.confirmpassword ? (
                     <p className="text-danger">{errors.confirmpassword} </p>
                   ) : (

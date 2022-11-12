@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export const ResetPassword = () => {
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [c_passwordShown, setC_PasswordShown] = useState(false);
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown)
+  }
+  const toggleConfirmPassword = () => {
+    setC_PasswordShown(!c_passwordShown)
+  }
   return (
     <div
       className="modal fade"
@@ -33,21 +41,25 @@ export const ResetPassword = () => {
                       New Password
                     </label>
                     <input
-                      type="password"
+                      type={passwordShown ? 'text' : 'password'}
                       id="password"
                       name="password"
                       required=""
                     />
+                        {passwordShown ? (<i class="fa-solid fa-eye eye-pass" onClick={togglePassword} ></i>) :
+                         (<i class="fa-solid fa-eye-slash eye-pass" onClick={togglePassword} ></i> )}
                   </div>
                   <div className="inputDiv">
                     <label className="inputLabel" htmlFor="confirmPassword">
                       Confirm Password
                     </label>
                     <input
-                      type="password"
+                      type={c_passwordShown ? 'text' : 'password'}
                       id="confirmPassword"
                       name="confirmPassword"
                     />
+                       {c_passwordShown ? (<i class="fa-solid fa-eye eye-pass" onClick={toggleConfirmPassword} ></i>) :
+                         (<i class="fa-solid fa-eye-slash eye-pass" onClick={toggleConfirmPassword} ></i> )}
                   </div>
                   <div className="buttonWrapper">
                     <button type="submit" className="btn">
