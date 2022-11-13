@@ -251,7 +251,7 @@ const LogIn = () => {
       {/* ============= RESET PASS MODAL =============== */}
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary d-none"
         data-bs-toggle="modal"
         data-bs-target="#verificationModal"
         // style={{ display: 'none' }}
@@ -262,7 +262,7 @@ const LogIn = () => {
       { renderVerifyCode && <VerificationCode toggleResetModal ={ toggleResetPassModal}  />}
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary d-none"
         data-bs-toggle="modal"
         data-bs-target="#resetPassword"
         ref={resetRef}

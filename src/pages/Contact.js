@@ -1,11 +1,39 @@
-import React from 'react'
-
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
+import { toast, ToastContainer } from 'react-toastify'
+import toastOptions from '../config/toast'
 const Contact = () => {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_yi3uz5q",
+        "template_qab0wdc",
+        form.current,
+        "1wftmcOR52AmWxF7t"
+      )
+      .then(
+        (result) => {
+          // console.log(result.text);
+          toast.success("Message sent", toastOptions)
+          // console.log("message sent");
+        },
+        (error) => {
+          // console.log(error.text);
+          toast.success("Something went wrong. Try again ", toastOptions)
+        }
+      );
+      e.target.reset()
+  };
+
   return (
     <div>
 
 <section className="contact-page-sec">
-        <div className="container">
+        <div className="container pb-5">
           <div className="row py-5">
             <div className="col-md-4">
               <div className="contact-info">
@@ -50,33 +78,33 @@ const Contact = () => {
           </div>
           <div className="row">
             <div className="col-md-8">
-              <div className="contact-page-form" method="post">
+              <div className="contact-page-form" >
                 <h2>Get in Touch</h2> 
-                <form action="contact-mail.php" method="post">
+                <form ref={form} onSubmit={sendEmail}>
                   <div className="row">
                     <div className="col-md-6 col-sm-6 col-xs-12">
                       <div className="single-input-field">
-                        <input type="text" placeholder="Your Name" name="name" />
+                        <input type="text" placeholder="Your Name" name="user_name" />
                       </div>
                     </div>  
                     <div className="col-md-6 col-sm-6 col-xs-12">
                       <div className="single-input-field">
-                        <input type="email" placeholder="E-mail" name="email" required />
+                        <input type="email" placeholder="E-mail" name="user_email" required />
                       </div>
                     </div>                              
                     <div className="col-md-6 col-sm-6 col-xs-12">
                       <div className="single-input-field">
-                        <input type="text" placeholder="Phone Number" name="phone" />
+                        <input type="text" placeholder="Phone Number" name="user_phone" />
                       </div>
                     </div>  
                     <div className="col-md-6 col-sm-6 col-xs-12">
                       <div className="single-input-field">
-                        <input type="text" placeholder="Subject" name="subject" />
+                        <input type="text" placeholder="Subject" name="user_subject" />
                       </div>
                     </div>                
                     <div className="col-md-12 message-input">
                       <div className="single-input-field">
-                        <textarea placeholder="Write Your Message" name="message" defaultValue={""} />
+                        <textarea placeholder="Write Your Message" name="user_message" />
                       </div>
                     </div>                                                
                     <div className="single-input-fieldsbtn">
@@ -94,7 +122,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-
+      <ToastContainer />
     </div>
   )
 }

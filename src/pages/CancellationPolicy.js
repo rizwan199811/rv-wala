@@ -2,7 +2,7 @@ import React from 'react'
 
 const CancellationPolicy = () => {
     return (
-        <div className='container my-4'>
+        <div className='container my-5'>
             <main className="header-offset content-wrapper about-wrapper">
                 <div className="terms-container">
                     <div className="row">

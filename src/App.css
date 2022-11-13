@@ -39,9 +39,9 @@ ul {
   background: #f9f8f8;
   position: relative;
 }
-.footer-cta {
+/* .footer-cta {
   border-bottom: 1px solid #cb5644;
-}
+} */
 .single-cta i {
   color: #cb5644;
   font-size: 30px;
@@ -65,6 +65,8 @@ ul {
 .footer-content {
   position: relative;
   z-index: 2;
+  border-top: 1px solid #cb5644;
+
 }
 .footer-pattern img {
   position: absolute;
@@ -426,8 +428,8 @@ hr {
 
 .steps-card-wrapper .card {
   width: auto;
-  /* max-width: 360px;
-    min-height: 360px; */
+  /* max-width: 360px; */
+    min-height: 350px;
   height: auto;
   background: #334252;
   /* margin: 20px 14px; */
@@ -1134,11 +1136,13 @@ button:focus {
 }
 
 @media screen and (max-width: 991px) {
-  .card1 {
+  /* .card1 {
     border-bottom-left-radius: 0px;
     border-top-right-radius: 20px;
-  }
-
+  } */
+  .card1{
+    display: none;
+   }
   .card2 {
     border-bottom-left-radius: 20px;
     border-top-right-radius: 0px;
@@ -1199,6 +1203,12 @@ color: #fff;
   background-color: #edbb00;
   border-color: #edbb00;
 } */
+.navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 8888;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .carousel-caption {
     padding-bottom: 350px;
@@ -1212,9 +1222,9 @@ color: #fff;
     font-size: 30px;
     padding: 20px 15px;
   }
-  .navbar-collapse {
+  /* .navbar-collapse {
     background: rgba(0, 0, 0, 0.5);
-  }
+  } */
   .carousel-caption {
     padding-bottom: 120px;
   }
@@ -1520,7 +1530,15 @@ a:hover, a:focus{
     transition: 0.4s;
     border-radius: 20px;
   }
-  
+  .dasboard-btn{
+    transition: 0.4s;
+    border-radius: 20px;
+    color: rgb(104, 85, 224);
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid #cb5644;
+    padding: 6px 15px !important;
+    margin-right: 20px;
+  }
   .reg {
     color: white !important;
     background-color: #cb5644;
@@ -1532,7 +1550,7 @@ a:hover, a:focus{
     border: 1px solid #cb5644;
   }
   
-  .log:hover,.reg:hover {
+  .log:hover,.reg:hover ,.dasboard-btn:hover{
     color: white !important;
     /* width:; */
     box-shadow: 0 0 20px #cb5644;
@@ -3474,3 +3492,147 @@ text-align: center;
   color: #f89938;
 }
 /* =================BOOKING PAGE ENDS=========================== */
+
+
+
+
+
+/*-----------About-page-Starts------------*/
+
+.about-bg {
+  background-image: url("./images/rvwala-bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+.about-bg h1 {
+  font-weight: 900;
+}
+.about-sec-wrapper {
+  background-color: #cb5644;
+  padding: 40px 0;
+  color: white;
+  position: relative;
+}
+.about-img-wrap img {
+  width: 100%;
+}
+.about-img-wrap-2 img {
+  width: 100%;
+  border-radius: 30px;
+  /* height: 60vh; */
+}
+.about-img-wrap::before {
+  content: "";
+  width: 80%;
+  height: 80%;
+  border: 10px solid white;
+  position: absolute;
+  right: -10%;
+  top: 10%;
+  z-index: -1;
+}
+
+.about-img-wrap-2::before {
+  content: "";
+  width: 92%;
+  height: 90%;
+  border: 10px solid #08295a;
+  position: absolute;
+  right: 13%;
+  z-index: 1;
+  border-radius: 40px;
+  bottom: -8%;
+  z-index: -1;
+}
+
+.about-inner-div {
+  position: relative;
+  z-index: 2;
+}
+.about-content-wrap p {
+  margin-top: 10px;
+  color: #fff;
+  font-size: 18px;
+}
+.about-content-wrap h3,
+.about-sec-wrapper-2 h3 {
+  font-weight: 900;
+}
+.about-sec-wrapper-2 {
+  /* background-image: url("assets/images/about-sol.jpeg"); */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+.about-content-wrap-2 p {
+  font-size: 18px;
+}
+.about-sec-wrapper-2 {
+  padding: 40px 0;
+  position: relative;
+}
+
+/* .about-content-wrap-2::before {
+  content: "";
+  width: 40%;
+  height: 65%;
+  border: 10px solid #08295a;
+  position: absolute;
+  right: 13%;
+  z-index: 1;
+  border-radius: 40px;
+  bottom: 9%;
+} */
+
+.counter-box {
+  display: block;
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  padding: 40px 20px 37px;
+  text-align: center;
+}
+
+.counter-box p {
+  margin: 5px 0 0;
+  padding: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.counter-box i {
+  font-size: 60px;
+  margin: 0 0 15px;
+  color: #fff;
+}
+
+.counter {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 28px;
+}
+
+.counter-box.colored p,
+.counter-box.colored i,
+.counter-box.colored .counter {
+  color: #fff;
+}
+.counter-sec-wrapper {
+  background-image: url("./images/rvwala-about-social.jpg");
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  padding: 30px 0;
+  height: 400px;
+  display: flex;
+  align-items: center;
+}
+
+/*-----------About-page-ends------------*/

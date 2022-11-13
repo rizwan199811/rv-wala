@@ -237,7 +237,7 @@ const Home = (props) => {
                   <img className="icon" src="//cdn.shopify.com/s/files/1/2083/7711/files/2_Form_1x_bbdc16b4-442e-4156-b506-6fb1d1f072cb.png?4742423178050864078" alt="" />
                   <hr />
                   <h4>
-                  Find your RV
+                  List your RV with confidence
                   </h4>
                 </div>
               </div>
@@ -254,7 +254,7 @@ const Home = (props) => {
                   <img className="icon" src="//cdn.shopify.com/s/files/1/2083/7711/files/2_Form_1x_bbdc16b4-442e-4156-b506-6fb1d1f072cb.png?4742423178050864078" alt="" />
                   <hr />
                   <h4>
-                  Book your RV
+                  Receive Rental Requests
                   </h4>
                 </div>
               </div>
@@ -271,7 +271,7 @@ const Home = (props) => {
                   <img className="icon" src="//cdn.shopify.com/s/files/1/2083/7711/files/2_Form_1x_bbdc16b4-442e-4156-b506-6fb1d1f072cb.png?4742423178050864078" alt="" />
                   <hr />
                   <h4>
-                  Start Your Adventure
+                  Set pick up location or drop off for your RV
                   </h4>
                 </div>
               </div>
@@ -288,7 +288,7 @@ const Home = (props) => {
                   <img className="icon" src="//cdn.shopify.com/s/files/1/2083/7711/files/2_Form_1x_bbdc16b4-442e-4156-b506-6fb1d1f072cb.png?4742423178050864078" alt="" />
                   <hr />
                   <h4>
-                  Return
+                  Earn Money
                   </h4>
                 </div>
               </div>

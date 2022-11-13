@@ -289,16 +289,12 @@ const SignUp = () => {
                     ''
                   )}
               </div>
-              <div className="row px-3 py-2 mb-3">
+              <div className="row px-3 py-2 mt-3 mb-3">
                 <small className="text-muted">
                  <input type="checkbox" style={{width:"auto"}}/> By signing up, you agree our{" "}
-                  <a href className="text-primary">
-                    Terms of services
-                  </a>{" "}
-                  and{" "}
-                  <a href className="text-primary">
-                    Privacy Policy
-                  </a>
+                  <Link to="/privacy-policy" className="text-primary">
+                  terms and conditions
+                  </Link>
                 </small>
               </div>
               <div className="row mb-4">

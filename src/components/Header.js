@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {  NavLink } from 'react-router-dom'
 import {  useSelector,useDispatch } from 'react-redux';
 import { setToken } from '../app/slice/AuthSlice';
 
@@ -33,24 +33,29 @@ const Header = () => {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
     <ul className="navbar-nav  mb-2 mb-lg-0">
         <li className="nav-item">
-          <Link to="/" className="nav-link active" aria-current="page" href="#">
+          <NavLink to="/" className="nav-link" aria-current="page" href="#">
             Home
-          </Link>
+          </NavLink>
         </li>
         <li className="nav-item">
-          <Link  to="/listRV" className="nav-link">
+          <NavLink  to="/listRV" className="nav-link">
           list my rv
-          </Link>
+          </NavLink>
         </li>
         <li className="nav-item">
-          <Link to="/rvs-for-rent" className="nav-link" >
+          <NavLink to="/rvs-for-rent" className="nav-link" >
           Search
-          </Link>
+          </NavLink>
         </li>
         <li className="nav-item">
-          <Link to="/contactus" className="nav-link" >
+          <NavLink to="/contact-us" className="nav-link" >
           Contact
-          </Link>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/about-us" className="nav-link" >
+          About Us
+          </NavLink>
         </li>
 
  
@@ -59,17 +64,17 @@ const Header = () => {
    !token ? (<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 
    <li className="nav-item">
-     <Link to="/login" className="nav-link log" href="#">
+     <NavLink to="/login" className="nav-link log">
     Login
-     </Link>
+     </NavLink>
    </li>
    <li className="nav-item">
-     <Link to="/signup" className="nav-link reg" href="#">
+     <NavLink to="/signup" className="nav-link reg">
     Sign up
-     </Link>
+     </NavLink>
    </li>
    <li className="nav-item">
-     <a className="nav-link" href="#">
+     <a className="nav-link">
    
      </a>
    </li>
@@ -77,7 +82,11 @@ const Header = () => {
 
  </ul>):(
     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-
+ {/* <li className="nav-item m-auto">
+     <NavLink to="#" className="nav-link dasboard-btn">
+    Dashboard
+     </NavLink>
+   </li> */}
     <div className="dropdown header-profile-dropdown">
         <button
             className="dropdown-toggle header-profile-dropdown"
@@ -89,19 +98,19 @@ const Header = () => {
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
-                <Link to="/account-settings" className="dropdown-item" >
+                <NavLink to="/account-settings" className="dropdown-item" >
                     Settings
-                </Link>
+                </NavLink>
             </li>
             <li>
-                <Link to="/booking" className="dropdown-item" >
+                <NavLink to="/booking" className="dropdown-item" >
                     Bookings
-                </Link>
+                </NavLink>
             </li>
             <li>
-                <Link to="/" className="dropdown-item" href="#" onClick={Logout}>
+                <NavLink to="/" className="dropdown-item" href="#" onClick={Logout}>
                     Logout
-                </Link>
+                </NavLink>
             </li>
         </ul>
     </div>

@@ -17,6 +17,8 @@ import VerificationCode from './components/Modals/ResetPassword/VerificationCode
 import CancellationPolicy from './pages/CancellationPolicy'
 import Booking from './pages/Booking'
 import RVforSale from './pages/RVforSale'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import AboutUs from './pages/AboutUs'
 process.env.GENERATE_SOURCEMAP = 'false'
 function App() {
   const token = useSelector((state) => state.auth.token)
@@ -41,6 +43,8 @@ function App() {
             <Route path="/cancellation-policy" element={<CancellationPolicy />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/rv-for-sale" element={<RVforSale />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/about-us" element={<AboutUs />} />
          
           </>
         )}
