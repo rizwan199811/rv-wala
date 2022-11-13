@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast,ToastContainer } from 'react-toastify';
 import toastOptions from "../config/toast";
 import { setProfileImage } from '../app/slice/ProfileSlice'
+import { Spinner } from 'reactstrap'
 
 const LogIn = () => {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -143,7 +144,12 @@ const LogIn = () => {
                   }}
                   onBlur={handleBlur}
                 />
-              {passwordShown? <i class="fa-solid fa-eye eye-pass" onClick={togglePassword}></i>:<i class="fa-solid fa-eye-slash eye-pass"  onClick={togglePassword}></i>} 
+              {passwordShown? 
+
+<i class="bi bi-eye-fill eye-pass" onClick={togglePassword}></i>
+:
+              <i class="bi bi-eye-slash-fill eye-pass"  onClick={togglePassword}></i>
+             } 
                 <small className="form-text text-muted" id="passwordHelp">
                   {errors.password && touched.password ? (
                     <p className="text-danger">{errors.password} </p>
@@ -175,8 +181,10 @@ const LogIn = () => {
                 className="btn btn-primary login-wrapper-btn"
                 type="submit"
                 onClick={SignIn}
+                disabled={loading?true:false}
               >
-               {loading && <i class="fa fa-spinner fa-spin"></i>}
+                
+               {loading && <Spinner size="sm"/> }
                 Sign In
               </button>
 

@@ -14,6 +14,11 @@ const navigation = [
     href: "/rv-request",
     icon: "bi bi-speedometer2",
   },
+  {
+    title: "Bookings",
+    href: "/bookings",
+    icon: "bi bi-speedometer2",
+  },
   // {
   //   title: "Alert",
   //   href: "/alerts",
