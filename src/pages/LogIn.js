@@ -53,11 +53,13 @@ const LogIn = () => {
   const resetRef = useRef(null)
   const toggleVerificationModal = async () => {
     setRenderVerifyCode(true)
+    setRenderResetModal(false)
     setVerifyCode(!toggleVerifyCode)
   }
 
   const toggleResetPassModal = () => {
     console.log("toggleResetPassModal")
+    setRenderVerifyCode(false)
     setRenderResetModal(true)
     setToggleResetModal(!toggleResetModal)
   }
@@ -277,7 +279,7 @@ const LogIn = () => {
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       > */}
-      { <ResetPassword />}
+      {renderResetModal && <ResetPassword />}
 
         {/* <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
