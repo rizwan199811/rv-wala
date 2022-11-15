@@ -725,7 +725,7 @@ hr {
   box-shadow: 0px 0px 20px 20px #66666605;
   border-radius: 45px;
   background-size: cover;
-  background-image: url(images/loigin.jpg);
+  background-image: url(images/loigin_1.jpg);
   border: 1px solid  #f89938;
   background-position: center;
 }
@@ -3636,3 +3636,6 @@ text-align: center;
 }
 
 /*-----------About-page-ends------------*/
+.slick-prev, .slick-next{
+  display: none !important;
+}

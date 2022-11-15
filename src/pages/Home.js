@@ -2,6 +2,22 @@ import React from 'react'
 import Sliderr from '../components/Slider'
 import Slider from "react-slick";
 import { Link, useNavigate } from "react-router-dom";
+import classA from "../images/classA.webp";
+import aaa from "../images/b.webp";
+import bbb from "../images/c.webp";
+import fifth from "../images/fifth.webp";
+// import hauler from "../images/hauler.webp";
+import camper from "../images/camper.webp";
+import popcamper from "../images/popcamper.webp";
+import campervan from "../images/campervan.webp";
+import location_1 from "../images/location_1.webp";
+import location_2 from "../images/location_2.webp";
+import location_3 from "../images/location_3.webp";
+import blog1 from "../images/blog1.webp";
+import blog2 from "../images/blog2.webp";
+import image1 from "../images/1.svg";
+import image2 from "../images/2.svg";
+import image3 from "../images/3.svg";
 const Home = (props) => {
   let history = useNavigate();
   var settings = {
@@ -107,13 +123,13 @@ const Home = (props) => {
     </div> */}
     <div className="serachrv-classes">
       <div className='d-flex justify-content-between flex-wrap'> 
-        <Link to="/rvs-for-rent?rvClass=Class A"><img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Class B"><img src="https://files.rvngo.com/assets/icons/class_a_off_sm-0de45904d2afa666ba618e429054e8cd7f9621456e50af73a4bb974951502846.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Class C"><img src="https://files.rvngo.com/assets/icons/class_c_off_sm-48b27e0e4e9d72be5ef7870129361181cf026686b5483e5f29f14957eb79e0b1.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Fifth Wheel"><img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Campervan"><img src="https://files.rvngo.com/assets/icons/fifth_wheel_off_sm-4715ae8bf69f9f157593b553d18643243ae1943816bfbf0f385e794ab8a028be.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Campervan"><img src="https://files.rvngo.com/assets/icons/camper_trailer_off_sm-3a76f47796e9da89bf36125de2ebec2163c1f423fa23d74db78ef5782aeaedab.png"/></Link>
-        <Link to="/rvs-for-rent?rvClass=Pop up camper and other"><img src="https://files.rvngo.com/assets/icons/popup_camper_off_sm-fc7c5fd615e78226cdb09af9fe043ddd956fd448fdb4c7ae6db54684b634ad78.png"/></Link>
+        <Link to="/rvs-for-rent?rvClass=Class A"><img src={classA}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Class B"><img src={aaa}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Class C"><img src={bbb}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Fifth Wheel"><img src={fifth}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Campervan"><img src={camper}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Campervan"><img src={campervan}/></Link>
+        <Link to="/rvs-for-rent?rvClass=Pop up camper and other"><img src={popcamper}/></Link>
       </div>
     </div>
     <div className="form-group my-3">
@@ -312,7 +328,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/lasvegas-94478218b4c7657ce7d335bcce6afc5a41f13b4d40c7939b1939b21c17bf53d7.jpg" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_1} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -333,7 +349,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/tampa-6a3c6b26466809347d1042d5fc9517b4d61927d3161fe2134b551cae7c89b7e6.png" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_2} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -354,7 +370,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/miami-43cffa5a83d2097be177098e35bb9987d63940d3e0c34250934a351495af65ee.png" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_3} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -376,7 +392,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/lasvegas-94478218b4c7657ce7d335bcce6afc5a41f13b4d40c7939b1939b21c17bf53d7.jpg" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_2} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -397,7 +413,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/tampa-6a3c6b26466809347d1042d5fc9517b4d61927d3161fe2134b551cae7c89b7e6.png" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_3} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -418,7 +434,7 @@ const Home = (props) => {
             <div className="card">
               <div className="content">
                 <div className="front">
-                  <img className="profile" width="100%" src="https://files.rvngo.com/assets/city/miami-43cffa5a83d2097be177098e35bb9987d63940d3e0c34250934a351495af65ee.png" alt="Neymar" />
+                  <img className="profile" width="100%" src={location_1} alt="Neymar" />
                   {/* <h2>Neymar</h2> */}
                 </div>
                 <div className="back from-left">
@@ -467,17 +483,17 @@ const Home = (props) => {
     <p>We have many options for you, whether you are you looking for an ADA Compliant, Wheelchair Accessible RV or a Pet Friendly RV we have you covered. You can find the perfect RV for a one way RV rental or an RV with a return trip. We even offer RVs and trailers that can be delivered to you.</p>
   <div className='col-4 '>
     <div className='flexible-img'>
-      <img src="https://files.rvngo.com/assets/icons/pull-camper-693369f3403b67100a30df18e8eef1bb272a5270fe7c7ca3d9e1e3d06fc0ca20.svg"/>
+      <img src={image1}/>
     </div>
   </div>
   <div className='col-4 '>
     <div className='flexible-img'>
-      <img src="https://files.rvngo.com/assets/icons/pet-love-d382132f36bc3bf85ea33ba2c1737e2c84d6125b7663416bb971650d482badfc.svg"/>
+      <img src={image2}/>
     </div>
   </div>
   <div className='col-4 '>
     <div className='flexible-img'>
-      <img src="https://files.rvngo.com/assets/icons/chair-badge-5cd8e442585050b977fc6edf20455efe742ff88a8f7414c932557a72a18d1100.svg"/>
+      <img src={image3}/>
     </div>
   </div>
 
@@ -500,7 +516,7 @@ const Home = (props) => {
         <div className="wrapper">
         <div className="card">
           <div className="card__img">
-            <img src="https://files.rvngo.com/assets/couple-celebrate-a854016a0a1ccacad333332a7d15de089bbeb52690cfca5dfe066f2aebc66568.png" />
+            <img src={blog1} />
           </div>
           <div className="card__content">
             <h3 className="card__title">What Is The Cheapest Way To Rent An RV?</h3>
@@ -520,7 +536,7 @@ const Home = (props) => {
         <div className="wrapper">
         <div className="card">
           <div className="card__img">
-            <img src="https://files.rvngo.com/assets/couple-9c5ef4950bce9185424ff2e2896ed4f548326da9038ff919510683c73fce4355.png" />
+            <img src={blog2} />
           </div>
           <div className="card__content">
             <h3 className="card__title">Getting Insurance for An RV Rental</h3>
@@ -540,7 +556,7 @@ const Home = (props) => {
         <div className="wrapper">
         <div className="card">
           <div className="card__img">
-            <img src="https://files.rvngo.com/assets/couple-celebrate-a854016a0a1ccacad333332a7d15de089bbeb52690cfca5dfe066f2aebc66568.png" />
+            <img src={blog1} />
           </div>
           <div className="card__content">
             <h3 className="card__title">How To Choose Between A Class A or Class C RV</h3>

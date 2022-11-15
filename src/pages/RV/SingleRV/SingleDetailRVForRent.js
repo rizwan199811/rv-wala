@@ -29,9 +29,29 @@ const SingleDetailRV = ({
     centerMode: true,
     infinite: true,
     centerPadding: '60px',
-    slidesToShow: 3,
+    slidesToShow: 4,
     speed: 500,
     autoplay: true,
+    dots: true,
+    responsive: [  
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+
+    ]
   }
 
 
@@ -567,6 +587,7 @@ const SingleDetailRV = ({
                 <div className="row">
                   <div className="col-md-12">
                     <DatePicker
+                    placeholderText='Select Date'
                       selectsRange={true}
                       startDate={startDate}
                       endDate={endDate}
@@ -888,10 +909,10 @@ const SingleDetailRV = ({
                 </button> */}
             </div>
           </div>
-          <div className="mb-3 mt-2">
+          <div className=" my-5">
             <h2 className="mb-3 border-bottom"> Nearby RVs</h2>
             <Slider {...settings}>
-              <div className="col-md-4 near-rv-card">
+              <div className="near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img
@@ -905,7 +926,7 @@ const SingleDetailRV = ({
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 near-rv-card">
+              <div class="near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img
@@ -919,7 +940,7 @@ const SingleDetailRV = ({
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 near-rv-card">
+              <div class="near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img
@@ -933,7 +954,21 @@ const SingleDetailRV = ({
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 near-rv-card">
+              <div class="near-rv-card">
+                <div className="card">
+                  <a className="card-image">
+                    <img
+                      src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp"
+                      alt=""
+                    />
+                  </a>
+                  <div className="card-description">
+                    <h6>The River Run 2021 RAM 3500 High Roof</h6>
+                    <p>0 miles away, Nightly Rate: $250</p>
+                  </div>
+                </div>
+              </div>
+              <div class="near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img
@@ -955,7 +990,7 @@ const SingleDetailRV = ({
       {/* ============== SEND MESSAGE MODAL =============== */}
       {/* <button
 {/* ============== SEND MESSAGE MODAL =============== */}
-      <button
+      {/* <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
@@ -1006,11 +1041,11 @@ const SingleDetailRV = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* ============== SEND MESSAGE MODAL =============== */}
 
       {/* ============== REVIEW MODAL =============== */}
-      <button
+      {/* <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
@@ -1083,7 +1118,7 @@ const SingleDetailRV = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* ============== REVIEW MODAL =============== */}
     </>
   )
