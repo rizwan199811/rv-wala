@@ -55,7 +55,7 @@ const Booking = () => {
                 <div className="card-footer text-muted fs-4">
                 {moment(booking.dates[0]).format("dddd, MMMM Do YYYY")} - {moment(booking.dates[booking.dates.length-1]).format("dddd, MMMM Do YYYY")}
                   <span className="float-end">
-                    <b> Guests :</b> 8
+                    <b> Guests :</b> {booking.guests || 1}
                   </span>
                 </div>
               </div>

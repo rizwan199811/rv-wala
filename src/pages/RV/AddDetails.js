@@ -13,7 +13,9 @@ const AddDetails = () => {
 
   const proceedToCheckOut = async () => {
     delete values['terms_n_conditions']
-    dispatch(setBookingDetails({...booking_details,...values}))
+    localStorage.setItem('bookingDetails',JSON.stringify({...booking_details,...values}))
+    dispatch(setBookingDetails({...booking_details,...values}));
+
     history('/checkout', { replace: true })
   }
 

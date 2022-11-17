@@ -166,7 +166,7 @@ const SplitForm = () => {
       console.log({paymentIntent})
       const {
         data: { data:paymentConfirm,message:confirmPayment},
-      } = await axios.post(baseURL + '/payment/confirm', {paymentIntent:paymentIntent.id,paymentMethod:payload.paymentMethod.id,RVId:bookingDetails._id,dates:bookingDetails.invoiceInfo.reservation.map((x)=>{return x.date})},{headers})
+      } = await axios.post(baseURL + '/payment/confirm', {paymentIntent:paymentIntent.id,paymentMethod:payload.paymentMethod.id,RVId:bookingDetails._id,guests:bookingDetails.traveller || 1, dates:bookingDetails.invoiceInfo.reservation.map((x)=>{return x.date})},{headers})
        console.log({paymentConfirm})
        toast.success(confirmPayment, toastOptions)
   
