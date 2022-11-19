@@ -92,7 +92,6 @@ const LogIn = () => {
         data.profileImage ||
         'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
       toast.success(message, toastOptions)
-      setLoading(false)
       setTimeout(() => {
         dispatch(setToken(token))
         dispatch(setProfileImage(profileImage))
@@ -100,6 +99,7 @@ const LogIn = () => {
         localStorage.setItem('image', profileImage)
         localStorage.setItem('user', JSON.stringify(data))
         history('/', { replace: true })
+        setLoading(false)
       }, 3000)
     } catch ({
       response: {

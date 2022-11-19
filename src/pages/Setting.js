@@ -159,9 +159,12 @@ const Setting = () => {
                         {/* <input className="form-control form-control-sm m-0" id="formFileSm" type="file" /> */}
                         <div {...getRootProps({ className: 'dropzone' })}>
                           {/* <i class="fa-solid fa-cloud-arrow-down fs-1"></i> */}
-
+                          <i class="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>
                           <input {...getInputProps()} />
-                          <img src={image} alt="user image" />
+                       { loading ?  (<div class="spinner-grow text-secondary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>):(<img src={image} alt="user image" />)}
+                          
                           {/* <p>
                          Click to upload
                             files
