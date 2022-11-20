@@ -58,6 +58,7 @@ const LogIn = () => {
           setLoading(false);
           dispatch(setToken(token))
           dispatch(setProfileImage(profileImage))
+          localStorage.setItem("user",JSON.stringify(data))
           localStorage.setItem('token', token)
           localStorage.setItem('image', profileImage)
           history('/', { replace: true })

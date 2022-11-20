@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import Login from "../pages/Login.js";
 import {  useSelector } from 'react-redux';
 /****Layouts*****/
-const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
+const FullLayout = lazy(() => import("../components/layouts/FullLayout.js"));
 
 /***** Pages ****/
 

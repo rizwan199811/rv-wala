@@ -14,10 +14,10 @@ import {
   Button,
 } from "reactstrap";
 import Logo from "./Logo";
-import { ReactComponent as LogoWhite } from "../assets/images/logos/materialprowhite.svg";
-import user1 from "../assets/images/users/user4.jpg";
+import { ReactComponent as LogoWhite } from "../../assets/images/logos/materialprowhite.svg";
+import user1 from "../../assets/images/users/user4.jpg";
 import {  useSelector,useDispatch } from 'react-redux';
-import { setToken } from '../app/slice/AuthSlice';
+import { setToken } from '../../app/slice/AuthSlice';
 
 
 const Header = () => {
