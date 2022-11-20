@@ -10,7 +10,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import { toastOptionsDate } from '../../../config/toast'
 import SingleDetailRV from './SingleDetailRVForRent'
 
-
 export const SingleDetailContainer = () => {
   const token = useSelector((state) => state.auth.token)
   const dispatch = useDispatch()
@@ -25,6 +24,8 @@ export const SingleDetailContainer = () => {
     hostServices: [],
     reservationTotal: 0,
     hostServicesTotal: 0,
+    addOnTotal: 0,
+    total: 0,
   })
 
   const { id } = useParams()
@@ -43,10 +44,48 @@ export const SingleDetailContainer = () => {
         { value: data.Pricing.cleaning_fee, label: 'Cleaning fee' },
         { value: data.Pricing.prep_fee, label: 'Prep fee' },
       ]
+      let addOns = []
+      data.Features &&
+        data.Features.others &&
+        data.Features.others.propane_tank &&
+        addOns.push({
+          value: data.Features.others.propane_tank,
+          label: 'Propane Tank Refill',
+        })
+      data.Pricing &&
+        data.Pricing.generator &&
+        data.Pricing.generator.price_per_extra_hours &&
+        addOns.push({
+          value: data.Pricing.generator.price_per_extra_hours,
+          label: 'Generator',
+        })
+      data.Pricing &&
+        data.Pricing.mileage &&
+        data.Pricing.mileage.per_extra_miles_charge &&
+        addOns.push({
+          value: data.Pricing.generator.per_extra_miles_charge,
+          label: 'Generator',
+        })
+      console.log({ addOns })
+      const sumAddOn = addOns.reduce((accumulator, object) => {
+        return accumulator + parseInt(object.value)
+      }, 0)
       const sum = hostServices.reduce((accumulator, object) => {
         return accumulator + parseInt(object.value)
       }, 0)
-      setInvoiceInfo({ ...invoiceInfo, hostServices, hostServicesTotal: sum })
+      let total =
+        sum +
+        sumAddOn +
+        parseFloat(data.Pricing.deposit) +
+        parseFloat(data.Pricing.damage_deposit)
+      console.log({ total })
+      setInvoiceInfo({
+        ...invoiceInfo,
+        hostServices,
+        hostServicesTotal: sum,
+        addOnTotal: sumAddOn,
+        total,
+      })
       setRV(data)
       const images = data.ImageInfo.files.map((x, index) => {
         if (index == 0) {
@@ -63,7 +102,9 @@ export const SingleDetailContainer = () => {
       console.log({ images })
       setImages(images)
       setLoading(false)
-    } catch (e) {}
+    } catch (e) {
+      console.log({ e })
+    }
   }
   const enumerateDaysBetweenDates = (startDate, endDate, nightly_rate) => {
     var now = startDate,
@@ -78,28 +119,33 @@ export const SingleDetailContainer = () => {
     }, 0)
     return { dates, sum }
   }
-  const checkReservedDates =(startDateParam,endDateParam,reservedDates)=>{
-   let comparedChecks=[];
-   console.log({startDateParam,endDateParam,reservedDates})
-  //  let compareDate = moment("15/02/2013", "DD/MM/YYYY");
-   let startDate   = moment(startDateParam).format("YYYY-MM-DD");
-   let endDate     = moment(endDateParam).format("YYYY-MM-DD");
-   for(let i=0;i<reservedDates.length;i++){
-    let compareDate = moment(reservedDates[i]).format("YYYY-MM-DD");
-    console.log({compareDate,startDate,endDate})
-    
-    comparedChecks[i]=moment(compareDate).isBetween(moment(startDate), moment(endDate));
-    // console.log(compareDate.isBetween(startDate, endDate))
+  const checkReservedDates = (startDateParam, endDateParam, reservedDates) => {
+    let comparedChecks = []
+    console.log({ startDateParam, endDateParam, reservedDates })
+    //  let compareDate = moment("15/02/2013", "DD/MM/YYYY");
+    let startDate = moment(startDateParam).format('YYYY-MM-DD')
+    let endDate = moment(endDateParam).format('YYYY-MM-DD')
+    for (let i = 0; i < reservedDates.length; i++) {
+      let compareDate = moment(reservedDates[i]).format('YYYY-MM-DD')
+      console.log({ compareDate, startDate, endDate })
 
-   }
-   console.log({comparedChecks})
-   const isBetween = (element) => element === true;
-   console.log(comparedChecks.some(isBetween))
-   return comparedChecks.some(isBetween)
+      comparedChecks[i] = moment(compareDate).isBetween(
+        moment(startDate),
+        moment(endDate),
+      )
+      // console.log(compareDate.isBetween(startDate, endDate))
+    }
+    console.log({ comparedChecks })
+    const isBetween = (element) => element === true
+    console.log(comparedChecks.some(isBetween))
+    return comparedChecks.some(isBetween)
   }
 
   const bookNow = async () => {
-    let total = invoiceInfo.reservationTotal + invoiceInfo.hostServicesTotal
+    let total =
+      invoiceInfo.reservationTotal +
+      invoiceInfo.hostServicesTotal +
+      invoiceInfo.addOnTotal
     total =
       total +
       total * 0.13 +
@@ -126,56 +172,58 @@ export const SingleDetailContainer = () => {
 
   const validateDates = (dates) => {
     let formattedDates = []
- 
- 
+
     setDateRange(dates)
     for (let i = 0; i < dates.length; i++) {
       if (dates[i] !== null) {
         formattedDates.push(moment(dates[i]).format('YYYY-MM-DD'))
         console.log({ formattedDates })
       }
-
     }
-    if(dates[0] && dates[1]){
-      if ( moment(dates[1]).diff(moment(dates[0]), 'days') < RV.ListInfo.min_nights-1 ) {
-        console.log(dates[1],dates[0])
-        console.log( moment(dates[1]).diff(moment(dates[0]), 'days'))
+    if (dates[0] && dates[1]) {
+      if (
+        moment(dates[1]).diff(moment(dates[0]), 'days') <
+        RV.ListInfo.min_nights - 1
+      ) {
+        console.log(dates[1], dates[0])
+        console.log(moment(dates[1]).diff(moment(dates[0]), 'days'))
         setError(true)
-        setDateRange([dates[0],null])
+        setDateRange([dates[0], null])
         toast.error(
           `Minimum nights for this RV is ${RV.ListInfo.min_nights}`,
-          toastOptionsDate
+          toastOptionsDate,
         )
-       return
+        return
       }
 
-     if(checkReservedDates(dates[0],dates[1], RV.reserved_dates || [])){
-      setError(true)
-      setDateRange([null,null])
-      toast.error(
-        `Please select dates other than previously reserved dates`,
-        toastOptionsDate
-      )
-     return
-     }
-
-    console.log(moment(dates[0]))
-      setError(false)
-        const {
-          dates: checkInDates,
-          sum: sumCheckIn,
-        } = enumerateDaysBetweenDates(
-          moment(dates[0]),
-          moment(dates[1]),
-          RV.Pricing.nightly,
+      if (checkReservedDates(dates[0], dates[1], RV.reserved_dates || [])) {
+        setError(true)
+        setDateRange([null, null])
+        toast.error(
+          `Please select dates other than previously reserved dates`,
+          toastOptionsDate,
         )
-        setInvoiceInfo({
-          ...invoiceInfo,
-          reservation: checkInDates,
-          reservationTotal: sumCheckIn,
-        })
-    }
+        return
+      }
 
+      console.log(moment(dates[0]))
+      setError(false)
+      const {
+        dates: checkInDates,
+        sum: sumCheckIn,
+      } = enumerateDaysBetweenDates(
+        moment(dates[0]),
+        moment(dates[1]),
+        RV.Pricing.nightly,
+      )
+      const total = invoiceInfo.total + sumCheckIn
+      setInvoiceInfo({
+        ...invoiceInfo,
+        reservation: checkInDates,
+        reservationTotal: sumCheckIn,
+        total: total + total * 0.13,
+      })
+    }
   }
   const handleDateChange = async (name, value) => {
     // const { name, value } = e.target;

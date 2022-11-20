@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { toastOptionsDate } from '../../../config/toast'
+import { Review } from '../../../components/Modals/Review'
 // import DatePicker from 'react-multi-date-picker'
 const SingleDetailRV = ({
   RV,
@@ -21,9 +22,9 @@ const SingleDetailRV = ({
   token,
   bookNow,
   startDate,
-  endDate
+  endDate,
 }) => {
-  console.log({startDate})
+  console.log({ startDate })
   const settings = {
     className: 'center',
     centerMode: true,
@@ -33,30 +34,26 @@ const SingleDetailRV = ({
     speed: 500,
     autoplay: true,
     dots: true,
-    responsive: [  
+    responsive: [
       {
         breakpoint: 992,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          initialSlide: 1
-        }
+          initialSlide: 1,
+        },
       },
       {
         breakpoint: 500,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 1
-        }
+          initialSlide: 1,
+        },
       },
-
-    ]
+    ],
   }
 
-
-
- 
   return (
     <>
       <section className="single-product-carousel">
@@ -132,7 +129,10 @@ const SingleDetailRV = ({
                             data-slide-to={index}
                             data-target="#custCarousel"
                           >
-                            <img src={x.path||x.location} className="img-fluid" />
+                            <img
+                              src={x.path || x.location}
+                              className="img-fluid"
+                            />
                           </a>
                         </li>
                       )
@@ -561,33 +561,12 @@ const SingleDetailRV = ({
                   {RV.RVInfo.year} {RV.RVInfo.make} {RV.RVInfo.model}{' '}
                 </h3>
                 <p>in {RV.ListInfo.address}</p>
-                <div class="rate">
-                  <input type="radio" id="star5" name="rate" value="5" />
-                  <label htmlFor="star5" title="text">
-                    5 stars
-                  </label>
-                  <input type="radio" id="star4" name="rate" value="4" />
-                  <label htmlFor="star4" title="text">
-                    4 stars
-                  </label>
-                  <input type="radio" id="star3" name="rate" value="3" />
-                  <label htmlFor="star3" title="text">
-                    3 stars
-                  </label>
-                  <input type="radio" id="star2" name="rate" value="2" />
-                  <label htmlFor="star2" title="text">
-                    2 stars
-                  </label>
-                  <input type="radio" id="star1" name="rate" value="1" />
-                  <label htmlFor="star1" title="text">
-                    1 star
-                  </label>
-                </div>
+             
                 <hr />
                 <div className="row">
                   <div className="col-md-12">
                     <DatePicker
-                    placeholderText='Select Date'
+                      placeholderText="Select Date"
                       selectsRange={true}
                       startDate={startDate}
                       endDate={endDate}
@@ -596,7 +575,6 @@ const SingleDetailRV = ({
                       onChange={(dates) => {
                         handleDateChange(dates)
                       }}
-                     
                       isClearable={true}
                       selected={startDate}
                       excludeDates={
@@ -616,31 +594,6 @@ const SingleDetailRV = ({
                   )}
                 </div>
               </div>
-
-              <div className="my-3">
-                <div className="card  invoice-accor" style={{ width: '100%' }}>
-                  <div className="card-header">Add-ons</div>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item d-flex justify-content-between">
-                      <b>Mileage</b>
-                      <span>0.5/km</span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between">
-                      <b>Propane Refil </b>
-                      <span>
-                        $200
-                      </span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between">
-                      <b>Generator</b>
-                      <span>
-                        $200
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
 
               <div className="my-3">
                 <div className="card  invoice-accor" style={{ width: '100%' }}>
@@ -801,21 +754,17 @@ const SingleDetailRV = ({
                         <span>$325.84</span>
                       </li> */}
                     </div>
-                    <li className="list-group-item d-flex justify-content-between">
-                      <b>Sales Tax</b>
-                      <span>Included</span>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between">
+
+                    {/* <li className="list-group-item d-flex justify-content-between">
                       <b>Total</b>
                       <span>
                         $
                         {invoiceInfo.reservationTotal +
                           invoiceInfo.hostServicesTotal +
                           (invoiceInfo.reservationTotal +
-                            invoiceInfo.hostServicesTotal) *
-                            0.13}
+                            invoiceInfo.hostServicesTotal) }
                       </span>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -851,42 +800,60 @@ const SingleDetailRV = ({
                 </div>
               </div>
               <div className="my-3">
-                <div className="card" style={{ width: '100%' }}>
-                  <div className="card-header">
-                    Other Charges That May Apply
-                  </div>
+                <div className="card  invoice-accor" style={{ width: '100%' }}>
+                  <div className="card-header">Add-ons</div>
                   <ul className="list-group list-group-flush">
-                    <li className="list-group-item d-flex justify-content-between">
-                      <span>
-                        Mileage <br />
-                        <em>
-                          (
-                          {(RV.Pricing.mileage &&
-                            RV.Pricing.mileage.max_free_miles_per_night) ||
-                            0}{' '}
-                          included a day)
-                        </em>
-                      </span>
-                      <span className="text-end">
-                        <b>
-                          $
-                          {(RV.Pricing.mileage &&
-                            RV.Pricing.mileage.per_extra_miles_charge) ||
-                            0}
-                        </b>
-                        <br />
-                        <em>per extra mile</em>{' '}
-                      </span>
-                    </li>
+                    {RV.Pricing.mileage &&
+                      RV.Pricing.mileage.per_extra_miles_charge && (
+                        <li className="list-group-item d-flex justify-content-between">
+                          <b>
+                            Mileage(
+                            {RV.Pricing.mileage.max_free_miles_per_night})
+                          </b>
+                          <span>
+                            {RV.Pricing.mileage.per_extra_miles_charge}/km
+                          </span>
+                        </li>
+                      )}
                     {/* <li className="list-group-item d-flex justify-content-between">
-                      <span>
-                        Deductible paid by Guest
-                        <br /> <em>(per incident)</em>
-                      </span>
-                      <span>
-                        <b>$2,500</b>
-                      </span>
+                      <b>Mileage</b>
+                      <span>0.5/km</span>
                     </li> */}
+                    {RV.Features && RV.Features.others && (
+                      <li className="list-group-item d-flex justify-content-between">
+                        <b>Propane Refill </b>
+                        <span>
+                          {RV.Features.others.propane_tank
+                            ? '$' + RV.Features.others.propane_tank
+                            : '$' + 0}
+                        </span>
+                      </li>
+                    )}
+
+                    {RV.Pricing.generator &&
+                      RV.Pricing.generator.price_per_extra_hours && (
+                        <li className="list-group-item d-flex justify-content-between">
+                          <b>Generator</b>
+                          <span>
+                            ${RV.Pricing.generator.price_per_extra_hours}
+                          </span>
+                        </li>
+                      )}
+                    {/* {!RV.Pricing.generator &&
+                      !RV.Features.others &&
+                      !RV.Pricing.mileage && (
+                        <li className="list-group-item d-flex justify-content-between">
+                          <b>Add-ons not provided by RV owner</b>
+                        </li>
+                      )} */}
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Sales Tax</b>
+                      <span>Included</span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Total Amount</b>
+                      <span>${invoiceInfo.total.toFixed(2)}</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -925,14 +892,24 @@ const SingleDetailRV = ({
                   Book now
                 </button>
               )}
-              <ToastContainer />
 
-              {/* <button
-                  className="btn btn-primary login-wrapper-btn"
-                  type="submit"
-                >
-                  Send Message
-                </button> */}
+              <ToastContainer />
+              <button
+                className="btn btn-primary login-wrapper-btn"
+                type="submit"
+                data-bs-toggle="modal"
+                data-bs-target="#reviewModal"
+              >
+                Write a Review
+              </button>
+              <button
+                className="btn btn-primary login-wrapper-btn"
+                type="submit"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Send Message
+              </button>
             </div>
           </div>
           <div className=" my-5">
@@ -1016,14 +993,7 @@ const SingleDetailRV = ({
       {/* ============== SEND MESSAGE MODAL =============== */}
       {/* <button
 {/* ============== SEND MESSAGE MODAL =============== */}
-      {/* <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
-        Launch demo modal
-      </button>
+
       <div
         className="modal fade"
         id="exampleModal"
@@ -1031,7 +1001,7 @@ const SingleDetailRV = ({
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
@@ -1067,84 +1037,13 @@ const SingleDetailRV = ({
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* ============== SEND MESSAGE MODAL =============== */}
 
       {/* ============== REVIEW MODAL =============== */}
-      {/* <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#reviewModal"
-      >
-        Launch demo modal
-      </button>
-      <div
-        className="modal fade"
-        id="reviewModal"
-        tabIndex={-1}
-        aria-labelledby="reviewModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="reviewModalLabel">
-                Write a Review
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div className="modal-body">
-              <div class="rate">
-                <input type="radio" id="star5" name="rate" value="5" />
-                <label for="star5" title="text">
-                  5 stars
-                </label>
-                <input type="radio" id="star4" name="rate" value="4" />
-                <label for="star4" title="text">
-                  4 stars
-                </label>
-                <input type="radio" id="star3" name="rate" value="3" />
-                <label for="star3" title="text">
-                  3 stars
-                </label>
-                <input type="radio" id="star2" name="rate" value="2" />
-                <label for="star2" title="text">
-                  2 stars
-                </label>
-                <input type="radio" id="star1" name="rate" value="1" />
-                <label for="star1" title="text">
-                  1 star
-                </label>
-              </div>
-              <div className=" bg-white mw-100 m-0">
-                <form action="#">
-                  <label class="form-label">REVIEW</label>
-                  <div className="form-group border-bottom d-flex align-items-center position-relative">
-                    <textarea
-                      type="text"
-                      required=""
-                      placeholder="Enter REVIEW"
-                      className="form-control"
-                      rows={4}
-                    />
-                  </div>
-                  <div className="form-group my-3">
-                    <div className="btn btn-primary rounded-0 d-flex justify-content-center text-center">
-                      SUBMIT REVIEW
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
+
+     <Review RV={RV._id}/>
+   
       {/* ============== REVIEW MODAL =============== */}
     </>
   )
