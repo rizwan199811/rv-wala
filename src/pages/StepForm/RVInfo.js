@@ -391,7 +391,10 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               onBlur={handleBlur}
               defaultValue={listObj && listObj.RVInfo && listObj.RVInfo.length}
             >
-              <option value="1" selected>
+               <option value="" selected>
+                Select Length
+              </option>
+              <option value="1">
                 1
               </option>
               <option value="2">2</option>

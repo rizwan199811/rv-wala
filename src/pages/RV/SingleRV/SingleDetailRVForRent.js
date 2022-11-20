@@ -83,7 +83,7 @@ const SingleDetailRV = ({
                             x.active ? 'carousel-item active' : 'carousel-item'
                           }
                         >
-                          <img src={x.path} alt="Hills" />
+                          <img src={x.path || x.location} alt="Hills" />
                         </div>
                       )
                     })}
@@ -132,7 +132,7 @@ const SingleDetailRV = ({
                             data-slide-to={index}
                             data-target="#custCarousel"
                           >
-                            <img src={x.path} className="img-fluid" />
+                            <img src={x.path||x.location} className="img-fluid" />
                           </a>
                         </li>
                       )

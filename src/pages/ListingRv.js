@@ -227,7 +227,7 @@ const ListingRv = () => {
                   >
                     <div className="badge">${x.Pricing.nightly}/night</div>
                     <div className="product-tumb">
-                      <img src={x.ImageInfo.files[0].path} alt="" />
+                      <img src={x.ImageInfo.files[0].path || x.ImageInfo.files[0].location} alt="" />
                     </div>
                     <div className="product-details">
                       <div className="d-flex justify-content-between">

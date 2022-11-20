@@ -1,30 +1,55 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { baseURL } from '../../config/apiURL'
 import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import toastOptions from '../../config/toast'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
-export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
+export const FeaturesInfo = ({
+  nextStep,
+  prevStep,
+  handleCheck,
+  handleChange,
+}) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
+  let initialValues = {
+    propane_tank: '',
+  }
+  let FeaturesInfo = listObj
+    ? { ...initialValues, ...listObj.Features }
+    : initialValues
   let history = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [checked, setChecked] = useState({
+    propane_tank:
+      listObj.Features &&
+      listObj.Features.others &&
+      parseInt(listObj.Features.others.propane_tank) > 0
+        ? true
+        : false,
+  })
   const handleSubmit = async () => {
     try {
       setLoading(true)
-      let features =localStorage.getItem('features') ? JSON.parse(localStorage.getItem('features')) : [];
+      let features = localStorage.getItem('features')
+        ? JSON.parse(localStorage.getItem('features'))
+        : []
       let body = localStorage.getItem('listObj')
         ? {
-          ...JSON.parse(localStorage.getItem('listObj'))
-          ,featuresArray:features
-        }
+            ...JSON.parse(localStorage.getItem('listObj')),
+            featuresArray: features,
+          }
         : {}
       let headers = {
         Authorization: localStorage.getItem('token'),
       }
       console.log({ headers })
-      const { data:{message} } = await axios.post(baseURL + '/rv', body, { headers })
-      console.log({message})
+      const {
+        data: { message },
+      } = await axios.post(baseURL + '/rv', body, { headers })
+      console.log({ message })
       toast.success(message, toastOptions)
       setTimeout(() => {
         setLoading(false)
@@ -40,25 +65,41 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
   }
 
   const generateData = (event, identifier, label) => {
-    
-    let features= localStorage.getItem("features") && JSON.parse(localStorage.getItem("features")) ||  [];
+    let features =
+      (localStorage.getItem('features') &&
+        JSON.parse(localStorage.getItem('features'))) ||
+      []
 
-    if(event.target.checked){
+    if (event.target.checked) {
       features.push({
-        label:label,
-        value:event.target.name,
-        type:identifier
+        label: label,
+        value: event.target.name,
+        type: identifier,
       })
+    } else {
+      let index = features.findIndex((x) => x.label == label)
+      console.log({ index })
+      if (index !== -1) {
+        features.splice(index, 1)
+      }
     }
-    else{
-    let index = features.findIndex(x=>x.label==label)
-    console.log({index})
-    if(index!==-1){
-      features.splice(index,1);
-    }
-    }
-    localStorage.setItem("features",JSON.stringify(features));
+    localStorage.setItem('features', JSON.stringify(features))
   }
+  const formik = useFormik({
+    initialValues: {},
+    validationSchema: Yup.object({
+      propane_tank: Yup.number()
+        .required('Required')
+        .positive('Must be positive')
+        .integer(),
+    }),
+    enableReinitialize: true,
+
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2))
+    },
+  })
+  const { errors, touched, handleBlur, values } = formik
 
   return (
     <>
@@ -571,19 +612,43 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
             <input
               type="checkbox"
               name="tank"
-              checked={
-                listObj &&
-                listObj.Features &&
-                listObj.Features.others &&
-                listObj.Features.others.tank
-              }
+              checked={checked['propane_tank']}
               onChange={(e) => {
-                generateData(e, 'others', 'Propane Tank')
-                handleCheck(e, 'Features.others')
+                // generateData(e, 'others', 'Propane Tank')
+                setChecked({
+                  ...checked,
+                  propane_tank: !checked['propane_tank'],
+                })
+                // handleCheck(e, 'Features.others')
               }}
             />
             <label className="fieldlabels">Propane Tank</label>
           </div>
+          {checked['propane_tank'] && (
+            <div className="priceing-checkhide-div">
+              <label class="fieldlabels pt-3">Price *</label>
+              <input
+                type="number"
+                name="propane_tank"
+                placeholder="e.g.$20.00"
+                min="0"
+                value={
+                  listObj &&
+                  listObj.Features &&
+                  listObj.Features.others &&
+                  listObj.Features.others.propane_tank
+                }
+                onChange={(e) => {
+                  formik.handleChange(e)
+                  handleChange(e, 'Features.others')
+                }}
+                onBlur={handleBlur}
+              />
+              {errors.propane_tank && touched.propane_tank && (
+                <p className="text-danger">{errors.propane_tank} </p>
+              )}
+            </div>
+          )}
           <div className="col-md-3 mb-3">
             <input
               type="checkbox"
@@ -698,7 +763,7 @@ export const FeaturesInfo = ({ nextStep, prevStep, handleCheck }) => {
           </div>
         </div>
       </div>
-      
+
       {loading && <i className="fa fa-spinner fa-spin"></i>}
       <input
         type="button"

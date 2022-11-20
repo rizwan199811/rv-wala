@@ -149,7 +149,7 @@ export const SingleDetailContainer = () => {
        return
       }
 
-     if(checkReservedDates(dates[0],dates[1], RV.reserved_dates)){
+     if(checkReservedDates(dates[0],dates[1], RV.reserved_dates || [])){
       setError(true)
       setDateRange([null,null])
       toast.error(

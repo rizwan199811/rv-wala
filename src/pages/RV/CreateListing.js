@@ -184,6 +184,7 @@ export const CreateListing = () => {
                       nextStep={nextStep}
                       prevStep={prevStep}
                       handleCheck={handleCheck}
+                      handleChange={handleChange}
                     />
                   )}
                   {/* {step == 8 && (
