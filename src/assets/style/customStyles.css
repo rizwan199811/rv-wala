@@ -350,3 +350,10 @@
       margin-right: 8px;
     }
     
+    .blog-icon{
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .rdw-editor-main{
+      border: 1px solid #0000002e;
+    }

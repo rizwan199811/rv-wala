@@ -21,6 +21,8 @@ const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 const Fleet = lazy(() => import("../views/Fleet"));
 const Bookings = lazy(() => import("../views/Booking"));
+const Blogs = lazy(() => import("../pages/dashboard/Blog"));
+const AddBlog = lazy(() => import("../pages/dashboard/AddBlog"));
 
 /*****Routes******/
 
@@ -74,6 +76,8 @@ const Router = () => {
         { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
         { path: "/fleet", exact: true, element: <Fleet /> },
         { path: "/bookings", exact: true, element: <Bookings /> },
+        { path: "/blogs", exact: true, element: <Blogs /> },
+        { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
       ],
     },
   ]:[
