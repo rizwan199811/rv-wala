@@ -616,6 +616,32 @@ const SingleDetailRV = ({
                   )}
                 </div>
               </div>
+
+              <div className="my-3">
+                <div className="card  invoice-accor" style={{ width: '100%' }}>
+                  <div className="card-header">Add-ons</div>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Mileage</b>
+                      <span>0.5/km</span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Propane Refil </b>
+                      <span>
+                        $200
+                      </span>
+                    </li>
+                    <li className="list-group-item d-flex justify-content-between">
+                      <b>Generator</b>
+                      <span>
+                        $200
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+
               <div className="my-3">
                 <div className="card  invoice-accor" style={{ width: '100%' }}>
                   <div className="card-header">Invoice</div>

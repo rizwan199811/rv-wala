@@ -19,6 +19,8 @@ import Booking from './pages/Booking'
 import RVforSale from './pages/RVforSale'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import AboutUs from './pages/AboutUs'
+import Blogs from './pages/Blogs'
+import BlogDetails from './pages/BlogDetails'
 process.env.GENERATE_SOURCEMAP = 'false'
 function App() {
   const token = useSelector((state) => state.auth.token)
@@ -45,6 +47,8 @@ function App() {
             <Route path="/rv-for-sale" element={<RVforSale />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/add" element={<BlogDetails />} />
          
           </>
         )}
