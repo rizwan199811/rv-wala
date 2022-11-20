@@ -10,35 +10,8 @@ import { useEffect, useState } from 'react'
 import { baseURL } from '../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-const tableData = [
-    {
-      avatar: user1,
-      Owner: "Hanna Gover",
-      email: "Anas@gmail.com",
-      Model: "KZ272",
-      status: "pending",
-      Details: "35",
-      Action: "95K",
-    },
-    {
-      avatar: user2,
-      Owner: "Hanna Gover",
-      email: "Anas@gmail.com",
-      Model: "KZ272",
-      status: "done",
-      Details: "35",
-      Action: "95K",
-    },
-    {
-      avatar: user3,
-      Owner: "Hanna Gover",
-      email: "Anas@gmail.com",
-      Model: "KZ272",
-      status: "holt",
-      Details: "35",
-      Action: "",
-    },
-  ];
+import Loader from "../components/layouts/loader/Loader";
+
   
 const Rvrequest = () => {
   const [RVs, setRVs] = useState([])
@@ -117,8 +90,10 @@ const Rvrequest = () => {
                 <th>Action</th>
               </tr>
             </thead>
+            
             <tbody>
-              {RVs.map((tdata, index) => (
+            {loading && <Loader></Loader>}
+              {!loading && RVs.length > 0 && RVs.map((tdata, index) => (
                 <tr key={index} className="border-top">
                   <td>
                     <div className="d-flex align-items-center p-2">

@@ -61,7 +61,7 @@ const Router = () => {
       path: "/",
       element: <FullLayout />,
       children: [
-        { path: "/", element: <Navigate to="/starter" replace ={true}/> },
+        { path: "/", element: <Navigate to="/rv-request" replace ={true}/> },
         { path: "/starter", exact: true , element: <Starter /> },
         { path: "/about", exact: true, element: <About /> },
         { path: "/alerts", exact: true, element: <Alerts /> },

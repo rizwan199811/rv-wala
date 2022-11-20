@@ -2,6 +2,7 @@ import { Button, Nav, NavItem } from "reactstrap";
 import { Link, useLocation } from "react-router-dom";
 import user1 from "../../assets/images/users/user4.jpg";
 import probg from "../../assets/images/bg/download.jpg";
+import { useState,useEffect } from "react";
 
 // const navigation = [
 //   {
@@ -91,8 +92,14 @@ const navigation = localStorage.getItem("user") ? JSON.parse(localStorage.getIte
 
 const Sidebar = () => {
   const [toggleSideBar, setToggleSideBar] = useState(false)
-  const showMobilemenu = () => {
+
+  useEffect(() => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
+  }, [toggleSideBar])
+  
+  const showMobilemenu = () => {
+    setToggleSideBar(!toggleSideBar)
+    // document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
   let location = useLocation();
 
