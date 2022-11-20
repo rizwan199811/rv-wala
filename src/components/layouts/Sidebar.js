@@ -21,7 +21,8 @@ import { useState,useEffect } from "react";
 //     icon: "bi bi-speedometer2",
 //   }
 // ];
-const navigation = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).permissions :[]
+const navigation = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).permissions || [] :[]
+
 // const navigation = [
 //   {
 //     title: "Dashboard",
@@ -124,7 +125,7 @@ const Sidebar = () => {
       </div>
       <div className="p-3 mt-2">
         <Nav vertical className="sidebarNav">
-          {navigation.map((navi, index) => (
+          {navigation.length>0 && navigation.map((navi, index) => (
             <NavItem key={index} className="sidenav-bg">
               <Link
                 to={navi.href}

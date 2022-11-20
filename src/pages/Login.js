@@ -68,6 +68,7 @@ const LogIn = () => {
       console.log({message})
       toast.error(message, toastOptions
         );
+        setLoading(false);
     }
   }
   const togglePassword = () => {

@@ -112,9 +112,9 @@ const Rvrequest = () => {
                   </td>
                   <td>{tdata.RVInfo.model}</td>
                   <td>
-                    {tdata.status === "pending" ? (
+                    {tdata.status === "rejected" ? (
                       <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
-                    ) : tdata.status === "holt" ? (
+                    ) : tdata.status === "pending" ? (
                       <span className="p-2 bg-warning rounded-circle d-inline-block ms-3"></span>
                     ) : (
                       <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
