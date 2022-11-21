@@ -83,6 +83,7 @@ export const SingleDetailContainer = () => {
         ...invoiceInfo,
         hostServices,
         hostServicesTotal: sum,
+        addOns,
         addOnTotal: sumAddOn,
         total,
       })
@@ -142,19 +143,10 @@ export const SingleDetailContainer = () => {
   }
 
   const bookNow = async () => {
-    let total =
-      invoiceInfo.reservationTotal +
-      invoiceInfo.hostServicesTotal +
-      invoiceInfo.addOnTotal
-    total =
-      total +
-      total * 0.13 +
-      parseFloat(RV.Pricing.deposit) +
-      parseFloat(RV.Pricing.damage_deposit)
+     
     const bookingDetails = {
       ...RV,
       invoiceInfo,
-      total,
       startDate,
       endDate,
       booking_deposit: parseFloat(RV.Pricing.deposit),

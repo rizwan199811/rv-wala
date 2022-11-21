@@ -161,7 +161,7 @@ const SplitForm = () => {
       console.log({token})
       const {
         data: { data:paymentIntent},
-      } = await axios.post(baseURL + '/payment/intent', {amount:bookingDetails.total,paymentMethod:payload.paymentMethod.id},{headers})
+      } = await axios.post(baseURL + '/payment/intent', {amount:bookingDetails.invoiceInfo.total,paymentMethod:payload.paymentMethod.id},{headers})
   
       console.log({paymentIntent})
       const {
@@ -529,10 +529,10 @@ const SplitForm = () => {
                 <div className="card-header">Order Summary</div>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    Total Cost <span>${bookingDetails.total}</span>
+                    Total Cost <span>${bookingDetails.invoiceInfo.total}</span>
                   </li>
                   <li className="list-group-item">
-                    To be Paid <span>${bookingDetails.total}</span>
+                    To be Paid <span>${bookingDetails.invoiceInfo.total}</span>
                   </li>
                 </ul>
               </div>
@@ -621,23 +621,34 @@ const SplitForm = () => {
                                     )
                                   },
                                 )}
+                                {bookingDetails.invoiceInfo.addOns &&
+                                bookingDetails.invoiceInfo.addOns.length >
+                                  0 &&
+                                bookingDetails.invoiceInfo.addOns.map(
+                                  (x) => {
+                                    return (
+                                      <p className="card-text">
+                                        {x.label}
+                                        <span className="float-end">
+                                          <b> Price: ${x.value}</b>
+                                        </span>
+                                      </p>
+                                    )
+                                  },
+                                )}
                               <p className="card-text">
                                 Tax
                                 <span className="float-end">
                                   <b>
                                     {' '}
                                     Price: $
-                                    {(bookingDetails.invoiceInfo
-                                      .reservationTotal +
-                                      bookingDetails.invoiceInfo
-                                        .hostServicesTotal) *
-                                      0.13}
+                                    {((bookingDetails.invoiceInfo.total-bookingDetails.invoiceInfo.total*0.13)*0.13).toFixed(2)}
                                   </b>
                                 </span>
                               </p>
 
                               <h6 className="float-end border-top pt-1">
-                                Subtotal:${bookingDetails.total}
+                                Subtotal:${bookingDetails.invoiceInfo.total}
                               </h6>
                             </div>
                           </div>
