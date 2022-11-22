@@ -92,7 +92,7 @@ const Rvrequest = () => {
             </thead>
             
             <tbody>
-            {loading && <Loader></Loader>}
+            <tr className="table-loader"><td> {loading && <Loader></Loader>}</td></tr>
               {!loading && RVs.length > 0 && RVs.map((tdata, index) => (
                 <tr key={index} className="border-top">
                   <td>

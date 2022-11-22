@@ -1,24 +1,50 @@
+import axios from 'axios';
 import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, CardSubtitle, Table, Button } from "reactstrap";
-import user1 from "../../assets/images/users/user1.jpg";
-import user2 from "../../assets/images/users/user2.jpg";
-import user3 from "../../assets/images/users/user3.jpg";
-import user4 from "../../assets/images/users/user4.jpg";
-import user5 from "../../assets/images/users/user5.jpg";
+import Loader from '../../components/layouts/loader/Loader';
+import { baseURL } from '../../config/apiURL';
 
-const tableData = [
-  {
-    avatar: user1,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Flexy React",
-    status: "pending",
-    weeks: "35",
-    budget: "95K",
-  },
-];
+
 const Blog = () => {
+  // const dispatch = useDispatch()
+  const [blogs, setBlogs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
+
+  const itemsPerPage = 12, minDistance = 0;
+
+  const fetchBlogs = async (currentPage = 1) => {
+    try {
+      let queryParams = {};
+      setBlogs([])
+      setLoading(true)
+      let body = {
+        page: currentPage,
+        limit: itemsPerPage,
+        searchCriteria: {
+          disabled:true
+        }
+      }
+      // let headers = {
+      //   Authorization: localStorage.getItem('token'),
+      // }
+      const {
+        data: {
+          data: { docs, totalPages, limit, page },
+        },
+      } = await axios.post(baseURL + '/blog/list', body)
+      setPageCount(totalPages)
+      setBlogs(docs)
+      setLoading(false)
+    } catch (e) { }
+  }
+  useEffect(() => {
+    fetchBlogs()
+  }, [])
   return (
     <div>
     <Card>
@@ -47,12 +73,13 @@ const Blog = () => {
             </tr>
           </thead>
           <tbody>
-            {tableData.map((tdata, index) => (
+          <tr className="table-loader"><td> {loading && <Loader></Loader>}</td></tr>
+            {!loading && blogs.length > 0 && blogs.map((tdata, index) => (
               <tr key={index} className="border-top">
                 <td>
                   <div className="d-flex align-items-center p-2">
                     <img
-                      src={tdata.avatar}
+                      src={tdata.image}
                       className="rounded-circle"
                       alt="avatar"
                       width="45"
@@ -60,8 +87,8 @@ const Blog = () => {
                     />
                   </div>
                 </td>
-                <td>{tdata.project}</td>
-                <td><Button className="btn" outline color="info">View</Button></td>
+                <td>{tdata.title}</td>
+                <td><Link to=""><Button className="btn" outline color="info">View</Button></Link></td>
                 <td><i className="bi bi-pencil-square me-3 blog-icon"></i> <i className="bi bi-trash blog-icon"></i></td>
               </tr>
             ))}
