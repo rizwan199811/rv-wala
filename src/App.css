@@ -3650,5 +3650,9 @@ text-align: center;
 
 
 /* ================== BLOGS STARTS==================== */
-
+.blog-detail-wrapper img{
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
 /* ================== BLOGS ENDS==================== */
