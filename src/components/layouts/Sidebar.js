@@ -1,8 +1,12 @@
-import { Button, Nav, NavItem } from "reactstrap";
-import { Link, useLocation } from "react-router-dom";
-import user1 from "../../assets/images/users/user4.jpg";
-import probg from "../../assets/images/bg/download.jpg";
-import { useState,useEffect } from "react";
+import { Button, Nav, NavItem } from 'reactstrap'
+import { Link, useLocation } from 'react-router-dom'
+import user1 from '../../assets/images/users/user4.jpg'
+import probg from '../../assets/images/bg/download.jpg'
+import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
+import toastOptions from '../../config/toast'
+import axios from 'axios'
+import { baseURL } from '../../config/apiURL'
 
 // const navigation = [
 //   {
@@ -21,7 +25,7 @@ import { useState,useEffect } from "react";
 //     icon: "bi bi-speedometer2",
 //   }
 // ];
-const navigation = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).permissions || [] :[]
+
 
 // const navigation = [
 //   {
@@ -93,23 +97,58 @@ const navigation = localStorage.getItem("user") ? JSON.parse(localStorage.getIte
 
 const Sidebar = () => {
   const [toggleSideBar, setToggleSideBar] = useState(false)
-
+  const [loading, setLoading] = useState(false)
+  const [permissions, setPermissions] = useState([])
   useEffect(() => {
-    document.getElementById("sidebarArea").classList.toggle("showSidebar");
+    document.getElementById('sidebarArea').classList.toggle('showSidebar')
   }, [toggleSideBar])
-  
+
+  const fetchPermissions = async () => {
+    try {
+      setLoading(true)
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const {
+        data: { data },
+      } = await axios.get(baseURL + '/user', { headers })
+      console.log({ data })
+      setPermissions(data.permissions || [])
+
+      setLoading(false)
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      console.log({ message })
+      toast.error(message, toastOptions)
+    }
+  }
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      fetchPermissions()
+    }
+    return () => {
+      setPermissions([]); // This worked for me
+    };
+  }, [])
+
   const showMobilemenu = () => {
     setToggleSideBar(!toggleSideBar)
     // document.getElementById("sidebarArea").classList.toggle("showSidebar");
-  };
-  let location = useLocation();
+  }
+  let location = useLocation()
 
   return (
     <div>
       <div className="d-flex align-items-center"></div>
       <div
         className="profilebg"
-        style={{ background: `url("https://rvwala.com/wp-content/uploads/2022/06/cropped-Untitled-design-3.png") no-repeat`,backgroundPosition:"center" }}
+        style={{
+          background: `url("https://rvwala.com/wp-content/uploads/2022/06/cropped-Untitled-design-3.png") no-repeat`,
+          backgroundPosition: 'center',
+        }}
       >
         <div className="p-3 d-flex">
           <img src={user1} alt="user" width="50" className="rounded-circle" />
@@ -125,21 +164,25 @@ const Sidebar = () => {
       </div>
       <div className="p-3 mt-2">
         <Nav vertical className="sidebarNav">
-          {navigation.length>0 && navigation.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "active nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>
-          ))}
+          {permissions.length > 0 &&
+            permissions.map((navi, index) => {
+              console.log({ navi })
+              return (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? 'active nav-link py-3'
+                        : 'nav-link text-secondary py-3'
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              )
+            })}
           {/* <Button
             color="danger"
             tag="a"
@@ -152,7 +195,7 @@ const Sidebar = () => {
         </Nav>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

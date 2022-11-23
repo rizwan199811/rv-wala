@@ -90,9 +90,9 @@ const Rvrequest = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            
-            <tbody>
             {loading && <Loader></Loader>}
+            <tbody>
+            
               {!loading && RVs.length > 0 && RVs.map((tdata, index) => (
                 <tr key={index} className="border-top">
                   <td>

@@ -54,12 +54,13 @@ const LogIn = () => {
       } = await axios.post(baseURL + '/auth/login', body)
         let profileImage =data.profileImage || 'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg'
         toast.success(message,toastOptions);
+        localStorage.setItem("user",JSON.stringify(data))
+        localStorage.setItem('token', token)
         setTimeout(() => {
           setLoading(false);
           dispatch(setToken(token))
           dispatch(setProfileImage(profileImage))
-          localStorage.setItem("user",JSON.stringify(data))
-          localStorage.setItem('token', token)
+   
           localStorage.setItem('image', profileImage)
           history('/', { replace: true })
         },3000);
