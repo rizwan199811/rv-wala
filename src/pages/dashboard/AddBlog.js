@@ -6,59 +6,166 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import { ContentState, convertToRaw ,EditorState} from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import toastOptions from '../../config/toast'
+import JoditEditor from "jodit-react"
+import { useRef } from "react"
 import { useState } from 'react';
+import { useDropzone } from 'react-dropzone'
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
+import { baseURL } from '../../config/apiURL';
 const AddBlog = () => {
-  const [editorState, setEditorState] = useState(
-    () => EditorState.createEmpty(),
-  );
-  const updateTextDescription = async (state) => {
+  let profile = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : {}
+  const editor = useRef(null);
+  const [loading, setLoading] = useState(false)
+  const [content, setContent] = useState()
+  const [title, setTitle] = useState()
+  const [proceedNext, setProceedNext] = useState(true)
+  const [image, setImage] = useState(
+    profile.profileImage ||
+      'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg',
+  )
+//   const [post, setPost] = useState({
+//     title: '',
+//     content: '',
+// })
 
-    await setEditorState(state);
+// const fieldChanged = (event) => {
+//   // console.log(event)
+//   setPost({ ...post, [event.target.name]: event.target.value })
+// }
+
+const contentFieldChanaged = (data) => {
+  setContent(data)
+  // setPost({ ...post, 'content': data })
+
+
+}
+const { getRootProps, getInputProps } = useDropzone({
+  accept: {
+    'image/*': [],
+  },
+  onDrop: async (acceptedFile) => {
+    await imageUpload(acceptedFile)
+    // setFiles(acceptedFiles.map(file => Object.assign(file, {
+    //   preview: URL.createObjectURL(file)
+    // })));
+  },
+  multiple: false,
+})
+
+const imageUpload = async (files) => {
+  try {
+    setLoading(true)
+    let formData = new FormData()
+    files.forEach((file) => {
+      formData.append('files', file)
+    })
+    // formData.append("files", files);
+    const {
+      data: { data, message },
+    } = await axios.post(baseURL + '/misc/upload-file', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    setProceedNext(true)
+    setImage(data[0].location ? data[0].location : data[0].path)
+    //   onUpload(data, 'ImageInfo')
+    // setPost({ ...post, 'image': image })
+    setLoading(false)
+    toast.success(message, toastOptions)
+    console.log({ data })
+  } catch ({
+    response: {
+      data: { message },
+    },
+  }) {
+    toast.error(message, toastOptions)
+    setTimeout(() => {
+      setLoading(false)
+    }, 6000)
+  }
+}
+
+const handleSubmit =  async (e) => {
+  try {
+    setLoading(true)
+    e.preventDefault()
+    let headers = {
+      Authorization: localStorage.getItem('token'),
+    }
+    let body = {
+      title,
+      content,
+      image
+    }
+    const {
+      data: {  message },
+    } = await axios.post(baseURL + '/blog', body,{headers})
     
-    const data = convertToRaw(editorState.getCurrentContent());
-    console.log(data)
-    };
+    toast.success(message, toastOptions)
+    setLoading(false)
+    
+
+  } catch ({
+    response: {
+      data: { message },
+    },
+  }) {
+    console.log({ message })
+    toast.error(message, toastOptions)
+  }
+}
+  // console.log(post)
+
   return (
     <Card>
     <CardBody>  
       <CardTitle tag="h5">Add New Blogs</CardTitle>
-      <Form>
+      <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label for="title">Blog Title</Label>
                 <Input
                   id="title"
-                  name="email"
+                  name="title"
                   placeholder="Enter Blog Title"
                   type="text"
+                  onChange={(e)=>setTitle(e.target.value)}
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="description">Blog Description</Label>
-                <Editor
-
-editorState={editorState}
-
-toolbarClassName="toolbarClassName"
-
-wrapperClassName="wrapperClassName"
-
-editorClassName="editorClassName"
-
-onEditorStateChange={updateTextDescription}
-
-/>
+                <Label for="content">Blog Description</Label>
+                <JoditEditor
+			ref={editor}
+			// value={post.content}
+			// config={config}
+      onChange={(newContent) => contentFieldChanaged(newContent)}
+		/>
               </FormGroup>
 
               <FormGroup>
-                <Label for="exampleFile">File</Label>
-                <Input id="exampleFile" name="file" type="file" />
+                <Label >File</Label>
+                <div {...getRootProps({ className: 'dropzone' })}>
+                          {/* <i class="fa-solid fa-cloud-arrow-down fs-1"></i> */}
+                          <i className="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>
+                          <input {...getInputProps()} />
+                       { loading ?  (<div className="spinner-grow text-secondary" role="status">
+  <span className="visually-hidden">Loading...</span>
+</div>):(<img src={image} alt="user image" width={150} height={150}/>)}
+                          
+                          {/* <p>
+                         Click to upload
+                            files
+                          </p> */}
+                        </div>
               </FormGroup>
-              <Button>Submit</Button>
+              <Button type='submit'>Submit</Button>
             </Form>
     </CardBody>
+    <ToastContainer/>
   </Card>
   )
 }
