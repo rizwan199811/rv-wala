@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { baseURL } from '../config/apiURL';
@@ -49,25 +50,26 @@ const Blogs = () => {
         <h1 >Blogs</h1>
         
       {blogs.length > 0 && blogs.map((value,index)=>(
+        
  <div className='col-md-4 col-sm-6 mb-3' key={index}>
-
+<Link to={`/blogs/${value._id}`}>
  <div className="wrapper">
  <div className="card">
    <div className="card__img">
      <img src={value.image} alt="RVwala-blog" />
    </div>
    <div className="card__content">
-     <h3 className="card__title">{value.title}</h3>
-     <div className="card__excerpt" >
-       <p></p>
-       
+     <h3 className="card__title text-start border-bottom pb-3">{value.title}</h3>
+     <div className="card__excerpt my-3" >
+     <p>{moment(value.createdAt).format('MMMM DD,YYYY')}</p>       
      </div>
    </div>
-   <div className="card__link">
+   {/* <div className="card__link">
      <Link to={`/blogs/${value._id}`}><button  className="button">Learn More</button></Link>
-   </div>
+   </div> */}
  </div>
 </div>
+</Link>
 </div>
       ))}
      
