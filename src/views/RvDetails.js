@@ -318,7 +318,7 @@ const RvDetails = () => {
                           <div className="d-flex justify-content-between pt-4">
                             <div>
                               <h6>BEDS</h6>
-                              <p>{RV.RVInfo.bed}</p>
+                              <p>{RV.RVInfo.sleep}</p>
                             </div>
                             <div>
                               <h6>SEATBELTS</h6>

@@ -14,19 +14,20 @@ import { useDropzone } from 'react-dropzone'
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { baseURL } from '../../config/apiURL';
+import upload from "../../images/upload-icon.png"
+import { useNavigate } from 'react-router-dom';
+
 const AddBlog = () => {
   let profile = localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user'))
     : {}
   const editor = useRef(null);
+  const naviagte = useNavigate()
   const [loading, setLoading] = useState(false)
   const [content, setContent] = useState()
   const [title, setTitle] = useState()
   const [proceedNext, setProceedNext] = useState(true)
-  const [image, setImage] = useState(
-    profile.profileImage ||
-      'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg',
-  )
+  const [image, setImage] = useState(upload)
 //   const [post, setPost] = useState({
 //     title: '',
 //     content: '',
@@ -108,7 +109,7 @@ const handleSubmit =  async (e) => {
     
     toast.success(message, toastOptions)
     setLoading(false)
-    
+    naviagte("/blogs")
 
   } catch ({
     response: {
@@ -147,7 +148,7 @@ const handleSubmit =  async (e) => {
               </FormGroup>
 
               <FormGroup>
-                <Label >File</Label>
+                <Label >Upload Image:</Label>
                 <div {...getRootProps({ className: 'dropzone' })}>
                           {/* <i class="fa-solid fa-cloud-arrow-down fs-1"></i> */}
                           <i className="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>

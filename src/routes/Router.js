@@ -23,6 +23,7 @@ const Fleet = lazy(() => import("../views/Fleet"));
 const Bookings = lazy(() => import("../views/Booking"));
 const Blogs = lazy(() => import("../pages/dashboard/Blog"));
 const AddBlog = lazy(() => import("../pages/dashboard/AddBlog"));
+const ViewBlog = lazy(() => import("../pages/dashboard/ViewBlogs"));
 
 /*****Routes******/
 
@@ -78,6 +79,7 @@ const Router = () => {
         { path: "/bookings", exact: true, element: <Bookings /> },
         { path: "/blogs", exact: true, element: <Blogs /> },
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
+        { path: "/blogs/:id", exact: true, element: <ViewBlog /> },
       ],
     },
   ]:[

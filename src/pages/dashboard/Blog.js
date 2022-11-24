@@ -14,6 +14,7 @@ const Blog = () => {
   const [loading, setLoading] = useState(true)
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
+  const [newData, setNewData] = useState([])
 
   const itemsPerPage = 12, minDistance = 0;
 
@@ -45,6 +46,25 @@ const Blog = () => {
   useEffect(() => {
     fetchBlogs()
   }, [])
+
+  useEffect(() => {
+    
+  }, [blogs])
+  
+  const handleDelete = async (blogId) =>{
+    try{
+       let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+    const {
+      data: {
+        data: { message },
+      },
+    } = await axios.delete(baseURL + '/blog/' + blogId ,{headers})
+    setBlogs(blogs => blogs.filter(({id}) => id !== blogId));
+    setLoading(false)
+  } catch (e) { }  
+  }
   return (
     <div>
     <Card>
@@ -88,8 +108,11 @@ const Blog = () => {
                   </div>
                 </td>
                 <td>{tdata.title}</td>
-                <td><Link to=""><Button className="btn" outline color="info">View</Button></Link></td>
-                <td><i className="bi bi-pencil-square me-3 blog-icon"></i> <i className="bi bi-trash blog-icon"></i></td>
+                <td><Link to={`/blogs/${tdata._id}`}><Button className="btn" outline color="info">View</Button></Link></td>
+                <td>
+                  <i className="bi bi-pencil-square me-3 blog-icon"></i> 
+                  <i className="bi bi-trash blog-icon" onClick={()=>handleDelete(tdata._id)}></i>
+                  </td>
               </tr>
             ))}
           </tbody>
