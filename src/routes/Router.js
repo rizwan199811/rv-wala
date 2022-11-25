@@ -80,6 +80,7 @@ const Router = () => {
         { path: "/blogs", exact: true, element: <Blogs /> },
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },
+        { path: "/blogs/edit/:id", exact: true, element: <AddBlog /> },
       ],
     },
   ]:[

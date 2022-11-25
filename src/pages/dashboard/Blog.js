@@ -61,7 +61,7 @@ const Blog = () => {
         data: { message },
       },
     } = await axios.delete(baseURL + '/blog/' + blogId ,{headers})
-    setBlogs(blogs => blogs.filter(({id}) => id !== blogId));
+    setNewData(blogs => blogs.filter(({id}) => id !== blogId));
     setLoading(false)
   } catch (e) { }  
   }
@@ -110,7 +110,7 @@ const Blog = () => {
                 <td>{tdata.title}</td>
                 <td><Link to={`/blogs/${tdata._id}`}><Button className="btn" outline color="info">View</Button></Link></td>
                 <td>
-                  <i className="bi bi-pencil-square me-3 blog-icon"></i> 
+                <Link to={`/blogs/edit/${tdata._id}`}> <i className="bi bi-pencil-square me-3 blog-icon"></i> </Link>
                   <i className="bi bi-trash blog-icon" onClick={()=>handleDelete(tdata._id)}></i>
                   </td>
               </tr>
