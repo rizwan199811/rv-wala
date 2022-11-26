@@ -48,7 +48,7 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs/add" element={<BlogDetails />} />
+            <Route path="/blogs/:id" element={<BlogDetails />} />
          
           </>
         )}

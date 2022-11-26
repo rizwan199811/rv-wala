@@ -1,23 +1,55 @@
-import React from 'react'
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { baseURL } from '../config/apiURL';
 import blog2 from "../images/blog2.webp";
 
 
 const BlogDetails = () => {
+  const [loading, setLoading] = useState(true)
+  const [blogs, setBlogs] = useState()
+
+  const { id } = useParams()
+  const fetchBlogsById = async () => {
+    try {
+      setLoading(true)
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const {
+        data: { data },
+      } = await axios.get(baseURL + '/blog/' + id, { headers })
+      console.log({ data })
+      setBlogs(data)
+
+      setLoading(false)
+    } catch (e) {}
+  }
+  useEffect(() => {
+    fetchBlogsById()
+  }, [id])
+  console.log(blogs)
+
   return (
-   <>
-   <div>
-    <img src={blog2} alt='blog-image' className='w-100'/>
+   <div className='container-fluid mt-2 blog-detail-wrapper'>
+   <div className='blog-detail-image'>
+    <img src={blogs&&blogs.image} alt='blog-image' className='w-100'/>
+    <div className='blog-image-content'>
+    <h1>{blogs&&blogs.title}</h1>
+    <p>{moment(blogs&&blogs.createdAt).format('MMMM DD,YYYY')}</p>
+    </div>
    </div>
    <div className='container my-4'>
-    <div className='row'>
-        <p>
-        RVing is a great way to explore new places, and Saskatchewan has some great locations to check out. Saskatchewan is a beautiful province located in the heart of Canada. It is known for its vast prairies, wildlife and friendly people. Saskatchewan is a great place to go camping, with many different locations. Here we will tell you about some of the best places to camp and some of the best places to explore. We promise that you will not be disappointed.
-        </p>
+    <div className='row my-5'>
+        <div dangerouslySetInnerHTML={{__html:blogs&&blogs.content}}>
+
+        </div>
 
     </div>
 
    </div>
-   </>
+   </div>
   )
 }
 
