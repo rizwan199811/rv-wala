@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import Login from "../pages/Login.js";
 import {  useSelector } from 'react-redux';
+import {CreateListing} from "../pages/RV/CreateListing"
 /****Layouts*****/
 const FullLayout = lazy(() => import("../components/layouts/FullLayout.js"));
 
@@ -24,6 +25,8 @@ const Bookings = lazy(() => import("../views/Booking"));
 const Blogs = lazy(() => import("../pages/dashboard/Blog"));
 const AddBlog = lazy(() => import("../pages/dashboard/AddBlog"));
 const ViewBlog = lazy(() => import("../pages/dashboard/ViewBlogs"));
+const RVlistings = lazy(() => import("../pages/dashboard/RVlisting"));
+
 
 /*****Routes******/
 
@@ -81,6 +84,10 @@ const Router = () => {
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },
         { path: "/blogs/edit/:id", exact: true, element: <AddBlog /> },
+        { path: "/rvlisting", exact: true, element: <RVlistings /> },
+        { path: "/rvlisting/edit", exact: true, element: <CreateListing /> },
+        { path: "/rvlisting/view", exact: true, element: <RVDetails /> },
+
       ],
     },
   ]:[

@@ -150,7 +150,7 @@ const handleSubmit =  async (e) => {
               <FormGroup>
                 <Label >Upload Image:</Label>
                 <div {...getRootProps({ className: 'dropzone' })}>
-                          {/* <i class="fa-solid fa-cloud-arrow-down fs-1"></i> */}
+                          {/* <i className="fa-solid fa-cloud-arrow-down fs-1"></i> */}
                           <i className="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>
                           <input {...getInputProps()} />
                        { loading ?  (<div className="spinner-grow text-secondary" role="status">

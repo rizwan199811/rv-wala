@@ -149,9 +149,9 @@ const LogIn = () => {
                 />
               {passwordShown? 
 
-<i class="bi bi-eye-fill eye-pass" onClick={togglePassword}></i>
+<i className="bi bi-eye-fill eye-pass" onClick={togglePassword}></i>
 :
-              <i class="bi bi-eye-slash-fill eye-pass"  onClick={togglePassword}></i>
+              <i className="bi bi-eye-slash-fill eye-pass"  onClick={togglePassword}></i>
              } 
                 <small className="form-text text-muted" id="passwordHelp">
                   {errors.password && touched.password ? (

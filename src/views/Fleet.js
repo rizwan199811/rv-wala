@@ -106,7 +106,7 @@ const Fleet = () => {
                <td>{tdata.created}</td>
                 
                 <td>
-                <i class="bi bi-trash"></i>
+                <i className="bi bi-trash"></i>
                 </td>
               </tr>
             ))}
