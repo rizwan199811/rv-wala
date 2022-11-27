@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Link,useNavigate } from "react-router-dom";
 import {
   Navbar,
@@ -21,8 +21,8 @@ import { setToken } from '../../app/slice/AuthSlice';
 
 
 const Header = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dispatch = useDispatch()
   let history = useNavigate()
@@ -34,6 +34,9 @@ const Header = () => {
   const showMobilemenu = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
+  useEffect(() => {
+    document.getElementById("sidebarArea").classList.toggle("showSidebar");
+  }, [isOpen]);
   return (
     <Navbar color="primary" dark expand="md" className="fix-header head-cl">
       <div className="d-flex align-items-center">
@@ -47,7 +50,7 @@ const Header = () => {
         <Button
           color="primary"
           className=" d-lg-none"
-          onClick={() => showMobilemenu()}
+          // onClick={() => showMobilemenu()}
         >
           <i className="bi bi-list"></i>
         </Button>
