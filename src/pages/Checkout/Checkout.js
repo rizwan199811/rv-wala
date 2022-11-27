@@ -1,4 +1,4 @@
-import React, { useMemo, useState,useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   useStripe,
@@ -6,11 +6,11 @@ import {
   CardNumberElement,
   CardCvcElement,
   CardExpiryElement,
-  cardElement
+  cardElement,
 } from '@stripe/react-stripe-js'
-import { toast,ToastContainer } from 'react-toastify';
-import toastOptions from "../../config/toast";
-import { format } from "date-fns";
+import { toast, ToastContainer } from 'react-toastify'
+import toastOptions from '../../config/toast'
+import { format } from 'date-fns'
 
 import { useFormik } from 'formik'
 import { paymentSchema } from '../../schemas'
@@ -68,8 +68,8 @@ const SplitForm = () => {
   const [states, setStates] = useState([])
   const [proceedNext, setProceedNext] = useState(false)
   const [cardError, setCardError] = useState(false)
-  const [paymentMethods, setPaymentMethods] = useState(null);
-  const [paymentMethod, setSelectedMethod] = useState(null);
+  const [paymentMethods, setPaymentMethods] = useState(null)
+  const [paymentMethod, setSelectedMethod] = useState(null)
 
   console.log({ optionsCountry })
   const bookingDetails = localStorage.getItem('bookingDetails')
@@ -83,46 +83,63 @@ const SplitForm = () => {
     let headers = {
       Authorization: localStorage.getItem('token'),
     }
-    axios.get(baseURL+`/payment/fetch-payment-methods`,{headers})
+    axios
+      .get(baseURL + `/payment/fetch-payment-methods`, { headers })
       .then((resp) => {
-        console.log(resp.data.data);
-        setPaymentMethods(resp.data.data.data);
+        console.log(resp.data.data)
+        setPaymentMethods(resp.data.data.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
-
-  
-
- 
 
   // useEffect(getPaymentMethods, []);
 
   const handleSubmit = async (event) => {
-    try{
+    try {
       event.preventDefault()
       let headers = {
         Authorization: localStorage.getItem('token'),
       }
-      const { email, phone, country, postal_code, state, city, address } = errors
-     
+      const {
+        email,
+        phone,
+        country,
+        postal_code,
+        state,
+        city,
+        address,
+      } = errors
+
       if (!stripe || !elements) {
         // Stripe.js has not loaded yet. Make sure to disable
         // form submission until Stripe.js has loaded.
         return
       }
-      if (email || phone || country || postal_code || state || city || address) {
+      if (
+        email ||
+        phone ||
+        country ||
+        postal_code ||
+        state ||
+        city ||
+        address
+      ) {
         setProceedNext(false)
         return
       }
-  
+
       setProceedNext(true)
       const {
-        data: { data ,message},
-      } = await axios.post(baseURL + '/payment/create-client', {name:values.card_name,email:values.email,phone:values.phone},{headers})
-      console.log({data})
-  
+        data: { data, message },
+      } = await axios.post(
+        baseURL + '/payment/create-client',
+        { name: values.card_name, email: values.email, phone: values.phone },
+        { headers },
+      )
+      console.log({ data })
+
       const billingDetails = {
         name: values.card_name,
         address: {
@@ -131,50 +148,68 @@ const SplitForm = () => {
           city: values.city,
           line1: values.address,
         },
-      };
+      }
       // return
       const payload = await stripe.createPaymentMethod({
         type: 'card',
         billing_details: billingDetails,
         card: elements.getElement(CardNumberElement),
       })
-  
-    
-  
-      const {error} =payload;
-      if(error && error.message){
+
+      const { error } = payload
+      if (error && error.message) {
         setCardError(error.message)
         setProceedNext(false)
         return
       }
-  
-  
+
       const {
-        data: { data:attachData ,message:attachMessage},
-      } = await axios.post(baseURL + '/payment/attach-payment', {paymentMethod: payload.paymentMethod},{headers})
-  
-      console.log({attachData})
-      
-  
-    const {token} = await stripe
-      .createToken(elements.getElement(CardNumberElement))
-      console.log({token})
+        data: { data: attachData, message: attachMessage },
+      } = await axios.post(
+        baseURL + '/payment/attach-payment',
+        { paymentMethod: payload.paymentMethod },
+        { headers },
+      )
+
+      console.log({ attachData })
+
+      const { token } = await stripe.createToken(
+        elements.getElement(CardNumberElement),
+      )
+      console.log({ token })
       const {
-        data: { data:paymentIntent},
-      } = await axios.post(baseURL + '/payment/intent', {amount:bookingDetails.invoiceInfo.total,paymentMethod:payload.paymentMethod.id},{headers})
-  
-      console.log({paymentIntent})
-      const {
-        data: { data:paymentConfirm,message:confirmPayment},
-      } = await axios.post(baseURL + '/payment/confirm', {paymentIntent:paymentIntent.id,paymentMethod:payload.paymentMethod.id,RVId:bookingDetails._id,guests:bookingDetails.traveller || 1, dates:bookingDetails.invoiceInfo.reservation.map((x)=>{return x.date})},{headers})
-       console.log({paymentConfirm})
-       toast.success(confirmPayment, toastOptions)
-  
-    }
-    catch({message}){
+        data: { data: paymentIntent, message: paymentRecievedMessage },
+      } = await axios.post(
+        baseURL + '/payment/intent',
+        {
+          amount: bookingDetails.invoiceInfo.total,
+          paymentMethod: payload.paymentMethod.id,
+          RVId: bookingDetails._id,
+          guests: bookingDetails.traveller || 1,
+          dates: bookingDetails.invoiceInfo.reservation.map((x) => {
+            return x.date
+          }),
+          bookingDetails: {
+            tax: (
+              (bookingDetails.invoiceInfo.total -
+                bookingDetails.invoiceInfo.total * 0.13) *
+              0.13
+            ).toFixed(2),
+            invoice:bookingDetails.invoiceInfo
+          }
+        },
+        { headers },
+      )
+
+      console.log({ paymentIntent })
+      // const {
+      //   data: { data:paymentConfirm,message:confirmPayment},
+      // } = await axios.post(baseURL + '/payment/confirm', {paymentIntent:paymentIntent.id,paymentMethod:payload.paymentMethod.id,RVId:bookingDetails._id,guests:bookingDetails.traveller || 1, dates:bookingDetails.invoiceInfo.reservation.map((x)=>{return x.date})},{headers})
+      //  console.log({paymentConfirm})
+      toast.success(paymentRecievedMessage, toastOptions)
+    } catch ({ message }) {
       toast.error(message, toastOptions)
     }
-   
   }
 
   const { values, handleChange, handleBlur, errors, touched } = useFormik({
@@ -194,9 +229,6 @@ const SplitForm = () => {
       <div className="row my-4">
         <div className="col-md-7">
           <div className="payment-form-wrap">
-          
-                  
-                   
             <div className="card">
               <div className="card-title mx-auto">Billing Details</div>
               <form>
@@ -484,18 +516,18 @@ const SplitForm = () => {
                     id="flexCheckDefault"
                   />
                   <small>
-                  SAVE PAYMENT INFORMATION TO MY ACCOUNT FOR FUTURE PURCHASES.
+                    SAVE PAYMENT INFORMATION TO MY ACCOUNT FOR FUTURE PURCHASES.
                   </small>
                 </div>
                 <div className="alert alert-primary">
-                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
+                  Your personal data will be used to process your order, support
+                  your experience throughout this website, and for other
+                  purposes described in our privacy policy.
                 </div>
                 <button type="submit" disabled={!stripe} onClick={handleSubmit}>
                   Pay
                 </button>
-                {cardError ? (
-                      <p className="form-error">{cardError}</p>
-                    ) : null}
+                {cardError ? <p className="form-error">{cardError}</p> : null}
                 {/* <button type="submit" className="btn btn-primary">
               Pay Now
             </button> */}
@@ -504,153 +536,143 @@ const SplitForm = () => {
           </div>
         </div>
         <div className="col-md-5">
-        <div className="mb-3 coupon-div-wrap">
-                      <label className="form-label">
-                      If you have a coupon code, please apply it below.
-                      </label>
-                      <div className='row'>
-                      <div className='col-7'>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder='coupon code'
-                      />
-                      </div>
-                      <div className='col-5'>
-                      <button type="submit" className="btn ">
-                      Apply Coupon
-                    </button>
-                    </div>
-                    </div>
-
-                    </div>
-            <div className="row payment-order-summary-wrap">
-              <div className="card">
-                <div className="card-header">Order Summary</div>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    Total Cost <span>${bookingDetails.invoiceInfo.total}</span>
-                  </li>
-                  <li className="list-group-item">
-                    To be Paid <span>${bookingDetails.invoiceInfo.total}</span>
-                  </li>
-                </ul>
+          <div className="mb-3 coupon-div-wrap">
+            <label className="form-label">
+              If you have a coupon code, please apply it below.
+            </label>
+            <div className="row">
+              <div className="col-7">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="coupon code"
+                />
+              </div>
+              <div className="col-5">
+                <button type="submit" className="btn ">
+                  Apply Coupon
+                </button>
               </div>
             </div>
-            <div className="row mt-4 payment-your-order-wrap">
-              <div
-                className="accordion accordion-flush p-0"
-                id="accordionFlushExample"
-              >
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingOne">
-                    <button
-                      className="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseOne"
-                    >
-                      Your Order
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseOne"
-                    className="accordion-collapse collapse show"
-                    aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample"
+          </div>
+          <div className="row payment-order-summary-wrap">
+            <div className="card">
+              <div className="card-header">Order Summary</div>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  Total Cost <span>${bookingDetails.invoiceInfo.total}</span>
+                </li>
+                <li className="list-group-item">
+                  To be Paid <span>${bookingDetails.invoiceInfo.total}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="row mt-4 payment-your-order-wrap">
+            <div
+              className="accordion accordion-flush p-0"
+              id="accordionFlushExample"
+            >
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="flush-headingOne">
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
                   >
-                    <div className="accordion-body">
-                      <div className="card mb-3 position-relative">
-                        <div className="row g-0">
-                          <div className="d-flex">
-                            <div className="image-wrap-inner">
-                              <img
-                                src="https://rvwala.com/wp-content/uploads/2022/07/f7ff8810-d21b-4fc3-9310-2c619c8e02a0-800x600.jpg"
-                                className="img-fluid rounded-start"
-                                alt="..."
-                              />
-                            </div>
-                            <div className="card-body">
-                              <h5 className="card-title">
-                                {bookingDetails.RVInfo.year}{' '}
-                                {bookingDetails.RVInfo.make} ×{' '}
-                                {bookingDetails.invoiceInfo.reservation.length}
-                                <span className="float-end">
-                                  <b>
-                                    {' '}
-                                    Price: $
-                                    {
-                                      bookingDetails.invoiceInfo
-                                        .reservationTotal
-                                    }
-                                  </b>
-                                </span>
-                              </h5>
-                              <p className="card-text">
-                                Booking Deposit
-                                <span className="float-end">
-                                  <b>
-                                    {' '}
-                                    Price: ${bookingDetails.booking_deposit}
-                                  </b>
-                                </span>
-                              </p>
-                              <p className="card-text">
-                                Security Deposit
-                                <span className="float-end">
-                                  <b>
-                                    {' '}
-                                    Price: ${bookingDetails.damage_deposit}
-                                  </b>
-                                </span>
-                              </p>
-                              {bookingDetails.invoiceInfo.hostServices &&
-                                bookingDetails.invoiceInfo.hostServices.length >
-                                  0 &&
-                                bookingDetails.invoiceInfo.hostServices.map(
-                                  (x) => {
-                                    return (
-                                      <p className="card-text">
-                                        {x.label}
-                                        <span className="float-end">
-                                          <b> Price: ${x.value}</b>
-                                        </span>
-                                      </p>
-                                    )
-                                  },
-                                )}
-                                {bookingDetails.invoiceInfo.addOns &&
-                                bookingDetails.invoiceInfo.addOns.length >
-                                  0 &&
-                                bookingDetails.invoiceInfo.addOns.map(
-                                  (x) => {
-                                    return (
-                                      <p className="card-text">
-                                        {x.label}
-                                        <span className="float-end">
-                                          <b> Price: ${x.value}</b>
-                                        </span>
-                                      </p>
-                                    )
-                                  },
-                                )}
-                              <p className="card-text">
-                                Tax
-                                <span className="float-end">
-                                  <b>
-                                    {' '}
-                                    Price: $
-                                    {((bookingDetails.invoiceInfo.total-bookingDetails.invoiceInfo.total*0.13)*0.13).toFixed(2)}
-                                  </b>
-                                </span>
-                              </p>
+                    Your Order
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  className="accordion-collapse collapse show"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div className="accordion-body">
+                    <div className="card mb-3 position-relative">
+                      <div className="row g-0">
+                        <div className="d-flex">
+                          <div className="image-wrap-inner">
+                            <img
+                              src="https://rvwala.com/wp-content/uploads/2022/07/f7ff8810-d21b-4fc3-9310-2c619c8e02a0-800x600.jpg"
+                              className="img-fluid rounded-start"
+                              alt="..."
+                            />
+                          </div>
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              {bookingDetails.RVInfo.year}{' '}
+                              {bookingDetails.RVInfo.make} ×{' '}
+                              {bookingDetails.invoiceInfo.reservation.length}
+                              <span className="float-end">
+                                <b>
+                                  {' '}
+                                  Price: $
+                                  {bookingDetails.invoiceInfo.reservationTotal}
+                                </b>
+                              </span>
+                            </h5>
+                            <p className="card-text">
+                              Booking Deposit
+                              <span className="float-end">
+                                <b> Price: ${bookingDetails.booking_deposit}</b>
+                              </span>
+                            </p>
+                            <p className="card-text">
+                              Security Deposit
+                              <span className="float-end">
+                                <b> Price: ${bookingDetails.damage_deposit}</b>
+                              </span>
+                            </p>
+                            {bookingDetails.invoiceInfo.hostServices &&
+                              bookingDetails.invoiceInfo.hostServices.length >
+                                0 &&
+                              bookingDetails.invoiceInfo.hostServices.map(
+                                (x) => {
+                                  return (
+                                    <p className="card-text">
+                                      {x.label}
+                                      <span className="float-end">
+                                        <b> Price: ${x.value}</b>
+                                      </span>
+                                    </p>
+                                  )
+                                },
+                              )}
+                            {bookingDetails.invoiceInfo.addOns &&
+                              bookingDetails.invoiceInfo.addOns.length > 0 &&
+                              bookingDetails.invoiceInfo.addOns.map((x) => {
+                                return (
+                                  <p className="card-text">
+                                    {x.label}
+                                    <span className="float-end">
+                                      <b> Price: ${x.value}</b>
+                                    </span>
+                                  </p>
+                                )
+                              })}
+                            <p className="card-text">
+                              Tax
+                              <span className="float-end">
+                                <b>
+                                  {' '}
+                                  Price: $
+                                  {(
+                                    (bookingDetails.invoiceInfo.total -
+                                      bookingDetails.invoiceInfo.total * 0.13) *
+                                    0.13
+                                  ).toFixed(2)}
+                                </b>
+                              </span>
+                            </p>
 
-                              <h6 className="float-end border-top pt-1">
-                                Subtotal:${bookingDetails.invoiceInfo.total}
-                              </h6>
-                            </div>
+                            <h6 className="float-end border-top pt-1">
+                              Subtotal:${bookingDetails.invoiceInfo.total}
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -659,10 +681,11 @@ const SplitForm = () => {
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
       <ToastContainer />
-    {/* <div className={style.wrapper}>
+      {/* <div className={style.wrapper}>
       <h3>Select your preferred payment method</h3>
       {paymentMethods&& paymentMethods.length>0 &&
         paymentMethods.map((method) => (

@@ -49,7 +49,7 @@ const Booking = () => {
                               </p> */}
                   <p className="my-3">BOOKED ON {moment(booking.createdAt).format("dddd, MMMM Do YYYY")} BY {booking.user.fullname}</p>
                   <button type="button" class="btn btn-outline-danger">
-                    {booking.status || 'CONFIRMED'}
+                    {booking.status && booking.status.toUpperCase()}
                   </button>
                 </div>
                 <div className="card-footer text-muted fs-4">
