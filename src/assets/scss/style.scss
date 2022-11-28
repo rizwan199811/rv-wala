@@ -27,8 +27,8 @@ float: right;
     display: flex;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.table-loader .fallback-spinner{
-    position:unset;
+.table-loader {
+    text-align: center;
 }
   @media (max-width: 767px) {
     .table-responsive .dropdown-menu {

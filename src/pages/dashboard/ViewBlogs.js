@@ -7,6 +7,7 @@ import { baseURL } from '../../config/apiURL';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import moment from 'moment/moment';
+import Loader from '../../components/layouts/loader/Loader';
 
 const ViewBlogs = () => {
     const [loading, setLoading] = useState(true)
@@ -31,10 +32,10 @@ const ViewBlogs = () => {
     useEffect(() => {
       fetchBlogsById()
     }, [id])
-    console.log(blogs)
   
   return (
     <Card>
+      {loading && <Loader/>}
     <CardBody>  
       <CardTitle tag="h5">View Blogs</CardTitle>
       <div className='container-fluid mt-2 blog-detail-wrapper'>

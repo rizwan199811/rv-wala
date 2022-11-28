@@ -1,17 +1,21 @@
 import axios from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardTitle, CardSubtitle, Table, Button } from "reactstrap";
+import { toast, ToastContainer } from 'react-toastify';
+import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Spinner } from "reactstrap";
+import DeleteModal from '../../components/layouts/DeleteModal';
 import Loader from '../../components/layouts/loader/Loader';
 import { baseURL } from '../../config/apiURL';
+import toastOptions from '../../config/toast';
 
 
 const Blog = () => {
   // const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [newData, setNewData] = useState([])
@@ -47,24 +51,57 @@ const Blog = () => {
     fetchBlogs()
   }, [])
 
-  useEffect(() => {
-    
-  }, [blogs])
   
-  const handleDelete = async (blogId) =>{
-    try{
-       let headers = {
-        Authorization: localStorage.getItem('token'),
-      }
-    const {
-      data: {
-        data: { message },
-      },
-    } = await axios.delete(baseURL + '/blog/' + blogId ,{headers})
-    setNewData(blogs => blogs.filter(({id}) => id !== blogId));
-    setLoading(false)
-  } catch (e) { }  
-  }
+
+
+
+  const [products, setProducts] = useState(blogs);
+
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+    nameProduct: ""
+  });
+  const idProductRef = useRef();
+  const handleDialog = (message, isLoading, nameProduct) => {
+    setDialog({
+      message,
+      isLoading,
+      //Update
+      nameProduct
+    });
+  };
+
+  const handleDelete = (id) => {
+    const index = blogs.findIndex((p) => p.id === id);
+    handleDialog("Are you sure you want to delete?", true, blogs[index].title);
+    idProductRef.current = id;
+    console.log(index,idProductRef.current)
+  };
+
+  const areUSureDelete = async (choose) => {
+    if (choose) {
+      setBlogs(blogs.filter((p) => p.id !== idProductRef.current));
+      try{
+             let headers = {
+              Authorization: localStorage.getItem('token'),
+            }
+          const {
+            data: {
+              data: { message },
+            },
+          } = await axios.delete(baseURL + '/blog/' + idProductRef.current ,{headers})
+          toast(message,toastOptions)
+          console.log(message,"message")
+        } catch (e) { }  
+      handleDialog("", false);
+    } else {
+      handleDialog("", false);
+    }
+
+  };
+
+  
   return (
     <div>
     <Card>
@@ -93,7 +130,9 @@ const Blog = () => {
             </tr>
           </thead>
           <tbody>
-          <tr className="table-loader"><td> {loading && <Loader></Loader>}</td></tr>
+          <tr className="table-loader">
+            <td colSpan={4}>{loading && <Spinner>Loading...</Spinner>}</td>
+          </tr>
             {!loading && blogs.length > 0 && blogs.map((tdata, index) => (
               <tr key={index} className="border-top">
                 <td>
@@ -111,7 +150,7 @@ const Blog = () => {
                 <td><Link to={`/blogs/${tdata._id}`}><Button className="btn" outline color="info">View</Button></Link></td>
                 <td>
                 <Link to={`/blogs/edit/${tdata._id}`}> <i className="bi bi-pencil-square me-3 blog-icon"></i> </Link>
-                  <i className="bi bi-trash blog-icon" onClick={()=>handleDelete(tdata._id)}></i>
+                  <i className="bi bi-trash blog-icon"  onClick={()=>handleDelete(tdata._id)}></i>
                   </td>
               </tr>
             ))}
@@ -119,34 +158,18 @@ const Blog = () => {
         </Table>
       </CardBody>
     </Card>
+    {dialog.isLoading && (
+        <DeleteModal
+          //Update
+          nameProduct={dialog.title}
+          onDialog={areUSureDelete}
+          message={dialog.message}
+        />
+      )}
+    <ToastContainer/>
   </div>
   )
 }
 
 export default Blog
 
-// import {
-//   Card,
-//   CardBody,
-//   CardImg,
-//   CardSubtitle,
-//   CardText,
-//   CardTitle,
-//   Button,
-// } from "reactstrap";
-
-// const Blog = (props) => {
-//   return (
-//     <Card>
-//       <CardImg alt="Card image cap" src={props.image} />
-//       <CardBody className="p-4">
-//         <CardTitle tag="h5">{props.title}</CardTitle>
-//         <CardSubtitle>{props.subtitle}</CardSubtitle>
-//         <CardText className="mt-3">{props.text}</CardText>
-//         <Button color={props.color}>Read More</Button>
-//       </CardBody>
-//     </Card>
-//   );
-// };
-
-// export default Blog;

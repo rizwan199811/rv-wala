@@ -1,51 +1,72 @@
-// import axios from 'axios';
-// import React, { useState } from 'react';
-// import { useEffect } from 'react';
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-// import { baseURL } from '../../config/apiURL';
+
+import React from 'react';
+
+function DeleteModal({ message, onDialog, nameProduct }) {
+
+  return (
+    <div
+    style={{
+      position: "fixed",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      backgroundColor: "rgba(0,0,0,0.5)"
+    }}
+    onClick={() => onDialog(false)}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%,-50%)",
+        background: "white",
+        padding: "20px",
+        borderRadius: "10px"
+      }}
+    >
+      <h3 style={{color: "#111", fontSize: "16px" ,textAlign:"center",width:"80%"}}>{message}</h3>
+      <h1 style={{ color: "blue", fontSize: "24px" }}>{nameProduct}</h1>
+            
+      <div style={{ display: "flex", alignItems: "center",marginTop:"20px" }}>
+        <button
+          onClick={() => onDialog(true)}
+          style={{
+            background: "red",
+            color: "white",
+            padding: "10px",
+            marginRight: "4px",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          Yes
+        </button>
+        <button
+          onClick={() => onDialog(false)}
+          style={{
+            background: "green",
+            color: "white",
+            padding: "10px",
+            marginLeft: "4px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+  );
+}
+
+export default DeleteModal;
 
 
-// function DeleteModal(args) {
-
-//   const handleDelete  = async(id) => {
-//         try{
-//        let headers = {
-//         Authorization: localStorage.getItem('token'),
-//       }
-//     args.toggle()
-//     const {
-//       data: {
-//         data: { message },
-//       },
-//     } = await axios.delete(baseURL + '/blog/' + id ,{headers})
-
-//   } catch (e) { } 
-
-//   };
-// //   useEffect(() => {
-
-// //   }, [args.toggle])
-  
-// console.log(args);
-//   return (
-//     <div>
-//       {/* <Button color="danger" onClick={toggle}>
-//         Click Me
-//       </Button> */}
-//       <Modal isopen={args.modal} toggle={args.toggle} {...args}>
-//         <ModalHeader {...args}>Are You Sure?</ModalHeader>
-//         <ModalBody className="text-center p-4">
-//         <Button outline color="success" className="me-3" onClick={args.toggle}>
-//             Cancel
-//           </Button>                         
-//         <Button outline color="danger" onClick={()=>handleDelete(args.deleteid)}>
-//            Delete
-//           </Button>{' '}
-          
-//         </ModalBody>
-//       </Modal>
-//     </div>
-//   );
-// }
-
-// export default DeleteModal;

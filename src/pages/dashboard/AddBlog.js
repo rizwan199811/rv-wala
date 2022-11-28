@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, CardTitle,  Button } from "reactstrap";
+import { Card, CardBody, CardTitle,  Button, Spinner } from "reactstrap";
 import {
   Form,
   FormGroup,
@@ -15,7 +15,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { baseURL } from '../../config/apiURL';
 import upload from "../../images/upload-icon.png"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const AddBlog = () => {
   let profile = localStorage.getItem('user')
@@ -23,7 +24,9 @@ const AddBlog = () => {
     : {}
   const editor = useRef(null);
   const naviagte = useNavigate()
+  const [blogs, setBlogs] = useState()
   const [loading, setLoading] = useState(false)
+
   const [content, setContent] = useState()
   const [title, setTitle] = useState()
   const [proceedNext, setProceedNext] = useState(true)
@@ -37,6 +40,28 @@ const AddBlog = () => {
 //   // console.log(event)
 //   setPost({ ...post, [event.target.name]: event.target.value })
 // }
+
+const { id } = useParams()
+const fetchBlogsById = async () => {
+  try {
+    setLoading(true)
+    let headers = {
+      Authorization: localStorage.getItem('token'),
+    }
+    const {
+      data: { data },
+    } = await axios.get(baseURL + '/blog/' + id, { headers })
+    console.log({ data })
+    setBlogs(data)
+
+    setLoading(false)
+  } catch (e) {}
+}
+useEffect(() => {
+  fetchBlogsById()
+}, [id])
+
+
 
 const contentFieldChanaged = (data) => {
   setContent(data)
@@ -108,8 +133,10 @@ const handleSubmit =  async (e) => {
     } = await axios.post(baseURL + '/blog', body,{headers})
     
     toast.success(message, toastOptions)
-    setLoading(false)
-    naviagte("/blogs")
+    setTimeout(() => {
+      setLoading(false)
+      naviagte("/blogs")
+    }, 2000);
 
   } catch ({
     response: {
@@ -134,7 +161,7 @@ const handleSubmit =  async (e) => {
                   name="title"
                   placeholder="Enter Blog Title"
                   type="text"
-                  onChange={(e)=>setTitle(e.target.value)}
+                  onChange={(e)=>setTitle(e.target.value )}
                 />
               </FormGroup>
               <FormGroup>
@@ -151,7 +178,7 @@ const handleSubmit =  async (e) => {
                 <Label >Upload Image:</Label>
                 <div {...getRootProps({ className: 'dropzone' })}>
                           {/* <i className="fa-solid fa-cloud-arrow-down fs-1"></i> */}
-                          <i className="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>
+                          {/* <i className="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i> */}
                           <input {...getInputProps()} />
                        { loading ?  (<div className="spinner-grow text-secondary" role="status">
   <span className="visually-hidden">Loading...</span>
@@ -163,7 +190,7 @@ const handleSubmit =  async (e) => {
                           </p> */}
                         </div>
               </FormGroup>
-              <Button type='submit'>Submit</Button>
+              <Button type='submit' disabled={loading?true:false}>{loading?<Spinner/>:"Submit"}</Button>
             </Form>
     </CardBody>
     <ToastContainer/>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardSubtitle, Table, Button } from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Spinner } from "reactstrap";
 import user1 from "../assets/images/users/user1.jpg";
 import user2 from "../assets/images/users/user2.jpg";
 import user3 from "../assets/images/users/user3.jpg";
@@ -90,9 +90,10 @@ const Rvrequest = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            {loading && <Loader></Loader>}
             <tbody>
-            
+            <tr className="table-loader">
+            <td colSpan={5}>{loading && <Spinner>Loading...</Spinner>}</td>
+          </tr>
               {!loading && RVs.length > 0 && RVs.map((tdata, index) => (
                 <tr key={index} className="border-top">
                   <td>
