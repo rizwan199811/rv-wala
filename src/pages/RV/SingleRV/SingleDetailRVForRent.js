@@ -450,6 +450,7 @@ const SingleDetailRV = ({
                                 )
                               }
                             })}
+                            {RV.featuresArray.length===0 && <p>No Data Added</p>}
                         </div>
 
                         <div className="row dposit-inp my-3">
@@ -470,6 +471,7 @@ const SingleDetailRV = ({
                                 )
                               }
                             })}
+                            {RV.featuresArray.length===0 && <p>No Data Added</p>}
                         </div>
 
                         <div className="row dposit-inp my-3">
@@ -490,8 +492,9 @@ const SingleDetailRV = ({
                                 )
                               }
                             })}
-
-                          <div></div>
+                            {RV.featuresArray.length===0 && <p>No Data Added</p>}
+                          <div>
+                          </div>
                         </div>
                       </div>
                     </div>

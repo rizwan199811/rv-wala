@@ -197,6 +197,14 @@ const ListingRv = () => {
           </div>
         </div>
       </div>
+      <div className='container'>
+        <div className='row'>
+        <div>
+            <h2>RVs For Rent</h2>
+            <p>See RVs For Rent</p>
+          </div>
+        </div>
+      </div>
       {loading && (
         <lottie-player
           src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
@@ -209,10 +217,6 @@ const ListingRv = () => {
       )}
       <div className="container">
         <div className="row">
-          <div>
-            <h2>RVs For Rent</h2>
-            <p>See RVs For Sale</p>
-          </div>
           {RVs.length > 0 &&
             RVs.map((x) => {
               return (

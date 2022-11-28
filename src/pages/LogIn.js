@@ -107,6 +107,7 @@ const LogIn = () => {
       },
     }) {
       console.log({ message })
+      setLoading(false)
       toast.error(message, toastOptions)
     }
   }
@@ -195,14 +196,15 @@ const LogIn = () => {
                     onClick={togglePassword}
                   ></i>
                 )}
-                <small className="form-text text-muted" id="passwordHelp">
+              </div>
+              <small className="form-text text-muted" id="passwordHelp">
                   {errors.password && touched.password ? (
                     <p className="text-danger">{errors.password} </p>
                   ) : (
                     ''
                   )}
                 </small>
-              </div>
+
               <div className="row mt-3">
                 <div className="col-md-6">
                   <div className="form-group form-check">

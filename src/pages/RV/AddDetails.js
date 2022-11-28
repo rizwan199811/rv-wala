@@ -43,6 +43,7 @@ const AddDetails = () => {
       alert(JSON.stringify(values, null, 2))
     },
   })
+  console.log(booking_details)
   return (
     <>
       <div className="container">
@@ -51,12 +52,12 @@ const AddDetails = () => {
           <div className="col-md-4 mb-2">
             <div className="book-detail-card-wrap">
               <div className="box">
-                <span className="sf">TRAVEL TRAILER</span>
+                <span className="sf">{booking_details.RVInfo.type}</span>
                 <div className="top">
                   <img
                     src={
                       booking_details.ImageInfo.files[0]
-                        ? booking_details.ImageInfo.files[0].path
+                        ? booking_details.ImageInfo.files[0].location
                         : booking_details.ImageInfo.files[0].location
                     }
                     alt=""

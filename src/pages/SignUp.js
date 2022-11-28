@@ -78,8 +78,8 @@ const SignUp = () => {
     }
     catch({response :{ data :{message}}}){
       console.log({message})
-      toast.error(message, toastOptions
-        );
+      toast.error(message, toastOptions);
+      setLoading(false)
     }
  
   }
@@ -300,7 +300,7 @@ const SignUp = () => {
               <div className="row mb-4">
                 <div className="col-md-6">
                   <button className="btn btn-blue text-center mb-1 py-2"
-                  onClick={createAccount}>
+                  onClick={createAccount} disabled={loading?true:false}>
                     {loading && <i className="fa fa-spinner fa-spin"></i>}
                     Create Account
                   </button>
