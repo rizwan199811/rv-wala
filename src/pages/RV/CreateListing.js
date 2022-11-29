@@ -1,6 +1,6 @@
-import React from "react";
+  
 import { Fieldset } from "../../components/Fieldset";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { RVInfo } from "../StepForm/RVInfo";
 import { ListingInfo } from "../StepForm/ListingInfo";
 import { InsuranceInfo } from "../StepForm/InsuranceInfo";
@@ -10,11 +10,65 @@ import { FeaturesInfo } from "../StepForm/FeaturesInfo";
 import { UrlsInfo } from "../StepForm/UrlsInfo";
 import { Finish } from "../StepForm/Finish";
 import '../../assets/style/stepFormStyle.css'
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { baseURL } from "../../config/apiURL";
 
 export const CreateListing = () => {
+
   const [step, setStep] = useState(1);
   const [progressWidth, setProgressWidth] = useState(parseFloat(100 / 7) * 1);
   const [listObj, setListObj] = useState({});
+  const [RV, setRV] = useState({})
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  let history = useNavigate()
+  const { id } = useParams()
+
+  useEffect(() => {  
+    fetchRV()
+  }, [])
+
+  const fetchRV = async () => {
+    try {
+    
+      setLoading(true)
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const {
+        data: { data },
+      } = await axios.get(baseURL + '/rv/' + id, { headers })
+      console.log({ data })
+  
+      let hostServices =[{value:data.Pricing.cleaning_fee,label:'Cleaning fee'},{value:data.Pricing.prep_fee,label:'Prep fee'}]
+      const sum = hostServices.reduce((accumulator, object) => {
+        return accumulator + parseInt(object.value);
+      }, 0);
+      // setInvoiceInfo({...invoiceInfo,hostServices,hostServicesTotal:sum})
+      setRV(data);
+      localStorage.setItem("listObj",JSON.stringify(data))
+      const images = data.ImageInfo.files.map((x, index) => {
+        if (index == 0) {
+          return {
+            ...x,
+            active: true,
+          }
+        }
+        return {
+          ...x,
+          active: false,
+        }
+      })
+
+
+      console.log({ images })
+      setImages(images)
+      setLoading(false)
+    } catch (e) {}
+  }
   const nextStep = () => {
     let totalSteps = 8;
     let percent = parseFloat(100 / totalSteps) * (step + 1);

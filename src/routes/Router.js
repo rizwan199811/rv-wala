@@ -59,13 +59,14 @@ const RVlistings = lazy(() => import("../pages/dashboard/RVlisting"));
 
 const Router = () => {
   console.log("called")  
+  const user =localStorage.user ? JSON.parse(localStorage.user) :{}
   const token = useSelector((state) => state.auth.token);
   const ThemeRoutes = token? [
     {
       path: "/",
       element: <FullLayout />,
       children: [
-        { path: "/", element: <Navigate to="/rv-request" replace ={true}/> },
+        { path: "/", element: <Navigate to={user.role=="admin"?"rvs":"/rv-request"} replace ={true}/> },
         { path: "/starter", exact: true , element: <Starter /> },
         { path: "/about", exact: true, element: <About /> },
         { path: "/alerts", exact: true, element: <Alerts /> },
@@ -84,9 +85,9 @@ const Router = () => {
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },
         { path: "/blogs/edit/:id", exact: true, element: <AddBlog /> },
-        { path: "/rvlisting", exact: true, element: <RVlistings /> },
-        { path: "/rvlisting/edit", exact: true, element: <CreateListing /> },
-        { path: "/rvlisting/view", exact: true, element: <RVDetails /> },
+        { path: "/rvs", exact: true, element: <RVlistings /> },
+        { path: "/rvlisting/edit/:id", exact: true, element: <CreateListing /> },
+        { path: "/rvlisting/view/:id", exact: true, element: <RVDetails /> },
 
       ],
     },
