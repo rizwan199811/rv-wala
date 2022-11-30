@@ -31,12 +31,12 @@ const Header = () => {
   const Handletoggle = () => {
     setIsOpen(!isOpen);
   };
-  const showMobilemenu = () => {
-    document.getElementById("sidebarArea").classList.toggle("showSidebar");
-  };
   useEffect(() => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   }, [isOpen]);
+
+  useEffect(() => {
+  }, [dropdownOpen]);
   return (
     <Navbar color="primary" dark expand="md" className="fix-header head-cl">
       <div className="d-flex align-items-center">

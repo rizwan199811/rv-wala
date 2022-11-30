@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
+import ReactPaginate from 'react-paginate'
 import { toast ,ToastContainer} from 'react-toastify'
 import {
   Card,
@@ -32,6 +33,7 @@ const Booking = () => {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
   const fetchBookings = async () => {
     try {
       setLoading(true)
@@ -39,10 +41,12 @@ const Booking = () => {
         Authorization: localStorage.getItem('token'),
       }
       const {
-        data: { data },
+        data: {
+          data: { docs, totalPages, limit, page },
+        },
       } = await axios.get(baseURL + '/booking/list', { headers })
-      console.log({ data })
-      setBookings(data.docs)
+      setPageCount(totalPages)
+      setBookings(docs)
       setLoading(false)
     } catch (e) {}
   }
@@ -95,6 +99,9 @@ const Booking = () => {
     } catch ({ message }) {
       toast.error(message, toastOptions)
     }
+  }
+  const handlePageClick =()=>{
+    
   }
   useEffect(() => {
     fetchBookings()
@@ -207,6 +214,19 @@ const Booking = () => {
                 ))}
               </tbody>
             </Table>
+            {bookings.length > 0 && (
+            <div id="react-paginate">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
             <ToastContainer />
           </CardBody>
         </Card>

@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import Login from "../pages/Login.js";
 import {  useSelector } from 'react-redux';
-import {CreateListing} from "../pages/RV/CreateListing"
+import {EditRV} from "../pages/RV/EditRV"
 /****Layouts*****/
 const FullLayout = lazy(() => import("../components/layouts/FullLayout.js"));
 
@@ -86,7 +86,7 @@ const Router = () => {
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },
         { path: "/blogs/edit/:id", exact: true, element: <AddBlog /> },
         { path: "/rvs", exact: true, element: <RVlistings /> },
-        { path: "/rvlisting/edit/:id", exact: true, element: <CreateListing /> },
+        { path: "/rvlisting/edit/:id", exact: true, element: <EditRV /> },
         { path: "/rvlisting/view/:id", exact: true, element: <RVDetails /> },
 
       ],

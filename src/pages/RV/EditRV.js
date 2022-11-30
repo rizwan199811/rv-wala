@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { baseURL } from "../../config/apiURL";
 
-export const CreateListing = () => {
+export const EditRV = () => {
 
   const [step, setStep] = useState(1);
   const [progressWidth, setProgressWidth] = useState(parseFloat(100 / 7) * 1);
@@ -49,6 +49,7 @@ export const CreateListing = () => {
       }, 0);
       // setInvoiceInfo({...invoiceInfo,hostServices,hostServicesTotal:sum})
       setRV(data);
+      ['user', 'booked','disabled','listingCount','reserved_dates','status','_id','updatedAt','createdAt','featuresArray','__v'].forEach(e => delete data[e]);
       localStorage.setItem("listObj",JSON.stringify(data))
       const images = data.ImageInfo.files.map((x, index) => {
         if (index == 0) {
@@ -144,7 +145,7 @@ export const CreateListing = () => {
         <div className="row justify-content-center">
           <div className="col-11 col-sm-10 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
             <div className="card p-2 pt-4 pb-0 mt-3 mb-3">
-              <h2 id="heading">Create Your Listing</h2>
+              <h2 id="heading">Update Your Listing</h2>
               <p>Fill all form field to go to next step</p>
               <form id="msform">
                 <ul id="progressbar">

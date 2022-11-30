@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { baseURL } from '../../config/apiURL'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import toastOptions from '../../config/toast'
 import { useFormik } from 'formik'
@@ -14,6 +14,7 @@ export const FeaturesInfo = ({
   handleChange,
 }) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
+  const { id } = useParams()
   let initialValues = {
     propane_tank: '',
   }
@@ -48,12 +49,12 @@ export const FeaturesInfo = ({
       console.log({ headers })
       const {
         data: { message },
-      } = await axios.post(baseURL + '/rv', body, { headers })
+      } = await axios.put(baseURL + '/rv/'+id, body, { headers })
       console.log({ message })
       toast.success(message, toastOptions)
       setTimeout(() => {
         setLoading(false)
-        history('/rvs-for-rent', { replace: true })
+        history('/rvs', { replace: true })
       }, 3000)
     } catch ({
       response: {

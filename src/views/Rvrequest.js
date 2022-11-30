@@ -49,6 +49,9 @@ const Rvrequest = () => {
       setLoading(false)
     } catch (e) { }
   }
+  const handlePageClick =()=>{
+    
+  }
   const approveRV = async (status,RVId) => {
     try {
       let queryParams = {};
@@ -136,6 +139,19 @@ const Rvrequest = () => {
               ))}
             </tbody>
           </Table>
+          {RVs.length > 0 && (
+            <div id="react-paginate">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
         </CardBody>
       </Card>
     </div>
