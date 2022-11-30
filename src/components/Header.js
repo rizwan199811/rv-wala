@@ -7,6 +7,8 @@ import { useRef } from 'react'
 const Header = () => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)
+  const admin = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).role : null;
+  const adminPanelUrl = 'http://localhost:3001'
   const profile = useSelector((state) => state.profile.image)
   const Logout = () => {
     localStorage.clear()
@@ -115,11 +117,9 @@ const Header = () => {
               </ul>
             ) : (
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                {/* <li className="nav-item m-auto">
-                  <NavLink to="#" className="nav-link dasboard-btn">
-                    Go to Dashboard
-                  </NavLink>
-                </li> */}
+               { admin && <li className="nav-item m-auto">
+                  <a rel="noopener noreferrer" href={adminPanelUrl} target="_blank" className="nav-link dasboard-btn">Go to Dashboard</a>
+                </li>}
                 <div className="dropdown header-profile-dropdown">
                   <button
                     className="dropdown-toggle header-profile-dropdown"
