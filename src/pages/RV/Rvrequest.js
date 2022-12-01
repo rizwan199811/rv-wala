@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Spinner } from "reactstrap";
-import user1 from "../assets/images/users/user1.jpg";
-import user2 from "../assets/images/users/user2.jpg";
-import user3 from "../assets/images/users/user3.jpg";
-import user4 from "../assets/images/users/user4.jpg";
-import user5 from "../assets/images/users/user5.jpg";
+import user1 from "../../assets/images/users/user1.jpg";
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { baseURL } from '../config/apiURL'
+import { baseURL } from '../../config/apiURL'
 import ReactPaginate from 'react-paginate'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import Loader from "../components/layouts/loader/Loader";
+import Loader from "../../components/layouts/loader/Loader";
 
   
 const Rvrequest = () => {
@@ -22,7 +18,7 @@ const Rvrequest = () => {
   useEffect(() => {
     fetchRVs()
   }, [])
-  const itemsPerPage = 12, minDistance = 0;
+  const itemsPerPage = 12;
  
   const fetchRVs = async (currentPage = 1) => {
     try {
@@ -49,8 +45,10 @@ const Rvrequest = () => {
       setLoading(false)
     } catch (e) { }
   }
-  const handlePageClick =()=>{
-    
+  const handlePageClick = async (event) => {
+    console.log({ event })
+    let currentPage = event.selected + 1
+    await fetchRVs(currentPage)
   }
   const approveRV = async (status,RVId) => {
     try {
@@ -140,6 +138,19 @@ const Rvrequest = () => {
             </tbody>
           </Table>
           {RVs.length > 0 && (
+            <div id="react-paginate">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
+           {RVs.length > 0 && (
             <div id="react-paginate">
               <ReactPaginate
                 breakLabel="..."

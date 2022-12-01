@@ -1,14 +1,14 @@
   
 import { Fieldset } from "../../components/Fieldset";
 import { useState,useEffect } from "react";
-import { RVInfo } from "../StepForm/RVInfo";
-import { ListingInfo } from "../StepForm/ListingInfo";
-import { InsuranceInfo } from "../StepForm/InsuranceInfo";
-import { PricingInfo } from "../StepForm/PricingInfo";
-import { ImagesInfo } from "../StepForm/ImagesInfo";
-import { FeaturesInfo } from "../StepForm/FeaturesInfo";
-import { UrlsInfo } from "../StepForm/UrlsInfo";
-import { Finish } from "../StepForm/Finish";
+import { RVInfo } from "../../components/StepForm/RVInfo";
+import { ListingInfo } from "../../components/StepForm/ListingInfo";
+import { InsuranceInfo } from "../../components/StepForm/InsuranceInfo";
+import { PricingInfo } from "../../components/StepForm/PricingInfo";
+import { ImagesInfo } from "../../components/StepForm/ImagesInfo";
+import { FeaturesInfo } from "../../components/StepForm/FeaturesInfo";
+import { UrlsInfo } from "../../components/StepForm/UrlsInfo";
+import { Finish } from "../../components/StepForm/Finish";
 import '../../assets/style/stepFormStyle.css'
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";

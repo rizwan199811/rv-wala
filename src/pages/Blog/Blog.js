@@ -3,6 +3,7 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Spinner } from "reactstrap";
@@ -17,22 +18,18 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([])
   const [loading, setLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
-  const [itemOffset, setItemOffset] = useState(0)
-  const [newData, setNewData] = useState([])
-
-  const itemsPerPage = 12, minDistance = 0;
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 1;
+  
   const fetchBlogs = async (currentPage = 1) => {
+
     try {
       let queryParams = {};
       setBlogs([])
       setLoading(true)
       let body = {
         page: currentPage,
-        limit: itemsPerPage,
-        searchCriteria: {
-          disabled:true
-        }
+        limit: itemsPerPage
       }
       // let headers = {
       //   Authorization: localStorage.getItem('token'),
@@ -43,6 +40,8 @@ const Blog = () => {
         },
       } = await axios.post(baseURL + '/blog/list', body)
       setPageCount(totalPages)
+      setCurrentPage(page)
+      console.log({totalPages})
       setBlogs(docs)
       setLoading(false)
     } catch (e) { }
@@ -50,7 +49,12 @@ const Blog = () => {
   useEffect(() => {
     fetchBlogs()
   }, [])
-
+  const handlePageClick = async (event) => {
+    console.log({ event })
+    let currentPage = event.selected + 1
+    setCurrentPage(currentPage)
+    await fetchBlogs(currentPage)
+  }
   
 
 
@@ -156,6 +160,19 @@ const Blog = () => {
             ))}
           </tbody>
         </Table>
+        {blogs.length > 0 && (
+            <div id="react-paginate">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
       </CardBody>
     </Card>
     {dialog.isLoading && (
@@ -172,4 +189,3 @@ const Blog = () => {
 }
 
 export default Blog
-

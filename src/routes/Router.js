@@ -9,8 +9,8 @@ const FullLayout = lazy(() => import("../components/layouts/FullLayout.js"));
 /***** Pages ****/
 
 const Starter = lazy(() => import("../views/Starter.js"));
-const RVrequest = lazy(() => import("../views/Rvrequest.js"));
-const RVDetails = lazy(() => import("../views/RvDetails.js"));
+const RVrequest = lazy(() => import("../pages/RV/Rvrequest.js"));
+const RVDetails = lazy(() => import("../pages/RV/RvDetails.js"));
 const About = lazy(() => import("../views/About.js"));
 const Alerts = lazy(() => import("../views/ui/Alerts"));
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -21,11 +21,11 @@ const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 const Fleet = lazy(() => import("../views/Fleet"));
-const Bookings = lazy(() => import("../views/Booking"));
-const Blogs = lazy(() => import("../pages/dashboard/Blog"));
-const AddBlog = lazy(() => import("../pages/dashboard/AddBlog"));
-const ViewBlog = lazy(() => import("../pages/dashboard/ViewBlogs"));
-const RVlistings = lazy(() => import("../pages/dashboard/RVlisting"));
+const Bookings = lazy(() => import("../pages/Booking"));
+const Blogs = lazy(() => import("../pages/Blog/Blog"));
+const AddBlog = lazy(() => import("../pages/Blog/AddBlog"));
+const ViewBlog = lazy(() => import("../pages/Blog/ViewBlogs"));
+const RVlistings = lazy(() => import("../pages/RV/RVlisting"));
 
 
 /*****Routes******/

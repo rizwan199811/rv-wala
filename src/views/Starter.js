@@ -3,7 +3,7 @@ import SalesChart from "../pages/dashboard/SalesChart";
 import Feeds from "../pages/dashboard/Feeds";
 import ProjectTables from "../pages/dashboard/ProjectTable";
 
-import Blog from "../pages/dashboard/Blog";
+
 import bg1 from "../assets/images/bg/bg1.jpg";
 import bg2 from "../assets/images/bg/bg2.jpg";
 import bg3 from "../assets/images/bg/bg3.jpg";
