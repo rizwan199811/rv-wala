@@ -71,21 +71,19 @@ const Blog = () => {
     setDialog({
       message,
       isLoading,
-      //Update
       nameProduct
     });
   };
 
   const handleDelete = (id) => {
-    const index = blogs.findIndex((p) => p.id === id);
+    const index = blogs.findIndex((p) => p._id === id);
     handleDialog("Are you sure you want to delete?", true, blogs[index].title);
     idProductRef.current = id;
-    console.log(index,idProductRef.current)
   };
 
-  const areUSureDelete = async (choose) => {
+  const areUSureDelete = (choose) => {
     if (choose) {
-      setBlogs(blogs.filter((p) => p.id !== idProductRef.current));
+      setBlogs(blogs.filter((p) => p._id !== idProductRef.current));
       try{
              let headers = {
               Authorization: localStorage.getItem('token'),
@@ -94,8 +92,8 @@ const Blog = () => {
             data: {
               data: { message },
             },
-          } = await axios.delete(baseURL + '/blog/' + idProductRef.current ,{headers})
-          toast(message,toastOptions)
+          } = axios.delete(baseURL + '/blog/' + idProductRef.current ,{headers})
+          toast.warn(message,toastOptions)
           console.log(message,"message")
         } catch (e) { }  
       handleDialog("", false);
@@ -160,25 +158,28 @@ const Blog = () => {
             ))}
           </tbody>
         </Table>
-        {blogs.length > 0 && (
+    
+      </CardBody>
+    </Card>
+
+    {blogs.length > 0 && (
             <div id="react-paginate">
               <ReactPaginate
                 breakLabel="..."
                 nextLabel="next >"
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={1}
                 pageCount={pageCount}
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
               />
             </div>
           )}
-      </CardBody>
-    </Card>
+
     {dialog.isLoading && (
         <DeleteModal
           //Update
-          nameProduct={dialog.title}
+          nameProduct={dialog.nameProduct}
           onDialog={areUSureDelete}
           message={dialog.message}
         />

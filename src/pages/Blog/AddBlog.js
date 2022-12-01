@@ -58,8 +58,10 @@ const fetchBlogsById = async () => {
   } catch (e) {}
 }
 useEffect(() => {
-  fetchBlogsById()
-}, [id])
+  if(id){
+    fetchBlogsById()
+  }
+}, [])
 
 
 

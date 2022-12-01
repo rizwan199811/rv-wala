@@ -234,7 +234,10 @@ const Booking = () => {
                   ))}
               </tbody>
             </Table>
-            {bookings.length > 0 && (
+            <ToastContainer />
+          </CardBody>
+        </Card>
+        {bookings.length > 0 && (
               <div id="react-paginate">
                 <ReactPaginate
                   breakLabel="..."
@@ -247,9 +250,6 @@ const Booking = () => {
                 />
               </div>
             )}
-            <ToastContainer />
-          </CardBody>
-        </Card>
       </div>
     </div>
   )
