@@ -1004,7 +1004,7 @@ console.log(RVs,"RVs")
               </button>
             </div>
           </div>
-          <div className=" my-5">
+          <div className=" my-5 related-sli">
             <h2 className="mb-3 border-bottom"> Nearby RVs</h2>
             <Slider {...settings}>
             {RVs.length > 0 &&

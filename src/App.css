@@ -3681,6 +3681,6 @@ left: 10%;
 }
 /* ================== BLOGS ENDS==================== */
 
-.slick-track{
+.related-sli .slick-track{
   width: auto !important;
 }
