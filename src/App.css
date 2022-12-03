@@ -3680,3 +3680,7 @@ left: 10%;
   margin-top: 30px !important;
 }
 /* ================== BLOGS ENDS==================== */
+
+.related-sli .slick-track{
+  width: auto !important;
+}

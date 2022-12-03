@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { baseURL } from '../../../config/apiURL'
 import Slider from 'react-slick'
 import moment from 'moment'
@@ -25,34 +25,123 @@ const SingleDetailRV = ({
   endDate,
 }) => {
   console.log({ startDate })
+  // const settings = {
+  //   className: 'center',
+  //   centerMode: true,
+  //   infinite: true,
+  //   centerPadding: '60px',
+  //   slidesToShow: 4,
+  //   speed: 500,
+  //   autoplay: true,
+  //   dots: true,
+  //   responsive: [
+  //     {
+  //       breakpoint: 992,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         slidesToScroll: 1,
+  //         initialSlide: 1,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 500,
+  //       settings: {
+  //         slidesToShow: 1,
+  //         slidesToScroll: 1,
+  //         initialSlide: 1,
+  //       },
+  //     },
+  //   ],
+  // }
+
   const settings = {
-    className: 'center',
-    centerMode: true,
-    infinite: true,
-    centerPadding: '60px',
+    // dots: true,
+    infinite: false,
     slidesToShow: 4,
-    speed: 500,
+    slidesToScroll: 1,
     autoplay: true,
-    dots: true,
+    autoplaySpeed: 2000,
     responsive: [
       {
-        breakpoint: 992,
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          initialSlide: 1,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: false,
+          dots: true,
         },
       },
       {
-        breakpoint: 500,
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 1,
         },
       },
     ],
+  };
+  const history = useNavigate()
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log({ searchParams: searchParams.get('rvClass') })
+
+  const itemsPerPage = 12, minDistance = 0;
+  let initialShow = {
+    price: false,
+    distance: false,
   }
+
+  const [RVs, setRVs] = useState([])
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
+  // const [loading, setLoading] = useState(false)
+  const [show, toggleShow] = useState(initialShow)
+  const [value, setValue] = useState([0, 1000]);
+  const [searchCriteria, setSearch] = useState({});
+
+  useEffect(() => {
+    fetchRVs()
+  }, [])
+  const fetchRVs = async (currentPage = 1) => {
+    try {
+      let queryParams = {};
+      const rvClass =RV?.RVInfo?.type;
+      queryParams = rvClass ? { class: rvClass } : queryParams;
+      console.log({ queryParams })
+      setRVs([])
+      // setLoading(true)
+      let body = {
+        page: currentPage,
+        limit: itemsPerPage,
+        searchCriteria: {
+          ...searchCriteria,
+          ...queryParams,
+          disabled:false
+        },
+        token:localStorage.getItem('token')
+      }
+      let headers = {
+        Authorization: localStorage.getItem('token'),
+      }
+      const { 
+        data: {
+          data: { docs, totalPages, limit, page },
+        },
+      } = await axios.post(baseURL + '/rv/list', body, { headers })
+      setPageCount(totalPages)
+      setRVs(docs)
+      // setLoading(false)
+    } catch (e) { }
+  }
+console.log(RVs,"RVs")
 
   return (
     <>
@@ -915,10 +1004,64 @@ const SingleDetailRV = ({
               </button>
             </div>
           </div>
-          <div className=" my-5">
+          <div className=" my-5 related-sli">
             <h2 className="mb-3 border-bottom"> Nearby RVs</h2>
             <Slider {...settings}>
-              <div className="near-rv-card">
+            {RVs.length > 0 &&
+            RVs.map((x) => {
+              return (
+                <div className="mb-2 pe-3">
+                  <div
+                    className="product-card"
+                    onClick={() => {
+                      history(`/rvs-for-rent/detail/${x._id}`, {
+                        replace: true,
+                      })
+                    }}
+                  >
+                    <div className="badge">${x.Pricing.nightly}/night</div>
+                    <div className="product-tumb">
+                      <img src={x.ImageInfo.files[0].path || x.ImageInfo.files[0].location} alt="Rv" />
+                    </div>
+                    <div className="product-details">
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <span className="product-catagory">Type</span>
+                          <h6>{x.RVInfo.type}</h6>
+                        </div>
+                        <div className='year-ty'>
+                          <span className="product-catagory text-white">Year</span>
+                          <h6>{x.RVInfo.year}</h6>
+                        </div>
+                      </div>
+                      <div className='d-flex justify-content-between align-items-end'>
+                      <div>
+                      <span className="product-catagory">Make</span>
+                      <h6>{x.RVInfo.make}</h6>
+                      </div>
+                      <div>
+                      <i class="fa-solid fa-bed mx-2"></i>{x.RVInfo.sleep}
+                      <i class="fa-solid fa-gauge mx-2"></i>{x.RVInfo.mileage}
+                      
+                      {/* <span className="product-catagory">Make</span> */}
+                      {/* <h6>{x.RVInfo.make}</h6> */}
+                      </div>
+                      </div>
+                      <div className="product-bottom-details">
+                        <div className="product-price">
+                          <h6>Model</h6>
+                          {/* model */}
+                          <p>{x.RVInfo.model}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+            {RVs.length===0 && <h4>No Related Rv Found</h4>}
+
+              {/* <div className="near-rv-card">
                 <div className="card">
                   <a className="card-image">
                     <img
@@ -931,63 +1074,8 @@ const SingleDetailRV = ({
                     <p>0 miles away, Nightly Rate: $250</p>
                   </div>
                 </div>
-              </div>
-              <div class="near-rv-card">
-                <div className="card">
-                  <a className="card-image">
-                    <img
-                      src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp"
-                      alt=""
-                    />
-                  </a>
-                  <div className="card-description">
-                    <h6>The River Run 2021 RAM 3500 High Roof</h6>
-                    <p>0 miles away, Nightly Rate: $250</p>
-                  </div>
-                </div>
-              </div>
-              <div class="near-rv-card">
-                <div className="card">
-                  <a className="card-image">
-                    <img
-                      src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp"
-                      alt=""
-                    />
-                  </a>
-                  <div className="card-description">
-                    <h6>The River Run 2021 RAM 3500 High Roof</h6>
-                    <p>0 miles away, Nightly Rate: $250</p>
-                  </div>
-                </div>
-              </div>
-              <div class="near-rv-card">
-                <div className="card">
-                  <a className="card-image">
-                    <img
-                      src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp"
-                      alt=""
-                    />
-                  </a>
-                  <div className="card-description">
-                    <h6>The River Run 2021 RAM 3500 High Roof</h6>
-                    <p>0 miles away, Nightly Rate: $250</p>
-                  </div>
-                </div>
-              </div>
-              <div class="near-rv-card">
-                <div className="card">
-                  <a className="card-image">
-                    <img
-                      src="https://files.rvngo.com/u/list_photo/photo/255252/sm_c4f6a0c50608c1bebda1060abebad068.webp"
-                      alt=""
-                    />
-                  </a>
-                  <div className="card-description">
-                    <h6>The River Run 2021 RAM 3500 High Roof</h6>
-                    <p>0 miles away, Nightly Rate: $250</p>
-                  </div>
-                </div>
-              </div>
+              </div> */}
+
             </Slider>
           </div>
         </div>
