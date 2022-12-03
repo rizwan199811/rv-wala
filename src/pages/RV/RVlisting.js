@@ -120,7 +120,9 @@ const RVlisting = () => {
               ))}
             </tbody>
           </Table>
-          {rvs.length > 0 && (
+        </CardBody>
+      </Card>
+      {rvs.length > 0 && (
             <div id="react-paginate">
               <ReactPaginate
                 breakLabel="..."
@@ -133,8 +135,6 @@ const RVlisting = () => {
               />
             </div>
           )}
-        </CardBody>
-      </Card>
     </div>
   )
 }

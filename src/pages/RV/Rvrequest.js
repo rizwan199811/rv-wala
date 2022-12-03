@@ -85,7 +85,6 @@ const Rvrequest = () => {
               <tr>
                 <th>Owner</th>
                 <th>Model</th>
-
                 <th>Status</th>
                 <th>RV Details</th>
                 <th>Action</th>
@@ -137,34 +136,21 @@ const Rvrequest = () => {
               ))}
             </tbody>
           </Table>
-          {RVs.length > 0 && (
-            <div id="react-paginate">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={1}
-                pageCount={pageCount}
-                previousLabel="< previous"
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          )}
-           {RVs.length > 0 && (
-            <div id="react-paginate">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={1}
-                pageCount={pageCount}
-                previousLabel="< previous"
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          )}
         </CardBody>
       </Card>
+      {RVs.length > 0 && (
+            <div id="react-paginate">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
     </div>
   )
 }
