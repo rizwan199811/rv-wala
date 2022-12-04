@@ -57,6 +57,11 @@ function App() {
           <>
             <Route path="*" element={<Navigate to="/login" replace />} />
             <Route path="/rvs-for-rent" element={<ListingRv />} />
+            {/* <Route path="/rvs-for-rent/detail/:id" element={<SingleDetailContainer />} /> */}
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/contact-us" element={<Contact />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </>
         )}
       </Routes>

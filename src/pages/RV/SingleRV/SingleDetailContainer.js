@@ -303,7 +303,7 @@ export const SingleDetailContainer = () => {
 
   useEffect(() => {
     fetchRV()
-  }, [])
+  }, [id])
   if (loading) {
     return (
       <section className="single-product-carousel">
