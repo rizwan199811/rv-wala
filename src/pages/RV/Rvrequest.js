@@ -50,13 +50,15 @@ const Rvrequest = () => {
     let currentPage = event.selected + 1
     await fetchRVs(currentPage)
   }
-  const approveRV = async (status,RVId) => {
+  const approveRV = async (status,RVId,user) => {
     try {
       let queryParams = {};
+      let userID= user && user._id || ''
       // setRVs([])
       setLoading(true)
       let body = {
-        status:status
+        status:status,
+        user:userID
       }
       let headers = {
         Authorization: localStorage.getItem('token'),
@@ -129,8 +131,8 @@ const Rvrequest = () => {
                 </Link>
                 </td>
                   <td>
-                  <Button className="btn me-2" color="success" size="sm" onClick={()=>{approveRV("approved",tdata._id)}}>Approve</Button>
-                  <Button className="btn" color="danger" size="sm" onClick={()=>{approveRV("rejected",tdata._id)}}> Reject</Button>
+                  <Button className="btn me-2" color="success" size="sm" onClick={()=>{approveRV("approved",tdata._id,tdata.user)}}>Approve</Button>
+                  <Button className="btn" color="danger" size="sm" onClick={()=>{approveRV("rejected",tdata._id,tdata.user)}}> Reject</Button>
                   </td>
                 </tr>
               ))}
