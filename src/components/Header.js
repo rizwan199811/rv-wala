@@ -8,7 +8,8 @@ const Header = () => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)
   const admin = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).role : null;
-  const adminPanelUrl = 'http://localhost:3001'
+  // const adminPanelUrl = 'http://localhost:3001'
+  const adminPanelUrl='http://3.99.168.68:4000/'
   const profile = useSelector((state) => state.profile.image)
   const Logout = () => {
     localStorage.clear()
