@@ -52,13 +52,19 @@ const SignUp = () => {
   let history = useNavigate()
   const createAccount =async (e)=>{
     try{
+      console.log({values,errors})
+      // return
       
-      if (!values.email && !values.password && !values.username && !values.fullname ) {
+      if (!values.email || !values.password || !values.username || !values.fullname ) {
+        toast.error("Please fill all fields", toastOptions);
         return
       }
-      if (errors.email && errors.password && errors.username && errors.fullname) {
+      if (errors.email || errors.password || errors.username || errors.fullname || errors.confirmpassword) {
+        toast.error("Please fill form correctly", toastOptions);
         return
       }
+      console.log("validation passed");
+      // return
       setLoading(true)
       let body = {
         email: values.email,
@@ -69,8 +75,7 @@ const SignUp = () => {
       const {
         data: { message },
       } = await axios.post(baseURL + '/auth/signup', body)
-      toast.success(message,toastOptions
-        );
+      toast.success(message,toastOptions);
         setTimeout(() => {
           setLoading(false)
           history('/login', { replace: true })

@@ -59,19 +59,12 @@ export const SingleDetailContainer = () => {
           value: data.Pricing.generator.price_per_extra_hours,
           label: 'Generator',
         })
-      data.Pricing &&
-        data.Pricing.mileage &&
-        data.Pricing.mileage.per_extra_miles_charge &&
-        addOns.push({
-          value: data.Pricing.generator.per_extra_miles_charge,
-          label: 'Generator',
-        })
       console.log({ addOns })
       const sumAddOn = addOns.reduce((accumulator, object) => {
-        return accumulator + parseInt(object.value)
+        return accumulator + parseInt(object.value && object.value || 0)
       }, 0)
       const sum = hostServices.reduce((accumulator, object) => {
-        return accumulator + parseInt(object.value)
+        return accumulator + parseInt(object.value && object.value || 0)
       }, 0)
       let total =
         sum +

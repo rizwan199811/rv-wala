@@ -75,10 +75,14 @@ const LogIn = () => {
     try {
       setLoading(true)
       e.preventDefault()
-      if (!values.email && !values.password) {
+      if (!values.email || !values.password) {
+        toast.error("Please fill all fields", toastOptions);
+        setLoading(false)
         return
       }
-      if (errors.email && errors.password) {
+      if (errors.email || errors.password) {
+        toast.error("Please fill form correctly", toastOptions);
+        setLoading(false)
         return
       }
       let body = {
