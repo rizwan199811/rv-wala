@@ -112,6 +112,15 @@ const SplitForm = () => {
         address,
       } = errors
 
+      const {
+        email:emailV,
+        phone:phoneV,
+        country:countryV,
+        postal_code:postal_codeV,
+        state:stateV,
+        city:cityV,
+        address:addressV,
+      } = errors
       if (!stripe || !elements) {
         // Stripe.js has not loaded yet. Make sure to disable
         // form submission until Stripe.js has loaded.
@@ -126,6 +135,21 @@ const SplitForm = () => {
         city ||
         address
       ) {
+        toast.error("Please fill all fields correctly",toastOptions);
+        setProceedNext(false)
+        return
+      }
+
+      if(
+        !emailV ||
+        !phoneV ||
+        !countryV ||
+        !postal_codeV ||
+        !stateV ||
+        !cityV ||
+        !addressV
+      ){
+        toast.error("Please fill all fields",toastOptions);
         setProceedNext(false)
         return
       }
@@ -158,6 +182,7 @@ const SplitForm = () => {
 
       const { error } = payload
       if (error && error.message) {
+        toast.error(error.message, toastOptions)
         setCardError(error.message)
         setProceedNext(false)
         return
@@ -506,6 +531,7 @@ const SplitForm = () => {
                       onFocus={() => {
                         console.log('CardCvcElement [focus]')
                       }}
+                  
                     />
                   </div>
                 </div>
@@ -527,7 +553,7 @@ const SplitForm = () => {
                 <button type="submit" disabled={!stripe} onClick={handleSubmit}>
                   Pay
                 </button>
-                {cardError ? <p className="form-error">{cardError}</p> : null}
+                {/* {cardError ? <p className="form-error">{cardError}</p> : null} */}
                 {/* <button type="submit" className="btn btn-primary">
               Pay Now
             </button> */}
