@@ -10,6 +10,11 @@ import { useDispatch } from 'react-redux'
 import { setToken } from '../app/slice/AuthSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { setProfileImage } from '../app/slice/ProfileSlice'
+import { useRef } from 'react'
+import { useEffect } from 'react'
+import { ForgetPassword } from '../components/Modals/ResetPassword/ForgetPassword'
+import VerificationCode from '../components/Modals/ResetPassword/VerificationCode'
+import { ResetPassword } from '../components/Modals/ResetPassword/ResetPassword'
 
 const Setting = () => {
   let profile = localStorage.getItem('user')
@@ -17,6 +22,12 @@ const Setting = () => {
     : {}
   const [proceedNext, setProceedNext] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [toggleVerifyCode, setVerifyCode] = useState(null);
+  const [renderVerifyCode, setRenderVerifyCode] = useState(false);
+  const [toggleResetModal, setToggleResetModal] = useState(null);
+  const [renderResetModal, setRenderResetModal] = useState(false);
+  const verifyRef = useRef(null)
+  const resetRef = useRef(null)
   const [image, setImage] = useState(
     profile.profileImage ||
       'https://res.cloudinary.com/dxtpcpwwf/image/upload/v1616176827/Asaan-Dukaan/default-avatar-profile-icon-vector-18942381_hytaov.jpg',
@@ -133,14 +144,35 @@ const Setting = () => {
       alert(JSON.stringify(values, null, 2))
     },
   })
-  const [passwordShown, setPasswordShown] = useState(false);
-  const [c_passwordShown, setC_PasswordShown] = useState(false);
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown)
+  // const [passwordShown, setPasswordShown] = useState(false);
+  // const [c_passwordShown, setC_PasswordShown] = useState(false);
+  // const togglePassword = () => {
+  //   setPasswordShown(!passwordShown)
+  // }
+  // const toggleConfirmPassword = () => {
+  //   setC_PasswordShown(!c_passwordShown)
+  // }
+ 
+  const toggleVerificationModal = async () => {
+    setRenderVerifyCode(true)
+    setRenderResetModal(false)
+    setVerifyCode(!toggleVerifyCode)
   }
-  const toggleConfirmPassword = () => {
-    setC_PasswordShown(!c_passwordShown)
+
+  const toggleResetPassModal = () => {
+    console.log("toggleResetPassModal")
+    setRenderVerifyCode(false)
+    setRenderResetModal(true)
+    setToggleResetModal(!toggleResetModal)
   }
+  useEffect(() => {
+  verifyRef.current.click()
+  }, [toggleVerifyCode]);
+
+  useEffect(() => {
+    resetRef.current.click()
+    }, [toggleResetModal]);
+
   return (
     <>
       <div className="container profile-setting-wrap my-4">
@@ -221,7 +253,7 @@ const Setting = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="form-group position-relative">
                       <label htmlFor="password">Password</label>
                       <input
@@ -267,10 +299,10 @@ const Setting = () => {
                           ''
                         )}
                       </small>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="row gutters">
-                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="text-right">
                       <button
                         type="button"
@@ -283,13 +315,50 @@ const Setting = () => {
                       </button>
                     </div>
                   </div>
-                  <ToastContainer />
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <div className="text-end">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#forgetPassword"
+                        // onClick={updateProfile}
+                      >
+                        Reset Password
+                      </button>
+                    </div>
+                  </div>
                 </div>
+                  <ToastContainer />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* =============  MODAL =============== */}
+      <ForgetPassword toggleVerificationModal={toggleVerificationModal} />
+      <button
+        type="button"
+        className="btn btn-primary d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#verificationModal"
+        ref={verifyRef}
+      >
+        Launch VerificationCode
+      </button>
+      { renderVerifyCode && <VerificationCode toggleResetModal ={ toggleResetPassModal}  />}
+      <button
+        type="button"
+        className="btn btn-primary d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#resetPassword"
+        ref={resetRef}
+      >
+        Launch Reset Password backdrop modal
+      </button>
+
+      {renderResetModal && <ResetPassword />}
     </>
   )
 }
