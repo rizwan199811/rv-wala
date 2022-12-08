@@ -21,6 +21,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import AboutUs from './pages/AboutUs'
 import Blogs from './pages/Blogs'
 import BlogDetails from './pages/BlogDetails'
+import NotFound from './components/NotFound'
 process.env.GENERATE_SOURCEMAP = 'false'
 function App() {
   const token = useSelector((state) => state.auth.token)
@@ -49,6 +50,7 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blogs/:id" element={<BlogDetails />} />
+            <Route path="*" element={<NotFound />} />
          
           </>
         )}
@@ -62,6 +64,7 @@ function App() {
             <Route path="/contact-us" element={<Contact />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="*" element={<NotFound />} />
           </>
         )}
       </Routes>
