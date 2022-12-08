@@ -31,15 +31,15 @@ const AddBlog = () => {
   const [title, setTitle] = useState()
   const [proceedNext, setProceedNext] = useState(true)
   const [image, setImage] = useState(upload)
-//   const [post, setPost] = useState({
-//     title: '',
-//     content: '',
-// })
+  const [post, setPost] = useState({
+    title: '',
+    content: '',
+})
 
-// const fieldChanged = (event) => {
-//   // console.log(event)
-//   setPost({ ...post, [event.target.name]: event.target.value })
-// }
+const fieldChanged = (event) => {
+  // console.log(event)
+  setPost({ ...post, [event.target.name]: event.target.value })
+}
 
 const { id } = useParams()
 const fetchBlogsById = async () => {
@@ -64,10 +64,9 @@ useEffect(() => {
 }, [])
 
 
-
 const contentFieldChanaged = (data) => {
   setContent(data)
-  // setPost({ ...post, 'content': data })
+  setPost({ ...post, 'content': data })
 
 
 }
@@ -102,7 +101,7 @@ const imageUpload = async (files) => {
     setProceedNext(true)
     setImage(data[0].location ? data[0].location : data[0].path)
     //   onUpload(data, 'ImageInfo')
-    // setPost({ ...post, 'image': image })
+    setPost({ ...post, 'image': image })
     setLoading(false)
     toast.success(message, toastOptions)
     console.log({ data })
@@ -119,16 +118,49 @@ const imageUpload = async (files) => {
 }
 
 const handleSubmit =  async (e) => {
-  try {
+
+  if(id){
+    try {
+      e.preventDefault()
     setLoading(true)
-    e.preventDefault()
     let headers = {
       Authorization: localStorage.getItem('token'),
     }
     let body = {
-      title,
-      content,
-      image
+      "title":post.title || blogs?.title,
+      "content" : post.content || blogs?.content,
+      "image" : image || blogs?.image,
+    }
+    const {
+      data: {  message },
+    } = await axios.put(baseURL + '/blog/' + id, body,{headers})
+    
+    toast.success(message, toastOptions)
+    setTimeout(() => {
+      setLoading(false)
+      naviagte("/blogs")
+    }, 2000);
+
+  } catch ({
+    response: {
+      data: { message },
+    },
+  }) {
+    console.log({ message })
+    toast.error(message, toastOptions)
+  }
+  }else{
+
+    try {
+      e.preventDefault()
+    setLoading(true)
+    let headers = {
+      Authorization: localStorage.getItem('token'),
+    }
+    let body = {
+      "title":post.title,
+      "content" : post.content,
+      "image" : image
     }
     const {
       data: {  message },
@@ -148,8 +180,12 @@ const handleSubmit =  async (e) => {
     console.log({ message })
     toast.error(message, toastOptions)
   }
+  }
+
 }
-  // console.log(post)
+
+
+
 
   return (
     <Card>
@@ -163,14 +199,15 @@ const handleSubmit =  async (e) => {
                   name="title"
                   placeholder="Enter Blog Title"
                   type="text"
-                  onChange={(e)=>setTitle(e.target.value )}
+                  value={post.title || blogs?.title}
+                  onChange={fieldChanged}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="content">Blog Description</Label>
                 <JoditEditor
 			ref={editor}
-			// value={post.content}
+			value={blogs?.content}
 			// config={config}
       onChange={(newContent) => contentFieldChanaged(newContent)}
 		/>
@@ -184,7 +221,7 @@ const handleSubmit =  async (e) => {
                           <input {...getInputProps()} />
                        { loading ?  (<div className="spinner-grow text-secondary" role="status">
   <span className="visually-hidden">Loading...</span>
-</div>):(<img src={image} alt="user image" width={150} height={150}/>)}
+</div>):(<img src={image || blogs?.image} alt="user image" width={150} height={150}/>)}
                           
                           {/* <p>
                          Click to upload

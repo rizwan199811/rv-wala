@@ -26,6 +26,7 @@ const Blogs = lazy(() => import("../pages/Blog/Blog"));
 const AddBlog = lazy(() => import("../pages/Blog/AddBlog"));
 const ViewBlog = lazy(() => import("../pages/Blog/ViewBlogs"));
 const RVlistings = lazy(() => import("../pages/RV/RVlisting"));
+const NotFound = lazy(() => import("../components/NotFound"));
 
 
 /*****Routes******/
@@ -88,6 +89,7 @@ const Router = () => {
         { path: "/rvs", exact: true, element: <RVlistings /> },
         { path: "/rvlisting/edit/:id", exact: true, element: <EditRV /> },
         { path: "/rvlisting/view/:id", exact: true, element: <RVDetails /> },
+        { path: "*", exact: true, element: <NotFound /> },
 
       ],
     },
