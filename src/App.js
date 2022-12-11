@@ -9,7 +9,7 @@ import Contact from './pages/Contact'
 import { CreateListing } from './pages/RV/CreateListing'
 import ListingRv from './pages/ListingRv'
 import { SingleDetailContainer } from './pages/RV/SingleRV/SingleDetailContainer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AddDetails from './pages/RV/AddDetails'
 import Checkout from './pages/Checkout/CheckoutContainer'
 import Setting from './pages/Setting'
@@ -22,10 +22,16 @@ import AboutUs from './pages/AboutUs'
 import Blogs from './pages/Blogs'
 import BlogDetails from './pages/BlogDetails'
 import NotFound from './components/NotFound'
+import AuthVerify from './helpers/authVerfify'
+import { setToken } from './app/slice/AuthSlice'
 process.env.GENERATE_SOURCEMAP = 'false'
 function App() {
   const token = useSelector((state) => state.auth.token)
-
+  const dispatch= useDispatch()
+  const Logout = () => {
+    localStorage.clear()
+    dispatch(setToken(''))
+  }
   return (
     <div>
       <Header />
@@ -67,7 +73,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </>
         )}
+ 
       </Routes>
+      <AuthVerify logOut={Logout} />
       <Footer />
     </div>
   )

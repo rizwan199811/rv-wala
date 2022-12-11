@@ -1,13 +1,13 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams ,Navigate  } from 'react-router-dom'
 import { baseURL } from '../../../config/apiURL'
 import Slider from 'react-slick'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBookingDetails } from '../../../app/slice/BookSlice'
 import { toast, ToastContainer } from 'react-toastify'
-import { toastOptionsDate } from '../../../config/toast'
+import toastOptions, { toastOptionsDate } from '../../../config/toast'
 import SingleDetailRV from './SingleDetailRVForRent'
 
 export const SingleDetailContainer = () => {
@@ -16,7 +16,8 @@ export const SingleDetailContainer = () => {
   const [RV, setRV] = useState({})
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
+  const [notFoundError,setNotFoundError] =useState(false);
   const [dateRange, setDateRange] = useState([null, null])
   const [startDate, endDate] = dateRange
   const [invoiceInfo, setInvoiceInfo] = useState({
@@ -96,8 +97,11 @@ export const SingleDetailContainer = () => {
       console.log({ images })
       setImages(images)
       setLoading(false)
-    } catch (e) {
-      console.log({ e })
+    }  catch ({ message }) {
+      console.log({message})
+      setLoading(false)
+      setNotFoundError(true)
+      toast.error(message, toastOptions)
     }
   }
   const enumerateDaysBetweenDates = (startDate, endDate, nightly_rate) => {
@@ -296,7 +300,7 @@ export const SingleDetailContainer = () => {
 
   useEffect(() => {
     fetchRV()
-  }, [id])
+  }, [])
   if (loading) {
     return (
       <section className="single-product-carousel">
@@ -313,6 +317,10 @@ export const SingleDetailContainer = () => {
       </section>
     )
   }
+  {if(notFoundError){
+    return <><Navigate to="*" state={notFoundError}/><ToastContainer/></>}
+  } 
+
   if (RV.ListInfo.for_rent) {
     return (
       <SingleDetailRV
@@ -326,6 +334,7 @@ export const SingleDetailContainer = () => {
         invoiceInfo={invoiceInfo}
         handleDateChange={validateDates}
         token={token}
+        notFoundError={notFoundError}
         bookNow={bookNow}
       ></SingleDetailRV>
     )

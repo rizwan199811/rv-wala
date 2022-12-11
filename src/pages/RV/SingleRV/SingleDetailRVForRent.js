@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { baseURL } from '../../../config/apiURL'
 import Slider from 'react-slick'
 import moment from 'moment'
@@ -23,6 +23,7 @@ const SingleDetailRV = ({
   bookNow,
   startDate,
   endDate,
+  notFoundError
 }) => {
   console.log({ startDate })
   // const settings = {
@@ -108,7 +109,7 @@ const SingleDetailRV = ({
   const [searchCriteria, setSearch] = useState({});
 
   useEffect(() => {
-    fetchRVs()
+    // fetchRVs()
   }, [])
   const fetchRVs = async (currentPage = 1) => {
     try {
@@ -1078,6 +1079,7 @@ console.log(RVs,"RVs")
 
             </Slider>
           </div>
+     
         </div>
       </section>
 
@@ -1129,6 +1131,7 @@ console.log(RVs,"RVs")
           </div>
         </div>
       </div>
+  
       {/* ============== SEND MESSAGE MODAL =============== */}
 
       {/* ============== REVIEW MODAL =============== */}
