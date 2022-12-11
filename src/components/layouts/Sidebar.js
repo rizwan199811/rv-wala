@@ -99,6 +99,7 @@ const Sidebar = () => {
   const [toggleSideBar, setToggleSideBar] = useState(false)
   const [loading, setLoading] = useState(false)
   const [permissions, setPermissions] = useState([])
+  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) :{}
   useEffect(() => {
     document.getElementById('sidebarArea').classList.toggle('showSidebar')
   }, [toggleSideBar])
@@ -146,7 +147,7 @@ const Sidebar = () => {
       <div
         className="profilebg"
         style={{
-          background: `url("https://rvwala.com/wp-content/uploads/2022/06/cropped-Untitled-design-3.png") no-repeat`,
+          background: `url(${user.image && user.image || "https://rvwala.com/wp-content/uploads/2022/06/cropped-Untitled-design-3.png"}) no-repeat`,
           backgroundPosition: 'center',
         }}
       >
@@ -160,7 +161,7 @@ const Sidebar = () => {
             <i className="bi bi-x"></i>
           </Button>
         </div>
-        <div className="bg-dark text-white p-2 opacity-75">Waqas Shah</div>
+        <div className="bg-dark text-white p-2 opacity-75">{user.fullname}</div>
       </div>
       <div className="p-3 mt-2">
         <Nav vertical className="sidebarNav">

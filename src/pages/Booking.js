@@ -232,6 +232,11 @@ const Booking = () => {
                       {booking.status === 'cancelled' && <td>N/A</td>}
                     </tr>
                   ))}
+                 {!loading && bookings.length == 0 && (
+                <tr className="table-loader">
+                  <td colSpan={5}>No data found</td>
+                </tr>
+              )}  
               </tbody>
             </Table>
             <ToastContainer />

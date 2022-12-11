@@ -45,7 +45,9 @@ const RVlisting = () => {
       setPageCount(totalPages)
       setRVs(docs)
       setLoading(false)
-    } catch (e) {}
+    } catch (e) {
+      setLoading(false)
+    }
   }
 
   const handlePageClick = async (event) => {
@@ -74,67 +76,74 @@ const RVlisting = () => {
               </tr>
             </thead>
             <tbody>
-              {rvs.map((tdata, index) => (
-                <tr key={index} className="border-top">
-                  <td>{tdata.RVInfo.make + '-' + tdata.RVInfo.year}</td>
-                  <td>{tdata.RVInfo.type}</td>
-                  <td>{tdata.ListInfo.min_nights}</td>
-                  <td>{moment(tdata.createdAt).format('LLL')}</td>
-                  <td>
-                    <div className="dropdown">
-                      <button
-                        className="btn btn-secondary dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-three-dots"></i>
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton1"
-                      >
-                        <li>
-                          <Link
-                            to={'/rvlisting/edit/' + tdata._id}
-                            className="dropdown-item"
-                            href="#"
-                          >
-                            Edit
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={'/rvlisting/view/' + tdata._id}
-                            className="dropdown-item"
-                            href="#"
-                          >
-                            View
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
+              {!loading &&
+                rvs.length > 0 &&
+                rvs.map((tdata, index) => (
+                  <tr key={index} className="border-top">
+                    <td>{tdata.RVInfo.make + '-' + tdata.RVInfo.year}</td>
+                    <td>{tdata.RVInfo.type}</td>
+                    <td>{tdata.ListInfo.min_nights}</td>
+                    <td>{moment(tdata.createdAt).format('LLL')}</td>
+                    <td>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-three-dots"></i>
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton1"
+                        >
+                          <li>
+                            <Link
+                              to={'/rvlisting/edit/' + tdata._id}
+                              className="dropdown-item"
+                              href="#"
+                            >
+                              Edit
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={'/rvlisting/view/' + tdata._id}
+                              className="dropdown-item"
+                              href="#"
+                            >
+                              View
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              {!loading && rvs.length == 0 && (
+                <tr className="table-loader">
+                  <td colSpan={5}>No data found</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </Table>
         </CardBody>
       </Card>
       {rvs.length > 0 && (
-            <div id="react-paginate">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={1}
-                pageCount={pageCount}
-                previousLabel="< previous"
-                renderOnZeroPageCount={null}
-              />
-            </div>
-          )}
+        <div id="react-paginate">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={1}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+          />
+        </div>
+      )}
     </div>
   )
 }

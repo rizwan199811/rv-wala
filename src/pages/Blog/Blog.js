@@ -156,6 +156,11 @@ const Blog = () => {
                   </td>
               </tr>
             ))}
+               {!loading && blogs.length == 0 && (
+                <tr className="table-loader">
+                  <td colSpan={5}>No data found</td>
+                </tr>
+              )}
           </tbody>
         </Table>
     
