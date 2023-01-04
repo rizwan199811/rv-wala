@@ -9,6 +9,7 @@ import { ImagesInfo } from "../StepForm/ImagesInfo";
 import { FeaturesInfo } from "../StepForm/FeaturesInfo";
 import { UrlsInfo } from "../StepForm/UrlsInfo";
 import { Finish } from "../StepForm/Finish";
+import { PaymentInfo } from "../StepForm/PaymentInfo";
 
 export const CreateListing = () => {
   const [step, setStep] = useState(1);
@@ -111,7 +112,10 @@ export const CreateListing = () => {
                   <li id="Photos" className={step == 6 ? "active" : ""}>
                     <strong>Photos</strong>
                   </li>
-                  <li id="Features" className={step == 7 ? "active" : ""}>
+                  <li id="payment" className={step == 7 ? "active" : ""}>
+                    <strong>Payment</strong>
+                  </li>
+                  <li id="Features" className={step == 8 ? "active" : ""}>
                     <strong>Features</strong>
                   </li>
                   {/* <li id="confirm" className={step == 8 ? "active" : ""}>
@@ -180,6 +184,14 @@ export const CreateListing = () => {
                     />
                   )}
                   {step == 7 && (
+                    <PaymentInfo
+                      nextStep={nextStep}
+                      prevStep={prevStep}
+                      handleCheck={handleCheck}
+                      handleChange={handleChange}
+                    />
+                  )}
+                  {step == 8 && (
                     <FeaturesInfo
                       nextStep={nextStep}
                       prevStep={prevStep}
