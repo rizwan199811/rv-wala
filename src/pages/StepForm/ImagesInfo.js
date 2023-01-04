@@ -155,32 +155,12 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
                     </div>
                   </div> */}
       <div className='row'>
-      <div className='col-12 col-md-9'>
+      <div className='col-12 col-md-12'>
         <h5 className='my-2'>Upload RV Photos</h5>
         <div {...getRootProps({ className: 'dropzone' })}>
           <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
           <input {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
-        </div>
-
-        {loading && (
-          <lottie-player
-            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
-            background="transparent"
-            speed="1"
-            style={{ width: '300px', height: '300px' }}
-            loop
-            autoplay
-          ></lottie-player>
-        )}
-        <aside style={thumbsContainer}>{thumbs}</aside>
-      </div>
-      <div className='col-12 col-md-3'>
-      <h5 className='my-2'>Profile Photo:</h5>
-        <div {...getRootProps({ className: 'dropzone' })}>
-          <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop</p>
         </div>
 
         {loading && (
