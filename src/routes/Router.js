@@ -22,6 +22,7 @@ const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 const Fleet = lazy(() => import("../views/Fleet"));
 const Bookings = lazy(() => import("../pages/Booking"));
+const BookingsDetails = lazy(() => import("../pages/BookingDetails"));
 const Blogs = lazy(() => import("../pages/Blog/Blog"));
 const AddBlog = lazy(() => import("../pages/Blog/AddBlog"));
 const ViewBlog = lazy(() => import("../pages/Blog/ViewBlogs"));
@@ -82,6 +83,7 @@ const Router = () => {
         { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
         { path: "/fleet", exact: true, element: <Fleet /> },
         { path: "/bookings", exact: true, element: <Bookings /> },
+        { path: "/booking-details", exact: true, element: <BookingsDetails /> },
         { path: "/blogs", exact: true, element: <Blogs /> },
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },

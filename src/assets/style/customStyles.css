@@ -551,3 +551,9 @@ left: 10%;
 
 
 /* ================== 404 ENDS =================== */
+.billing-detail-p p{
+  margin: 0 !important;
+}
+.booking-dates .rmdp-input{
+  height: 30px;
+}

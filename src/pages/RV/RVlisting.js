@@ -93,7 +93,7 @@ const RVlisting = () => {
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <i class="bi bi-three-dots"></i>
+                          <i className="bi bi-three-dots"></i>
                         </button>
                         <ul
                           className="dropdown-menu"
