@@ -83,7 +83,7 @@ const Router = () => {
         { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
         { path: "/fleet", exact: true, element: <Fleet /> },
         { path: "/bookings", exact: true, element: <Bookings /> },
-        { path: "/booking-details", exact: true, element: <BookingsDetails /> },
+        { path: "/booking-details/:id", exact: true, element: <BookingsDetails /> },
         { path: "/blogs", exact: true, element: <Blogs /> },
         { path: "/blogs/add-new-blog", exact: true, element: <AddBlog /> },
         { path: "/blogs/:id", exact: true, element: <ViewBlog /> },

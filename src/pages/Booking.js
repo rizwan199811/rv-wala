@@ -2,6 +2,7 @@ import axios from 'axios'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import ReactPaginate from 'react-paginate'
+import { Link } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import {
   Card,
@@ -44,6 +45,7 @@ const Booking = () => {
       let body = {
         page: currentPage,
         limit: itemsPerPage,
+        isHost:true
       }
       const {
         data: {
@@ -189,7 +191,7 @@ const Booking = () => {
                         </td>
                       )}
 
-                      {booking.status == 'pending' && (
+                      {/* {booking.status == 'pending' && (
                         <td>
                           <Button
                             className="btn me-2"
@@ -229,7 +231,43 @@ const Booking = () => {
                           </Button>
                         </td>
                       )}
-                      {booking.status === 'cancelled' && <td>N/A</td>}
+                      {booking.status === 'cancelled' && <td>N/A</td>} */}
+                      <td>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i className="bi bi-three-dots"></i>
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton1"
+                        >
+                          <li>
+                            <Link
+                              to={'/booking-details/' + booking._id}
+                              className="dropdown-item"
+                              href="#"
+                            >
+                              Edit
+                            </Link>
+                          </li>
+                          <li>
+                            {/* <Link
+                              to={'/rvlisting/view/' + booking._id}
+                              className="dropdown-item"
+                              href="#"
+                            >
+                              View
+                            </Link> */}
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
                     </tr>
                   ))}
                  {!loading && bookings.length == 0 && (
