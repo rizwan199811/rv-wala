@@ -1,9 +1,18 @@
 import { useFormik } from "formik";
-import React from "react";
+import {useMemo} from "react";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { paymentSchema } from "../../schemas";
+import { accountSchema } from "../../../schemas";
 import { Country, State, City } from 'country-state-city'
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement,
+  cardElement,
+} from '@stripe/react-stripe-js'
+import useResponsiveFontSize from '../../../components/useResponsiveFont'
 
 const initialValues = {
     email: '',
@@ -18,18 +27,30 @@ const initialValues = {
     cvc: '',
     expiryMonth: '',
     expiryYear: '',
+    account_number:''
   }
   const optionsCountry = Country.getAllCountries().map((x) => {
     return { label: x.name, value: x.isoCode }
   })
-export const PaymentInfo = ({ nextStep, prevStep, handleChanges }) => {
+
+  const handleSubmit = async (event) => {
+    
+  }
+export const PaymentInfo = ({  nextStep,
+  prevStep,
+  handleCheck,
+  handleChange,
+}) => {
   const [proceedNext, setProceedNext] = useState(true);
   const [cities, setCities] = useState([])
   const [states, setStates] = useState([])
+  const [cardError, setCardError] = useState(false)
+  const [paymentMethods, setPaymentMethods] = useState(null)
   
-  const { values, handleChange, handleBlur, errors, touched } = useFormik({
+  
+  const formik = useFormik({
     initialValues,
-    validationSchema: paymentSchema,
+    validationSchema: accountSchema,
     validateOnChange: true,
     validateOnBlur: false,
     //// By disabling validation onChange and onBlur formik will validate on submit.
@@ -38,13 +59,41 @@ export const PaymentInfo = ({ nextStep, prevStep, handleChanges }) => {
       // action.resetForm();
     },
   })
-
+  const { values, handleBlur, errors, touched } =formik
+  const useOptions = () => {
+    const fontSize = useResponsiveFontSize()
+    const options = useMemo(
+      () => ({
+        style: {
+          base: {
+            fontSize,
+            color: '#424770',
+            letterSpacing: '0.025em',
+            fontFamily: 'Source Code Pro, monospace',
+            '::placeholder': {
+              color: '#aab7c4',
+            },
+          },
+          invalid: {
+            color: '#9e2146',
+          },
+        },
+      }),
+      [fontSize],
+    )
+  
+    return options
+  }
+  const stripe = useStripe()
+  const elements = useElements()
+  const options = useOptions()
+  
   return (
     <>
-           <div className="container">
-           <div class="row">
+    <div className="container">
+      <div class="row">
           <div class="col-7">
-            <h2 class="fs-title">Billing Details</h2>
+            <h2 class="fs-title">Payment Details</h2>
           </div>
           <div class="col-5">
             <h2 class="steps">Step 7 - 8</h2>
@@ -56,22 +105,24 @@ export const PaymentInfo = ({ nextStep, prevStep, handleChanges }) => {
             <div className="">
               <form>
                 <div className="mb-3 position-relative">
-                  <label className="form-label">Card Holder Name</label>
+                  <label className="form-label">Stripe account number</label>
                   <input
                     type="text"
                     className="form-control mt-1"
-                    placeholder="Anas Murtaza"
-                    name="card_name"
-                    id="card_name"
-                    value={values.card_name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    placeholder="acct_****************"
+                    name="account_number"
+                    id="account_number"
+                    value={values.account_number}
+                    onChange={(e)=>{formik.handleChange(e); 
+                      setProceedNext(true);
+                      handleChange(e, "PaymentInfo"); }}
+                    onBlur={handleBlur}                     
                   />
-                  {touched.card_name && errors.card_name ? (
-                    <p className="form-error">{errors.card_name}</p>
+                  {touched.account_number && errors.account_number ? (
+                    <p className="form-error">{errors.account_number}</p>
                   ) : null}
                 </div>
-                <div className="mb-3 position-relative">
+                {/* <div className="mb-3 position-relative">
                   <label className="form-label">
                     COMPANY NAME <em>(OPTIONAL)</em>
                   </label>
@@ -86,9 +137,9 @@ export const PaymentInfo = ({ nextStep, prevStep, handleChanges }) => {
                       onChange={handleChange}
                       // onBlur={handleBlur}
                     />
-                    {/* {touched.name && errors.name ? (
+                    {touched.name && errors.name ? (
                       <p className="form-error">{errors.name}</p>
-                    ) : null} */}
+                    ) : null}
                   </div>
                 </div>
                 <div className="row mb-3 position-relative">
@@ -268,7 +319,7 @@ export const PaymentInfo = ({ nextStep, prevStep, handleChanges }) => {
                   {touched.address && errors.address ? (
                     <p className="form-error">{errors.address}</p>
                   ) : null}
-                </div>
+                </div> */}
 
                 {/* <div className="mb-3 position-relative stripe-div">
                   <label className="form-label">Card number</label>

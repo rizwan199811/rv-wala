@@ -33,3 +33,7 @@ export const paymentSchema = Yup.object({
     .max(4)
     .required(),
 });
+
+export const accountSchema = Yup.object({
+  account_number: Yup.string().max(21).required("Please enter stripe account number")
+});

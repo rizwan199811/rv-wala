@@ -22,6 +22,7 @@ const Setting = () => {
     : {}
   const [proceedNext, setProceedNext] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [imageLoading, setImageLoading] = useState(false)
   const [toggleVerifyCode, setVerifyCode] = useState(null);
   const [renderVerifyCode, setRenderVerifyCode] = useState(false);
   const [toggleResetModal, setToggleResetModal] = useState(null);
@@ -49,7 +50,7 @@ const Setting = () => {
 
   const imageUpload = async (files) => {
     try {
-      setLoading(true)
+      setImageLoading(true)
       let formData = new FormData()
       files.forEach((file) => {
         formData.append('files', file)
@@ -65,7 +66,7 @@ const Setting = () => {
       setProceedNext(true)
       setImage(data[0].location ? data[0].location : data[0].path)
       //   onUpload(data, 'ImageInfo')
-      setLoading(false)
+      setImageLoading(false)
       toast.success(message, toastOptions)
       console.log({ data })
     } catch ({
@@ -87,10 +88,6 @@ const Setting = () => {
       let headers = {
         Authorization: localStorage.getItem('token'),
       }
-      if (errors.password || errors.confirmPassword) {
-        return
-      }
-      delete values['confirmPassword'];
       let body = {
         ...values,
         profileImage:image
@@ -121,22 +118,13 @@ const Setting = () => {
 
   const { handleBlur, handleChange, errors, values, touched } = useFormik({
     initialValues: {
-      password: '',
-      confirmPassword: '',
       fullname: profile.fullname || '',
       info:  profile.info || '',
     },
     validationSchema: Yup.object({
-      password: Yup.string()
-        .required('Required')
-        .min(8, 'Password must be 8 characters long')
-        .matches(/[0-9]/, 'Password requires a number')
-        .matches(/[a-z]/, 'Password requires a lowercase letter')
-        .matches(/[!@#_\$%\^&\*]/, 'Password requires a special character'),
-      confirmPassword: Yup.string().oneOf(
-        [Yup.ref('password'), null],
-        'Passwords must match',
-      ),
+      fullname: Yup.string()
+        .required('Required'),
+        info: Yup.string().required('Required')
     }),
     enableReinitialize: true,
 
@@ -165,13 +153,7 @@ const Setting = () => {
     setRenderResetModal(true)
     setToggleResetModal(!toggleResetModal)
   }
-  useEffect(() => {
-  verifyRef.current.click()
-  }, [toggleVerifyCode]);
 
-  useEffect(() => {
-    resetRef.current.click()
-    }, [toggleResetModal]);
 
   return (
     <>
@@ -193,7 +175,7 @@ const Setting = () => {
                           {/* <i class="fa-solid fa-cloud-arrow-down fs-1"></i> */}
                           <i class="fa-solid fa-pen-to-square fs-2 edit-p-pic"></i>
                           <input {...getInputProps()} />
-                       { loading ?  (<div class="spinner-grow text-secondary" role="status">
+                       { imageLoading ?  (<div class="spinner-grow text-secondary" role="status">
   <span class="visually-hidden">Loading...</span>
 </div>):(<img src={image} alt="user image" />)}
                           
@@ -321,8 +303,9 @@ const Setting = () => {
                         type="button"
                         className="btn btn-primary"
                         data-bs-toggle="modal"
-                        data-bs-target="#forgetPassword"
+                        data-bs-target="#resetPassword"
                         // onClick={updateProfile}
+                        onClick={()=>{localStorage.setItem("forgetEmail",JSON.parse(localStorage.user).email)}}
                       >
                         Reset Password
                       </button>
@@ -337,7 +320,9 @@ const Setting = () => {
       </div>
 
       {/* =============  MODAL =============== */}
-      <ForgetPassword toggleVerificationModal={toggleVerificationModal} />
+      {/* <ForgetPassword toggleVerificationModal={toggleVerificationModal} />
+       */}
+       <ResetPassword />
       <button
         type="button"
         className="btn btn-primary d-none"
@@ -347,7 +332,7 @@ const Setting = () => {
       >
         Launch VerificationCode
       </button>
-      { renderVerifyCode && <VerificationCode toggleResetModal ={ toggleResetPassModal}  />}
+      {/* { renderVerifyCode && <VerificationCode toggleResetModal ={ toggleResetPassModal}  />}
       <button
         type="button"
         className="btn btn-primary d-none"
@@ -358,7 +343,7 @@ const Setting = () => {
         Launch Reset Password backdrop modal
       </button>
 
-      {renderResetModal && <ResetPassword />}
+      {renderResetModal && <ResetPassword />} */}
     </>
   )
 }

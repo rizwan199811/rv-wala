@@ -4,36 +4,68 @@ import axios from 'axios'
 import { baseURL } from '../../config/apiURL'
 import { toast, ToastContainer } from 'react-toastify'
 import toastOptions from '../../config/toast'
+const _ = require('lodash')
 
 export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
   let listObj = JSON.parse(localStorage.getItem('listObj'))
-
+  let type = ''
   // let files = listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [];
   const [proceedNext, setProceedNext] = useState(true)
-  const [loading, setLoading] = useState(false)
+  const [loadingRV, setLoadingRV] = useState(false)
+  const [loadingFront, setLoadingFront] = useState(false)
+  const [loadingBack, setLoadingBack] = useState(false)
 
-  const [files, setFiles] = useState(
-    listObj && listObj.ImageInfo ? listObj.ImageInfo.files : [],
+  const [filesRV, setFilesRV] = useState(
+    _.get(listObj, 'ImageInfo.RV.files') ? listObj.ImageInfo.RV.files : [],
   )
-  const { getRootProps, getInputProps } = useDropzone({
+  const [filesLicenseBack, setFilesLicenseBack] = useState(
+    _.get(listObj, 'ImageInfo.license.back.files') ? listObj.ImageInfo.license.back.files : [],
+  )
+  const [filesLicenseFront, setFilesLicenseFront] = useState(
+    _.get(listObj,'ImageInfo.license.front.files') ? listObj.ImageInfo.license.front.files : [],
+  )
+  const { getRootProps, getInputProps, open } = useDropzone({
     accept: {
       'image/*': [],
     },
     onDrop: async (acceptedFiles) => {
-      await imageUpload(acceptedFiles)
+      console.log({ acceptedFiles, type })
+      // return
+      await imageUpload(acceptedFiles, type)
       // setFiles(acceptedFiles.map(file => Object.assign(file, {
       //   preview: URL.createObjectURL(file)
       // })));
     },
   })
-  const imageUpload = async (files) => {
+  const imageUpload = async (files, type) => {
     try {
-      setLoading(true)
-      let formData = new FormData()
-      files.forEach((file) => {
-        formData.append('files', file)
-      })
-      // formData.append("files", files);
+      let formData
+      switch (type) {
+        case 'RV':
+          setLoadingRV(true)
+          formData = new FormData()
+          files.forEach((file) => {
+            formData.append('files', file)
+          })
+          break
+        case 'front':
+          setLoadingFront(true)
+          formData = new FormData()
+          files.forEach((file) => {
+            formData.append('files', file)
+          })
+          break
+        case 'back':
+          setLoadingBack(true)
+          formData = new FormData()
+          files.forEach((file) => {
+            formData.append('files', file)
+          })
+          break
+
+        default:
+          break
+      }
       const {
         data: { data, message },
       } = await axios.post(baseURL + '/misc/upload-file', formData, {
@@ -41,10 +73,28 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
           'Content-Type': 'multipart/form-data',
         },
       })
+
+      switch (type) {
+        case 'RV':
+          setFilesRV(data)
+          onUpload(data, 'ImageInfo.RV.files')
+          setLoadingRV(false)
+          break
+        case 'front':
+          setFilesLicenseFront(data)
+          onUpload(data, 'ImageInfo.license.front.files')
+          setLoadingFront(false)
+          break
+        case 'back':
+         setFilesLicenseBack(data)
+          onUpload(data, 'ImageInfo.license.back.files')
+          setLoadingBack(false)
+          break
+
+        default:
+          break
+      }
       setProceedNext(true)
-      setFiles(data)
-      onUpload(data, 'ImageInfo')
-      setLoading(false)
       toast.success(message, toastOptions)
       console.log({ data })
     } catch ({
@@ -53,20 +103,53 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
       },
     }) {
       toast.error(message, toastOptions)
-      setTimeout(()=>{
-        setLoading(false)
-      },6000)
-      
+      setTimeout(() => {
+        setLoadingRV(false)
+      }, 6000)
     }
   }
 
-  const removeFile = async (key) => {
-    let tempFile = [...files]
+  const removeFile = async (key,type) => {
+    let tempFile=[];
+    switch (type) {
+      case 'RV':
+        tempFile = [...filesRV]
+        break;
+      case 'front':
+        tempFile = [...filesLicenseFront]
+       break;
+      case 'back':
+        tempFile = [...filesLicenseBack]
+       break;
+      default:
+        break;
+    }
+    console.log({tempFile,key})
+   
     let filtered = tempFile.filter(function (el) {
-      return el.filename != key
+      return el.location != key
     })
-    setFiles(filtered)
-    onUpload(filtered, 'ImageInfo')
+    console.log({filtered});
+    // return
+
+     switch (type) {
+      case 'RV':
+        setFilesRV(filtered)
+        onUpload(filtered, 'ImageInfo.RV.files')
+        break;
+      case 'front':
+        setFilesLicenseFront(filtered)
+        onUpload(filtered, 'ImageInfo.license.front.files')
+       break;
+      case 'back':
+        setFilesLicenseBack(filtered)
+        onUpload(filtered, 'ImageInfo.license.back.files')
+       break;
+      default:
+        break;
+    }
+    
+    
   }
   // onDrop:onUpload
   const thumbsContainer = {
@@ -100,18 +183,62 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
     height: '100%',
   }
   const validateImages = () => {
-    if (files.length == 0) {
+    if (filesRV.length == 0 || filesLicenseFront.length==0 || filesLicenseBack.length==0) {
       return setProceedNext(false)
     }
     setProceedNext(true)
     nextStep()
   }
-  const thumbs = files.map((file) => (
-    <div style={thumb} key={file.filename}>
+  const thumbsRV = filesRV.map((file) => (
+    <div style={thumb} key={file.location}>
       <div className="imageinfo-preview-div" style={thumbInner}>
         <a
           onClick={() => {
-            removeFile(file.filename)
+            removeFile(file.location,'RV')
+          }}
+        >
+          {' '}
+          <i class="fa-solid fa-circle-xmark"></i>
+        </a>
+        <img
+          src={file.path ? file.path : file.location}
+          style={img}
+          // Revoke data uri after image is loaded
+          onLoad={() => {
+            URL.revokeObjectURL(file.path ? file.path : file.location)
+          }}
+        />
+      </div>
+    </div>
+  ))
+  const thumbsLicenseFront = filesLicenseFront.map((file) => (
+    <div style={thumb} key={file.location}>
+      <div className="imageinfo-preview-div" style={thumbInner}>
+        <a
+          onClick={() => {
+            removeFile(file.location,'front')
+          }}
+        >
+          {' '}
+          <i class="fa-solid fa-circle-xmark"></i>
+        </a>
+        <img
+          src={file.path ? file.path : file.location}
+          style={img}
+          // Revoke data uri after image is loaded
+          onLoad={() => {
+            URL.revokeObjectURL(file.path ? file.path : file.location)
+          }}
+        />
+      </div>
+    </div>
+  ))
+  const thumbsLicenseBack = filesLicenseBack.map((file) => (
+    <div style={thumb} key={file.location}>
+      <div className="imageinfo-preview-div" style={thumbInner}>
+        <a
+          onClick={() => {
+            removeFile(file.location,'back')
           }}
         >
           {' '}
@@ -154,69 +281,83 @@ export const ImagesInfo = ({ nextStep, prevStep, onUpload }) => {
                       </div>
                     </div>
                   </div> */}
-      <div className='row'>
-      <div className='col-12 col-md-12'>
-        <h5 className='my-2'>Upload RV Photos</h5>
-        <div {...getRootProps({ className: 'dropzone' })}>
-          <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop some files here, or click to select files</p>
-        </div>
+        <div className="row">
+          <div
+            className="col-12 col-md-12"
+            onClick={() => {
+              type = 'RV'
+            }}
+          >
+            <h5 className="my-2">Upload RV Photos</h5>
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
+              <input {...getInputProps()} />
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            </div>
 
-        {loading && (
-          <lottie-player
-            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
-            background="transparent"
-            speed="1"
-            style={{ width: '300px', height: '300px' }}
-            loop
-            autoplay
-          ></lottie-player>
-        )}
-        <aside style={thumbsContainer}>{thumbs}</aside>
-      </div>
-      <div className='col-12 col-md-6'>
-      <h5 className='my-2'>Driving License Front Photo:</h5>
-        <div {...getRootProps({ className: 'dropzone' })}>
-          <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop , or click to select files</p>
-        </div>
+            {loadingRV && (
+              <lottie-player
+                src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
+                background="transparent"
+                speed="1"
+                style={{ width: '300px', height: '300px' }}
+                loop
+                autoplay
+              ></lottie-player>
+            )}
+            <aside style={thumbsContainer}>{thumbsRV}</aside>
+          </div>
+          <div
+            className="col-12 col-md-6"
+            onClick={() => {
+              type = 'front'
+            }}
+          >
+            <h5 className="my-2">Driving License Front Photo:</h5>
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
+              <input {...getInputProps()} onClick={open} />
+              <p>Drag 'n' drop , or click to select files</p>
+            </div>
 
-        {loading && (
-          <lottie-player
-            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
-            background="transparent"
-            speed="1"
-            style={{ width: '300px', height: '300px' }}
-            loop
-            autoplay
-          ></lottie-player>
-        )}
-        <aside style={thumbsContainer}>{thumbs}</aside>
-      </div>
-      <div className='col-12 col-md-6'>
-      <h5 className='my-2'>Driving License Front Photo:</h5>
-        <div {...getRootProps({ className: 'dropzone' })}>
-          <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop , or click to select files</p>
-        </div>
+            {loadingFront && (
+              <lottie-player
+                src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
+                background="transparent"
+                speed="1"
+                style={{ width: '300px', height: '300px' }}
+                loop
+                autoplay
+              ></lottie-player>
+            )}
+            <aside style={thumbsContainer}>{thumbsLicenseFront}</aside>
+          </div>
+          <div
+            className="col-12 col-md-6"
+            onClick={() => {
+              type = 'back'
+            }}
+          >
+            <h5 className="my-2">Driving License Back Photo:</h5>
+            <div {...getRootProps({ className: 'dropzone' })}>
+              <i class="fa-solid fa-cloud-arrow-down fs-1"></i>
+              <input {...getInputProps()} />
+              <p>Drag 'n' drop , or click to select files</p>
+            </div>
 
-        {loading && (
-          <lottie-player
-            src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
-            background="transparent"
-            speed="1"
-            style={{ width: '300px', height: '300px' }}
-            loop
-            autoplay
-          ></lottie-player>
-        )}
-        <aside style={thumbsContainer}>{thumbs}</aside>
-      </div>
-     
-      </div>
+            {loadingBack && (
+              <lottie-player
+                src="https://assets1.lottiefiles.com/private_files/lf30_d92kodgw.json"
+                background="transparent"
+                speed="1"
+                style={{ width: '300px', height: '300px' }}
+                loop
+                autoplay
+              ></lottie-player>
+            )}
+            <aside style={thumbsContainer}>{thumbsLicenseBack}</aside>
+          </div>
+        </div>
       </div>
       <input
         type="button"

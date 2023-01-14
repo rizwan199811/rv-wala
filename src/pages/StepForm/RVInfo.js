@@ -11,6 +11,8 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
  const [slides, setSlides] = useState([])
  const [seatbelts, setSeatbelts] = useState([])
  const [sleeps, setSleeps] = useState([])
+ 
+ 
   let initialValues ={
     make: "",
     type: "",
@@ -54,8 +56,8 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
   
 
   let listObj = JSON.parse(localStorage.getItem("listObj"));
-  let RVInfo = listObj ? {...initialValues ,...listObj.RVInfo} : initialValues
-  
+  let RVInfo = listObj ? {...initialValues ,...listObj.RVInfo} : initialValues;  
+  const [mileageToggle, setMileage] = useState(['classa','classb','classc'].includes(RVInfo.type.split(' ').join('').toLowerCase()) ? true : false)
   const [proceedNext, setProceedNext] = useState(true);
   const formik = useFormik({
     initialValues: RVInfo,
@@ -79,8 +81,21 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
       alert(JSON.stringify(values, null, 2));
     },
   });
-  const { errors, touched, handleBlur,values } = formik;
+  const { errors, touched, handleBlur,values,setFieldValue } = formik;
+  const handleMileageToggle=({target:{ value }})=>{
+   if(['classa','classb','classc'].includes(value.split(' ').join('').toLowerCase())){
+    console.log("Mileage toggle called");
+    setMileage(true)
+   }
+   else{
+     delete RVInfo['mileage']
+     localStorage.setItem("listObj",JSON.stringify({...listObj,RVInfo:{...RVInfo,type:value}}))
+    //  localStorage.getItem("listObj")
 
+    console.log('values',{values})   
+    setMileage(false)
+   }
+  }
   const validateFields = () => {
     const {
       vin,
@@ -125,6 +140,8 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
       value
     }
     )
+
+    
     if (
       vin   &&
       type &&
@@ -135,15 +152,22 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
       slides &&
       seatbelts  &&
       mileage &&
+      mileageToggle &&
       weight &&
       length &&
-      value
+      value 
     ) {
       // 
       setProceedNext(true);
       nextStep();
+      return
     } else {
       setProceedNext(false);
+    }
+    console.log("called",{mileageToggle,mileage})
+    if(!mileageToggle && !mileage){
+      setProceedNext(true)
+      nextStep()
     }
   };
 
@@ -177,7 +201,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               <p className="text-danger">{errors.vin} </p>
             )}
           </div>
-          <div class="col-md-4 mb-3">
+          {<div class="col-md-4 mb-3">
             <label class="fieldlabels">Type: *</label>
             <select
               class="form-select"
@@ -188,6 +212,8 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
                 formik.handleChange(e);
                 setProceedNext(true);
                 handleChange(e, "RVInfo");
+                handleMileageToggle(e)
+
               }}
               onBlur={handleBlur}
             >
@@ -203,7 +229,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
             {errors.type && touched.type && (
               <p className="text-danger">{errors.type} </p>
             )}
-          </div>
+          </div>}
           <div class="col-md-4 mb-3">
             <label class="fieldlabels">Make: *</label>
             <select
@@ -258,7 +284,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               onChange={(e) => {
                 formik.handleChange(e);
                 setProceedNext(true);
-                handleChange(e, "RVInfo");
+               handleChange(e, "RVInfo"); 
               }}
               onBlur={handleBlur}
             >
@@ -316,7 +342,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               defaultValue={listObj && listObj.RVInfo && listObj.RVInfo.slides}
             >
               <option  value="">
-                Number of slides
+               Number of slides
               </option>
               {
               slides.length > 0 &&  
@@ -357,7 +383,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               <p className="text-danger">{errors.seatbelts} </p>
             )}
           </div>
-          <div class="col-md-4 mb-3">
+          {mileageToggle && <div class="col-md-4 mb-3">
             <label class="fieldlabels">Mileage: *</label>
             <input
               type="number"
@@ -376,7 +402,7 @@ export const RVInfo = ({ nextStep, prevStep, handleChange }) => {
               <p className="text-danger">{errors.mileage} </p>
             )}
           </div>
-
+}
           <div class="col-md-4 mb-3">
             <label class="fieldlabels">Length (ft.): *</label>
             <select

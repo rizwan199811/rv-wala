@@ -9,7 +9,7 @@ import { ImagesInfo } from "../StepForm/ImagesInfo";
 import { FeaturesInfo } from "../StepForm/FeaturesInfo";
 import { UrlsInfo } from "../StepForm/UrlsInfo";
 import { Finish } from "../StepForm/Finish";
-import { PaymentInfo } from "../StepForm/PaymentInfo";
+import  PaymentInfo  from "../StepForm/Payment/PaymentInfoContainer";
 
 export const CreateListing = () => {
   const [step, setStep] = useState(1);
@@ -77,7 +77,7 @@ export const CreateListing = () => {
 
 
   const onUpload =(files,identifier)=>{
-    let path =`${identifier}.files`
+    let path =`${identifier}`
     let obj = localStorage.getItem("listObj") ? JSON.parse(localStorage.getItem("listObj")) :{}
     set(obj, path, files);
     console.log({ obj });

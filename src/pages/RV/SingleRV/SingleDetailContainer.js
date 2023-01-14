@@ -9,6 +9,7 @@ import { setBookingDetails } from '../../../app/slice/BookSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import toastOptions, { toastOptionsDate } from '../../../config/toast'
 import SingleDetailRV from './SingleDetailRVForRent'
+const _ =require('lodash')
 
 export const SingleDetailContainer = () => {
   const token = useSelector((state) => state.auth.token)
@@ -79,10 +80,11 @@ export const SingleDetailContainer = () => {
         hostServicesTotal: sum,
         addOns,
         addOnTotal: sumAddOn,
-        total,
+        initialAmount:total,
       })
       setRV(data)
-      const images = data.ImageInfo.files.map((x, index) => {
+      
+      let images = _.get(data,'ImageInfo.RV.files',_.get(data,'ImageInfo.files','')).map((x, index) => {
         if (index == 0) {
           return {
             ...x,
@@ -104,17 +106,17 @@ export const SingleDetailContainer = () => {
       toast.error(message, toastOptions)
     }
   }
-  const enumerateDaysBetweenDates = (startDate, endDate, nightly_rate) => {
+  const enumerateDaysBetweenDates = (startDate, endDate, nightly_rate,days=1) => {
     var now = startDate,
       dates = []
     while (now.isSameOrBefore(endDate)) {
       dates.push({ date: now.format('YYYY-MM-DD'), rate: nightly_rate })
       now.add(1, 'days')
     }
-    console.log({ dates })
-    const sum = dates.reduce((accumulator, object) => {
+    console.log({ dates,startDate,endDate,days })
+    const sum = days==7 ? parseInt(RV.Pricing.weekly) : (days==30 ? parseInt(RV.Pricing.monthly): dates.reduce((accumulator, object) => {
       return accumulator + parseInt(object.rate)
-    }, 0)
+    }, 0))
     return { dates, sum }
   }
   const checkReservedDates = (startDateParam, endDateParam, reservedDates) => {
@@ -160,7 +162,7 @@ export const SingleDetailContainer = () => {
   }
 
   const validateDates = (dates) => {
-    let formattedDates = []
+    let formattedDates = [],days;
 
     setDateRange(dates)
     for (let i = 0; i < dates.length; i++) {
@@ -170,6 +172,7 @@ export const SingleDetailContainer = () => {
       }
     }
     if (dates[0] && dates[1]) {
+      days= moment(dates[1]).diff(moment(dates[0]), 'days'); 
       if (
         moment(dates[1]).diff(moment(dates[0]), 'days') <
         RV.ListInfo.min_nights - 1
@@ -194,8 +197,9 @@ export const SingleDetailContainer = () => {
         )
         return
       }
-
-      console.log(moment(dates[0]))
+      
+      
+      // console.log(moment(dates[0]))
       setError(false)
       const {
         dates: checkInDates,
@@ -204,13 +208,16 @@ export const SingleDetailContainer = () => {
         moment(dates[0]),
         moment(dates[1]),
         RV.Pricing.nightly,
+        days+1
+        
       )
-      const total = invoiceInfo.total + sumCheckIn
+      console.log({sumCheckIn})
+      const total = invoiceInfo.initialAmount + sumCheckIn
       setInvoiceInfo({
         ...invoiceInfo,
         reservation: checkInDates,
         reservationTotal: sumCheckIn,
-        total: total + total * 0.13,
+        total: total+total*0.13,
       })
     }
   }

@@ -20,6 +20,7 @@ import { Country, State, City } from 'country-state-city'
 import axios from 'axios'
 import { baseURL } from '../../config/apiURL'
 import { getCardImage } from '../../utils/helpers'
+import _ from 'lodash'
 
 const useOptions = () => {
   const fontSize = useResponsiveFontSize()
@@ -93,6 +94,12 @@ const SplitForm = () => {
         console.log(err)
       })
   }
+  function setCookie(cname, cvalue, exdays) {
+    const d = new Date()
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
+    let expires = 'expires=' + d.toUTCString()
+    document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
+  }
 
   // useEffect(getPaymentMethods, []);
 
@@ -113,13 +120,13 @@ const SplitForm = () => {
       } = errors
 
       const {
-        email:emailV,
-        phone:phoneV,
-        country:countryV,
-        postal_code:postal_codeV,
-        state:stateV,
-        city:cityV,
-        address:addressV,
+        email: emailV,
+        phone: phoneV,
+        country: countryV,
+        postal_code: postal_codeV,
+        state: stateV,
+        city: cityV,
+        address: addressV,
       } = values
       if (!stripe || !elements) {
         // Stripe.js has not loaded yet. Make sure to disable
@@ -135,12 +142,12 @@ const SplitForm = () => {
         city ||
         address
       ) {
-        toast.error("Please fill all fields correctly",toastOptions);
+        toast.error('Please fill all fields correctly', toastOptions)
         setProceedNext(false)
         return
       }
 
-      if(
+      if (
         !emailV ||
         !phoneV ||
         !countryV ||
@@ -148,8 +155,8 @@ const SplitForm = () => {
         !stateV ||
         !cityV ||
         !addressV
-      ){
-        toast.error("Please fill all fields",toastOptions);
+      ) {
+        toast.error('Please fill all fields', toastOptions)
         setProceedNext(false)
         return
       }
@@ -163,7 +170,8 @@ const SplitForm = () => {
         { headers },
       )
       console.log({ data })
-
+      let countryLabel = optionsCountry.find((x) => x.value == countryV)
+      let stateLabel = states.find((x) => x.value == stateV)
       const billingDetails = {
         name: values.card_name,
         address: {
@@ -179,6 +187,9 @@ const SplitForm = () => {
         billing_details: billingDetails,
         card: elements.getElement(CardNumberElement),
       })
+      console.log({ card: CardNumberElement })
+      // return
+      // setCookie("card",JSON.stringify(elements.getElement(CardNumberElement)),1)
 
       const { error } = payload
       if (error && error.message) {
@@ -214,14 +225,34 @@ const SplitForm = () => {
           dates: bookingDetails.invoiceInfo.reservation.map((x) => {
             return x.date
           }),
-          bookingDetails: {
-            tax: (
-              (bookingDetails.invoiceInfo.total -
-                bookingDetails.invoiceInfo.total * 0.13) *
-              0.13
-            ).toFixed(2),
-            invoice:bookingDetails.invoiceInfo
-          }
+          bookingObj: {
+            billingDetails: {
+              name: values.card_name,
+              address: {
+                country: values.country && _.get(countryLabel, 'label', 'N/A'),
+                state: values.state && _.get(stateLabel, 'label', 'N/A'),
+                city: values.city,
+                line1: values.address,
+              },
+            },
+            bookingDetails: {
+              tax: (
+                (bookingDetails.invoiceInfo.total -
+                  bookingDetails.invoiceInfo.total * 0.13) *
+                0.13
+              ).toFixed(2),
+              invoice: bookingDetails.invoiceInfo,
+              damage_deposit:bookingDetails.damage_deposit,
+              booking_deposit:bookingDetails.booking_deposit
+            },
+            personalInfo: {
+              email: emailV,
+              phone: phoneV,
+            },
+            shippingDetails: {
+              address: addressV,
+            },
+          },
         },
         { headers },
       )
@@ -490,6 +521,9 @@ const SplitForm = () => {
                     onFocus={() => {
                       console.log('CardNumberElement [focus]')
                     }}
+                    onClick={(e) => {
+                      console.log({ e })
+                    }}
                   />
                 </div>
                 <div className="row stripe-div">
@@ -501,7 +535,10 @@ const SplitForm = () => {
                         console.log('CardExpiryElement [ready]')
                       }}
                       onChange={(event) => {
-                        console.log('CardExpiryElement [change]', event)
+                        console.log(
+                          'CardExpiryElement [change]',
+                          event.target.value,
+                        )
                         setProceedNext(true)
                         setCardError('')
                       }}
@@ -521,7 +558,10 @@ const SplitForm = () => {
                         console.log('CardCvcElement [ready]')
                       }}
                       onChange={(event) => {
-                        console.log('CardCvcElement [change]', event)
+                        console.log(
+                          'CardCvcElement [change]',
+                          event.target.value,
+                        )
                         setProceedNext(true)
                         setCardError('')
                       }}
@@ -531,7 +571,6 @@ const SplitForm = () => {
                       onFocus={() => {
                         console.log('CardCvcElement [focus]')
                       }}
-                  
                     />
                   </div>
                 </div>

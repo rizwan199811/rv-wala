@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { setBookingDetails } from '../../app/slice/BookSlice'
-
+const _ =require('lodash')
 const AddDetails = () => {
   let history = useNavigate()
   const dispatch = useDispatch()
@@ -56,9 +56,7 @@ const AddDetails = () => {
                 <div className="top">
                   <img
                     src={
-                      booking_details.ImageInfo.files[0]
-                        ? booking_details.ImageInfo.files[0].location
-                        : booking_details.ImageInfo.files[0].location
+                      _.get(booking_details,'ImageInfo.RV.files[0].location',_.get(booking_details,'ImageInfo.files[0].location',''))
                     }
                     alt=""
                   />

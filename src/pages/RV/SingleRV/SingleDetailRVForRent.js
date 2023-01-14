@@ -11,6 +11,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { toastOptionsDate } from '../../../config/toast'
 import { Review } from '../../../components/Modals/Review'
+const _ =require('lodash')
 // import DatePicker from 'react-multi-date-picker'
 const SingleDetailRV = ({
   RV,
@@ -1022,7 +1023,7 @@ console.log(RVs,"RVs")
                   >
                     <div className="badge">${x.Pricing.nightly}/night</div>
                     <div className="product-tumb">
-                      <img src={x.ImageInfo.files[0].path || x.ImageInfo.files[0].location} alt="Rv" />
+                      <img src={_.get(x,'ImageInfo.RV.files[0].location',_.get(x,'ImageInfo.files[0].location',''))} alt="Rv" />
                     </div>
                     <div className="product-details">
                       <div className="d-flex justify-content-between">

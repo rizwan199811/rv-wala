@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import MultiRangeSlider from '../components/MultiRangeSlider'
 import { PrettoSlider } from '../components/SimpleSlider'
+const _ =require('lodash')
 
 // import InputRange from 'react-input-range'
 // import 'react-input-range/lib/css/index.css'
@@ -231,7 +232,7 @@ const ListingRv = () => {
                   >
                     <div className="badge">${x.Pricing.nightly}/night</div>
                     <div className="product-tumb">
-                      <img src={x.ImageInfo.files[0].path || x.ImageInfo.files[0].location} alt="Rv" />
+                      <img src={_.get(x,'ImageInfo.RV.files[0].location','') || _.get(x,'ImageInfo.files[0].location','')} alt="Rv" />
                     </div>
                     <div className="product-details">
                       <div className="d-flex justify-content-between">

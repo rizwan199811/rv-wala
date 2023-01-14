@@ -396,7 +396,7 @@ export const PricingInfo = ({
             )}
           </div>
 
-          <div class="col-md-4 mb-3">
+          {listObj && listObj.RVInfo && listObj.RVInfo.mileage && <div class="col-md-4 mb-3">
             <input
               type="checkbox"
               name="mileage"
@@ -460,7 +460,7 @@ export const PricingInfo = ({
                   )}
               </div>
             )}
-          </div>
+          </div>}
           <div class="col-md-4 mb-3">
             <input
               type="checkbox"
@@ -526,7 +526,7 @@ export const PricingInfo = ({
               </div>
             )}
           </div>
-          <div class="col-md-4 mb-3">
+          {listObj && listObj.RVInfo && !listObj.RVInfo.mileage && <div class="col-md-4 mb-3">
             <input
               type="checkbox"
               name="towing_package"
@@ -583,7 +583,7 @@ export const PricingInfo = ({
                 )}
               </div>
             )}
-          </div>
+          </div>}
           <div class="col-md-4 mb-3">
             <input
               type="checkbox"
